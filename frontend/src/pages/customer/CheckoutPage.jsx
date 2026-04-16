@@ -11,7 +11,7 @@ import {
   Truck
 } from 'lucide-react';
 import useCartStore from '../../store/cart-store';
-import { cn } from '../../lib/utils';
+import { cn, formatCurrency } from '../../lib/utils';
 import { Link, useNavigate } from 'react-router-dom';
 
 const StepIndicator = ({ currentStep }) => {
@@ -82,7 +82,7 @@ export default function CheckoutPage() {
           <p className="text-xl text-white/50 max-w-md mx-auto">Your technology is preparing for shipment. A confirmation email has been sent.</p>
           <div className="pt-10 flex flex-col md:flex-row items-center justify-center gap-6">
             <Link to="/catalog" className="px-10 py-5 rounded-2xl bg-white text-black font-black uppercase tracking-widest text-sm hover:scale-105 transition-transform">Continue Shopping</Link>
-            <Link to="/shop" className="px-10 py-5 rounded-2xl border border-white/20 font-black uppercase tracking-widest text-sm hover:bg-white/5 transition-colors">Go Home</Link>
+            <Link to="/home" className="px-10 py-5 rounded-2xl border border-white/20 font-black uppercase tracking-widest text-sm hover:bg-white/5 transition-colors">Go Home</Link>
           </div>
         </motion.div>
       </div>
@@ -154,10 +154,10 @@ export default function CheckoutPage() {
                           </div>
                           <div>
                             <p className="font-bold">{item.productName}</p>
-                            <p className="text-[10px] font-black uppercase text-white/30">Qty: {item.quantity} × ${item.price}</p>
+                            <p className="text-[10px] font-black uppercase text-white/30">Qty: {item.quantity} × {formatCurrency(item.price)}</p>
                           </div>
                         </div>
-                        <span className="font-black">$ {item.price * item.quantity}</span>
+                        <span className="font-black text-white">{formatCurrency(item.price * item.quantity)}</span>
                       </div>
                     ))}
                   </div>
@@ -229,7 +229,7 @@ export default function CheckoutPage() {
               <div className="space-y-4">
                 <div className="flex justify-between text-xs font-bold">
                   <span className="text-white/40 uppercase">Subtotal</span>
-                  <span className="text-white">$ {getTotalPrice()}</span>
+                  <span className="text-white font-bold">{formatCurrency(getTotalPrice())}</span>
                 </div>
                 <div className="flex justify-between text-xs font-bold text-accent">
                   <span className="uppercase tracking-widest">Shipping</span>
@@ -238,7 +238,7 @@ export default function CheckoutPage() {
                 <div className="h-px bg-white/10" />
                 <div className="flex justify-between items-baseline">
                   <span className="text-xs font-black uppercase tracking-widest">Total</span>
-                  <span className="text-4xl font-black">$ {getTotalPrice()}</span>
+                  <span className="text-3xl font-black text-accent">{formatCurrency(getTotalPrice())}</span>
                 </div>
               </div>
 

@@ -14,7 +14,7 @@ import {
   ChevronLeft
 } from 'lucide-react';
 import { catalogService } from '../../services/catalog-service';
-import { cn } from '../../lib/utils';
+import { cn, formatCurrency } from '../../lib/utils';
 import { useTranslation } from 'react-i18next';
 import useCartStore from '../../store/cart-store';
 import SEO from '../../components/common/SEO';
@@ -184,7 +184,7 @@ export default function ProductDetail() {
             </div>
 
             <div className="flex items-baseline gap-4">
-              <span className="text-5xl font-black text-white">$ {selectedVariant?.price || product.minPrice}</span>
+              <span className="text-5xl font-black text-white">{formatCurrency(selectedVariant?.price || product.minPrice)}</span>
               <span className="text-sm font-bold text-white/30 uppercase tracking-widest">Pricing Inc. VAT</span>
             </div>
 

@@ -48,8 +48,8 @@ export default function LoginPage() {
 
       {/* Left Panel — Brand */}
       <div className="hidden lg:flex lg:w-1/2 flex-col justify-between p-16 relative z-10">
-        <Link to="/shop" className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-[var(--accent-lime)] flex items-center justify-center">
+        <Link to="/home" className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-accent flex items-center justify-center">
             <Zap className="w-5 h-5 text-black" />
           </div>
           <span className="text-2xl font-black uppercase tracking-widest">TechChain</span>
@@ -57,16 +57,16 @@ export default function LoginPage() {
 
         <div className="space-y-8">
           <div className="inline-flex items-center gap-2 border border-white/10 px-4 py-2 rounded-full">
-            <ShieldCheck className="w-3 h-3 text-[var(--accent-lime)]" />
-            <span className="text-[10px] font-black tracking-[0.3em] uppercase text-white/60">Premium Access Point</span>
+            <ShieldCheck className="w-3 h-3 text-accent" />
+            <span className="text-[10px] font-black tracking-[0.3em] uppercase text-white/80">Premium Access Point</span>
           </div>
 
           <h1 className="text-6xl xl:text-7xl font-black leading-none tracking-tighter uppercase">
             Welcome<br />Back to<br />
-            <span className="text-[var(--accent-lime)]">The Future.</span>
+            <span className="text-accent">The Future.</span>
           </h1>
 
-          <p className="text-white/40 font-bold max-w-xs leading-relaxed">
+          <p className="text-white/70 font-bold max-w-xs leading-relaxed">
             Thế giới công nghệ cao cấp đang chờ bạn. Đăng nhập để khám phá những sản phẩm đỉnh cao nhất.
           </p>
 
@@ -77,9 +77,9 @@ export default function LoginPage() {
               transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
               className="p-5 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-xl"
             >
-              <Cpu className="w-6 h-6 text-[var(--accent-lime)] mb-3" />
+              <Cpu className="w-6 h-6 text-accent mb-3" />
               <p className="text-xs font-black">Next-Gen</p>
-              <p className="text-[10px] text-white/40 font-bold">Hardware</p>
+              <p className="text-[10px] text-white/60 font-bold">Hardware</p>
             </motion.div>
             <motion.div 
               animate={{ y: [6, -6, 6] }}
@@ -88,12 +88,12 @@ export default function LoginPage() {
             >
               <Wifi className="w-6 h-6 text-blue-400 mb-3" />
               <p className="text-xs font-black">Always</p>
-              <p className="text-[10px] text-white/40 font-bold">Connected</p>
+              <p className="text-[10px] text-white/60 font-bold">Connected</p>
             </motion.div>
           </div>
         </div>
 
-        <p className="text-[10px] text-white/20 font-bold tracking-widest uppercase">
+        <p className="text-[10px] text-white/50 font-bold tracking-widest uppercase">
           © 2025 TechChain · All Rights Reserved
         </p>
       </div>
@@ -107,8 +107,8 @@ export default function LoginPage() {
           className="w-full max-w-md"
         >
           {/* Mobile Logo */}
-          <Link to="/shop" className="flex items-center gap-3 mb-12 lg:hidden">
-            <div className="w-8 h-8 rounded-lg bg-[var(--accent-lime)] flex items-center justify-center">
+          <Link to="/home" className="flex items-center gap-3 mb-12 lg:hidden">
+            <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center">
               <Zap className="w-4 h-4 text-black" />
             </div>
             <span className="text-xl font-black uppercase tracking-widest">TechChain</span>
@@ -116,7 +116,7 @@ export default function LoginPage() {
 
           <div className="mb-10">
             <h2 className="text-4xl font-black tracking-tighter uppercase mb-2">Sign In</h2>
-            <p className="text-white/40 font-bold">Đăng nhập vào tài khoản của bạn.</p>
+            <p className="text-white/70 font-bold">Đăng nhập vào tài khoản của bạn.</p>
           </div>
 
           {error && (
@@ -131,7 +131,7 @@ export default function LoginPage() {
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
-              <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">Tên đăng nhập</label>
+              <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/70">Tên đăng nhập</label>
               <div className="relative">
                 <Mail className="absolute left-5 top-1/2 -translate-y-1/2 text-white/20 w-4 h-4" />
                 <input 
@@ -140,13 +140,13 @@ export default function LoginPage() {
                   value={formData.username}
                   onChange={(e) => setFormData({ ...formData, username: e.target.value })}
                   placeholder="username"
-                  className="w-full bg-white/5 border border-white/10 focus:border-[var(--accent-lime)]/50 focus:bg-white/8 pl-14 pr-6 py-5 rounded-2xl text-white font-bold transition-all outline-none placeholder:text-white/20"
+                  className="w-full bg-white/5 border border-white/10 focus:border-accent pl-14 pr-6 py-5 rounded-2xl text-white font-bold transition-all outline-none placeholder:text-white/40 shadow-inner shadow-black/50"
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">Mật khẩu</label>
+              <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/70">Mật khẩu</label>
               <div className="relative">
                 <Lock className="absolute left-5 top-1/2 -translate-y-1/2 text-white/20 w-4 h-4" />
                 <input 
@@ -155,7 +155,7 @@ export default function LoginPage() {
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                   placeholder="••••••••"
-                  className="w-full bg-white/5 border border-white/10 focus:border-[var(--accent-lime)]/50 pl-14 pr-14 py-5 rounded-2xl text-white font-bold transition-all outline-none placeholder:text-white/20"
+                  className="w-full bg-white/5 border border-white/10 focus:border-accent pl-14 pr-14 py-5 rounded-2xl text-white font-bold transition-all outline-none placeholder:text-white/40 shadow-inner shadow-black/50"
                 />
                 <button 
                   type="button"
@@ -168,7 +168,7 @@ export default function LoginPage() {
             </div>
 
             <div className="flex items-center justify-end">
-              <button type="button" className="text-xs font-black text-[var(--accent-lime)] hover:underline">
+              <button type="button" className="text-xs font-black text-accent hover:underline">
                 Quên mật khẩu?
               </button>
             </div>
@@ -176,7 +176,7 @@ export default function LoginPage() {
             <button 
               type="submit" 
               disabled={isLoading}
-              className="w-full bg-[var(--accent-lime)] text-black py-5 rounded-2xl font-black text-sm tracking-widest uppercase hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3 disabled:opacity-50 disabled:hover:scale-100 shadow-xl"
+              className="w-full bg-accent text-black py-5 rounded-2xl font-black text-sm tracking-widest uppercase hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3 disabled:opacity-50 disabled:hover:scale-100 shadow-[0_0_30px_rgba(180,255,0,0.2)]"
             >
               {isLoading ? (
                 <div className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin" />
@@ -187,16 +187,16 @@ export default function LoginPage() {
           </form>
 
           <div className="mt-8 text-center">
-            <p className="text-white/40 font-bold text-sm">
+            <p className="text-white/70 font-bold text-sm">
               Chưa có tài khoản?{' '}
-              <Link to="/register" className="text-[var(--accent-lime)] hover:underline font-black">
+              <Link to="/register" className="text-accent hover:text-accent/80 hover:underline font-black">
                 Đăng ký ngay
               </Link>
             </p>
           </div>
 
           <div className="mt-6 text-center">
-            <Link to="/catalog" className="text-white/20 text-xs font-bold hover:text-white/40 transition-colors">
+            <Link to="/catalog" className="text-white/50 text-xs font-bold hover:text-white transition-colors">
               ← Tiếp tục mua sắm không cần đăng nhập
             </Link>
           </div>

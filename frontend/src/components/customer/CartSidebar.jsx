@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ShoppingBag, Plus, Minus, Trash2, ArrowRight } from 'lucide-react';
 import useCartStore from '../../store/cart-store';
-import { cn } from '../../lib/utils';
+import { cn, formatCurrency } from '../../lib/utils';
 import { useNavigate } from 'react-router-dom';
 
 export default function CartSidebar() {
@@ -38,7 +38,7 @@ export default function CartSidebar() {
             <div className="p-6 border-b border-white/5 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <ShoppingBag className="w-5 h-5 text-accent" />
-                <h2 className="text-xl font-black uppercase tracking-widest">Your Bag ({getTotalItems()})</h2>
+                <h2 className="text-xl font-black uppercase tracking-widest text-white">Your Bag ({getTotalItems()})</h2>
               </div>
               <button 
                 onClick={toggleCart}
@@ -75,28 +75,30 @@ export default function CartSidebar() {
                     <div className="flex-1 flex flex-col justify-between">
                       <div>
                         <h3 className="text-sm font-bold text-white line-clamp-1">{item.productName}</h3>
-                        <div className="flex gap-2 mt-1">
-                          {item.attributes.map(av => (
-                            <span key={av.id} className="text-[8px] font-black uppercase text-white/30">{av.value}</span>
+                        <div className="flex flex-wrap gap-x-3 gap-y-1 mt-1">
+                          {item.attributes && item.attributes.map((av, idx) => (
+                            <span key={idx} className="text-[10px] font-black uppercase text-accent tracking-tighter">
+                              {av.attributeName}: <span className="text-white">{av.value}</span>
+                            </span>
                           ))}
                         </div>
                       </div>
                       
                       <div className="flex items-center justify-between">
-                        <span className="text-sm font-black">$ {item.price}</span>
+                        <span className="text-sm font-black text-white">{formatCurrency(item.price)}</span>
                         
                         {/* Quantity Controls */}
-                        <div className="flex items-center gap-3 p-1 bg-black/40 rounded-xl border border-white/5">
+                        <div className="flex items-center gap-3 p-1 bg-white/5 rounded-xl border border-white/10">
                           <button 
                             onClick={() => updateQuantity(item.variantId, item.quantity - 1)}
-                            className="w-6 h-6 flex items-center justify-center hover:text-accent"
+                            className="w-6 h-6 flex items-center justify-center text-white hover:text-accent transition-colors"
                           >
                             <Minus className="w-3 h-3" />
                           </button>
-                          <span className="text-xs font-bold w-4 text-center">{item.quantity}</span>
+                          <span className="text-xs font-black w-4 text-center text-accent">{item.quantity}</span>
                           <button 
                             onClick={() => updateQuantity(item.variantId, item.quantity + 1)}
-                            className="w-6 h-6 flex items-center justify-center hover:text-accent"
+                            className="w-6 h-6 flex items-center justify-center text-white hover:text-accent transition-colors"
                           >
                             <Plus className="w-3 h-3" />
                           </button>
@@ -121,7 +123,7 @@ export default function CartSidebar() {
               <div className="p-6 border-t border-white/5 bg-zinc-900/50 backdrop-blur-xl space-y-6">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-black uppercase tracking-[0.2em] text-white/30">Subtotal</span>
-                  <span className="text-2xl font-black">$ {getTotalPrice()}</span>
+                  <span className="text-2xl font-black text-accent">{formatCurrency(getTotalPrice())}</span>
                 </div>
                 <button 
                   onClick={handleCheckout}

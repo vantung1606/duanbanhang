@@ -43,7 +43,7 @@ export default function CustomerNavbar() {
         )}
       >
         {/* Logo */}
-        <NavLink to="/shop" className="flex items-center gap-3 group">
+        <NavLink to="/home" className="flex items-center gap-3 group">
           <div className="w-10 h-10 rounded-xl bg-shopper-emerald flex items-center justify-center shadow-lg group-hover:rotate-12 transition-all">
             <Zap className="text-white w-6 h-6 fill-white" />
           </div>
@@ -52,7 +52,7 @@ export default function CustomerNavbar() {
 
         {/* Navigation */}
         <div className="hidden md:flex items-center gap-10 font-bold text-[11px] tracking-[0.2em] text-slate-500 uppercase">
-          <NavLink to="/shop" className="hover:text-shopper-emerald transition-colors">Home</NavLink>
+          <NavLink to="/home" className="hover:text-shopper-emerald transition-colors">Home</NavLink>
           <NavLink to="/catalog" className="hover:text-shopper-emerald transition-colors">Catalog</NavLink>
           <NavLink to="/shop/exclusives" className="hover:text-shopper-emerald transition-colors">Exclusives</NavLink>
           <a href="#footer" className="hover:text-shopper-emerald transition-colors">Contact</a>
@@ -80,7 +80,7 @@ export default function CustomerNavbar() {
                 <User className="w-4 h-4" />
               </NavLink>
               <button 
-                onClick={() => { logout(); navigate('/shop'); }}
+                onClick={() => { logout(); navigate('/home'); }}
                 className="w-8 h-8 rounded-full bg-red-500/10 flex items-center justify-center text-red-500 hover:bg-red-500/20 transition-all font-black"
                 title="Logout"
               >

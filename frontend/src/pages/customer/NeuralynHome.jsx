@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform, useSpring } from 'framer-motion';
 import { 
   ChevronDown, 
   ArrowRight, 
@@ -20,47 +20,8 @@ import {
   ShoppingBag,
   User
 } from 'lucide-react';
-import { clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
-import { useTranslation } from 'react-i18next';
-import useCartStore from '../../store/cart-store';
-import { useAuthStore } from '../../store/authStore';
-import { Link, useNavigate } from 'react-router-dom';
-
-// Fonts
-import "@fontsource/inter/400.css";
-import "@fontsource/inter/700.css";
-import "@fontsource/instrument-serif/400-italic.css";
-
-function cn(...inputs) {
-  return twMerge(clsx(inputs));
-}
-
-// Reusable Floating Sphere Component
-const FloatingBall = ({ color, size, top, left, delay = 0 }) => (
-  <motion.div
-    initial={{ x: 0, y: 0 }}
-    animate={{ 
-      x: [0, 40, -40, 0],
-      y: [0, -30, 30, 0]
-    }}
-    transition={{ 
-      duration: 8 + Math.random() * 4, 
-      repeat: Infinity, 
-      ease: "easeInOut",
-      delay: delay
-    }}
-    className="absolute pointer-events-none rounded-full blur-[40px] opacity-20 mix-blend-screen"
-    style={{
-      width: size,
-      height: size,
-      top: top,
-      left: left,
-      background: color,
-      boxShadow: `0 0 80px ${color}`
-    }}
-  />
-);
+import { cn, formatCurrency } from '../../lib/utils';
+import FloatingBall from '../../components/common/FloatingBall';
 
 const MegaMenu = ({ isOpen }) => {
   const categories = [
@@ -113,26 +74,40 @@ const FeatureCard = ({ icon: Icon, title, desc }) => (
   </motion.div>
 );
 
-const BottomProductCard = ({ image, title, price, delay, t }) => (
+const BottomProductCard = ({ image, title, price, delay, t, addItem }) => (
   <motion.div
-    initial={{ opacity: 0, y: 40 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.8, delay }}
+    variants={{
+      hidden: { opacity: 0, y: 30 },
+      visible: { opacity: 1, y: 0 }
+    }}
+    transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+    whileHover={{ y: -12, transition: { duration: 0.5, ease: "easeOut" } }}
     className="w-full bg-white/10 backdrop-blur-2xl rounded-[2.5rem] p-4 border border-white/20 relative group overflow-hidden"
   >
     <div className="aspect-[4/3] rounded-[2rem] overflow-hidden bg-black/40 mb-4">
-      <img src={image} alt={title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+      <img src={image} alt={title} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" />
     </div>
     <div className="flex items-center justify-between px-2 mb-2">
       <div>
         <h4 className="text-white font-bold">{title}</h4>
         <p className="text-white/50 text-xs">Premium Device</p>
       </div>
-      <div className="bg-white/10 rounded-full px-3 py-1 text-xs font-black text-white">$ {price}</div>
+      <div className="bg-white/10 rounded-full px-3 py-1 text-[10px] font-black text-white tracking-widest">{formatCurrency(parseFloat(price.replace(/,/g, '')))}</div>
     </div>
     <button 
-      onClick={() => addItem({ id: Math.random(), name: title, slug: title.toLowerCase().replace(/ /g, '-'), thumbnailUrl: image }, { id: Math.random(), price: parseFloat(price.replace(/,/g, '')), sku: 'SKU' })}
-      className="w-full bg-white text-black py-3 rounded-full text-sm font-bold mt-2 hover:bg-white/90 transition-colors"
+      onClick={() => addItem(
+        { id: Math.random(), name: title, slug: title.toLowerCase().replace(/ /g, '-'), thumbnailUrl: image }, 
+        { 
+          id: Math.random(), 
+          price: parseFloat(price.replace(/,/g, '')), 
+          sku: 'SKU',
+          attributeValues: [
+            { attributeName: "Color", value: "Neural Onyx" },
+            { attributeName: "Edition", value: "Founder" }
+          ]
+        }
+      )}
+      className="w-full bg-white text-black py-4 rounded-full text-sm font-bold mt-2 hover:bg-white/90 transition-colors shadow-lg active:scale-95 transition-all"
     >
       {t('products.order')}
     </button>
@@ -146,6 +121,9 @@ export default function NeuralynHome() {
   const [searchQuery, setSearchQuery] = useState('');
   const [showSearch, setShowSearch] = useState(false);
   const containerRef = useRef(null);
+  const { scrollYProgress } = useScroll({ container: containerRef });
+  const smoothProgress = useSpring(scrollYProgress, { damping: 45, stiffness: 60 });
+  
   const { toggleCart, getTotalItems, addItem } = useCartStore();
   const { isAuthenticated, user, logout } = useAuthStore();
   const navigate = useNavigate();
@@ -164,14 +142,10 @@ export default function NeuralynHome() {
 
   return (
     <div className={cn(
-      "transition-colors duration-700 selection:bg-white selection:text-black min-h-screen relative p-4 md:p-6",
+      "transition-colors duration-700 selection:bg-white selection:text-black min-h-screen relative",
       isDarkMode ? "bg-[#0a0a0a] text-white" : "bg-slate-50 text-slate-900"
     )}>
       
-      {/* Visual Frame */}
-      <div className="layout-frame">
-        <div className="frame-border" />
-      </div>
       
       {/* Background Fixed Video */}
       <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
@@ -192,7 +166,7 @@ export default function NeuralynHome() {
         {/* Advanced Header */}
         <nav className={cn(
           "fixed top-0 left-0 right-0 z-[100] px-8 md:px-28 py-6 flex items-center justify-between transition-all border-b",
-          isDarkMode ? "bg-accent/20 border-accent/30 backdrop-blur-md" : "bg-white/50 border-black/5 backdrop-blur-md"
+          isDarkMode ? "bg-black/40 border-white/10 backdrop-blur-2xl" : "bg-white/50 border-black/5 backdrop-blur-2xl"
         )}>
           {/* Left: Logo & Nav */}
           <div className="flex items-center gap-12">
@@ -326,51 +300,89 @@ export default function NeuralynHome() {
         </nav>
 
         {/* SLIDE 1: HERO */}
-        <section className="h-screen w-full snap-start flex flex-col items-center justify-center relative px-6 overflow-hidden pt-20">
-          <FloatingBall color="#ff0080" size="400px" top="-10%" left="-5%" />
-          <FloatingBall color="#7000ff" size="300px" top="60%" left="80%" delay={2} />
-          <FloatingBall color="#00ffcc" size="250px" top="20%" left="30%" delay={1} />
+        <section className="h-screen w-full snap-start flex flex-col items-center justify-between relative px-6 overflow-hidden pt-36 pb-12">
+          <FloatingBall color="#ff0080" size="400px" top="-10%" left="-5%" scrollYProgress={smoothProgress} speed={0.4} />
+          <FloatingBall color="#7000ff" size="300px" top="60%" left="80%" delay={2} scrollYProgress={smoothProgress} speed={0.3} />
+          <FloatingBall color="#00ffcc" size="250px" top="20%" left="30%" delay={1} scrollYProgress={smoothProgress} speed={0.5} />
 
-          <div className="relative z-20 text-center flex flex-col items-center max-w-4xl pt-12">
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            variants={{
+              visible: { 
+                transition: { 
+                  staggerChildren: 0.3,
+                  delayChildren: 0.3
+                } 
+              }
+            }}
+            viewport={{ once: true }}
+            className="relative z-20 text-center flex flex-col items-center max-w-5xl"
+          >
             <motion.h1 
               key={i18n.language}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="text-6xl md:text-[5.5rem] font-black leading-[1] mb-8 tracking-[-0.04em]"
+              variants={{
+                hidden: { opacity: 0, y: 60, scale: 0.98 },
+                visible: { opacity: 1, y: 0, scale: 1 }
+              }}
+              transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1] }}
+              className="text-6xl md:text-[6.5rem] font-black leading-[0.95] mb-8 tracking-[-0.05em] text-white"
             >
               {t('hero.title')} <br/> <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FACC15] to-accent/90">{t('hero.accent')}</span>
             </motion.h1>
             <motion.p 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className={cn("text-lg md:text-xl font-medium max-w-2xl mb-12", isDarkMode ? "text-white/60" : "text-black/60")}
+              variants={{
+                hidden: { opacity: 0, y: 30 },
+                visible: { opacity: 1, y: 0 }
+              }}
+              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+              className={cn("text-lg md:text-2xl font-medium max-w-2xl mb-12", isDarkMode ? "text-white/70" : "text-black/70")}
             >
               {t('hero.subtitle')}
             </motion.p>
             <motion.div 
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.4 }}
+              variants={{
+                hidden: { opacity: 0, scale: 0.8 },
+                visible: { opacity: 1, scale: 1 }
+              }}
+              transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
               className="flex items-center gap-4"
             >
-              <button className="bg-gradient-to-r from-[#F97316] to-[#A855F7] px-10 py-5 rounded-full text-lg font-black shadow-[0_0_40px_rgba(249,115,22,0.3)] hover:scale-105 transition-transform flex items-center gap-3 text-white">
-                {t('hero.cta')} <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center"><ArrowRight className="w-4 h-4"/></div>
+              <button className="bg-gradient-to-r from-[#F97316] to-[#A855F7] px-12 py-6 rounded-full text-lg font-black shadow-[0_0_40px_rgba(249,115,22,0.3)] hover:scale-110 active:scale-95 transition-all flex items-center gap-3 text-white">
+                {t('hero.cta')} <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center"><ArrowRight className="w-5 h-5"/></div>
               </button>
             </motion.div>
-          </div>
+          </motion.div>
 
           {/* Bottom Cards Section */}
-          <div className="absolute bottom-10 left-1/2 -translate-x-1/2 w-full max-w-6xl px-6 grid grid-cols-1 md:grid-cols-3 gap-6">
-            <BottomProductCard t={t} title="Apple Vision Pro" price="3,499" image="https://images.unsplash.com/photo-1707053591461-8274f88062e7?auto=format&fit=crop&q=80&w=600" delay={0.6} />
-            <BottomProductCard t={t} title="MacBook Air M3" price="1,099" image="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&q=80&w=600" delay={0.7} />
-            <BottomProductCard t={t} title="iPhone 15 Pro" price="999" image="https://images.unsplash.com/photo-1696446701796-da61225697cc?auto=format&fit=crop&q=80&w=600" delay={0.8} />
-          </div>
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            variants={{
+              visible: { 
+                transition: { 
+                  staggerChildren: 0.2,
+                  delayChildren: 0.8
+                } 
+              }
+            }}
+            viewport={{ once: true }}
+            className="w-full max-w-7xl px-6 grid grid-cols-1 md:grid-cols-3 gap-8 relative z-30"
+          >
+            <BottomProductCard addItem={addItem} t={t} title="Apple Vision Pro" price="89,990,000" image="https://images.unsplash.com/photo-1707053591461-8274f88062e7?auto=format&fit=crop&q=80&w=600" />
+            <BottomProductCard addItem={addItem} t={t} title="MacBook Air M3" price="27,990,000" image="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&q=80&w=600" />
+            <BottomProductCard addItem={addItem} t={t} title="iPhone 15 Pro" price="28,990,000" image="https://images.unsplash.com/photo-1696446701796-da61225697cc?auto=format&fit=crop&q=80&w=600" />
+          </motion.div>
         </section>
 
         {/* SLIDE 2: FUTURE ECOSYSTEM */}
         <section className="h-screen w-full snap-start relative flex flex-col items-center justify-center px-8 md:px-28">
-          <div className="max-w-7xl w-full grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.97 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1] }}
+            className="max-w-7xl w-full grid grid-cols-1 md:grid-cols-2 gap-20 items-center"
+          >
             <div className="space-y-8">
               <span className="text-accent font-black uppercase tracking-widest text-sm">Next Generation</span>
               <h2 className="text-5xl md:text-7xl font-black leading-tight">Advanced <br/> Ecosystem.</h2>
@@ -395,12 +407,12 @@ export default function NeuralynHome() {
               <FeatureCard icon={Globe} title="Global Sync" desc="Available in 120+ countries worldwide." />
               <FeatureCard icon={Cpu} title="AI Engine" desc="Predictive analytics for your daily usage." />
             </div>
-          </div>
+          </motion.div>
         </section>
 
         {/* SLIDE 3: GLOBAL ANALYTICS */}
         <section className="h-screen w-full snap-start relative flex flex-col items-center justify-center p-8 overflow-hidden">
-          <FloatingBall color="#3b82f6" size="500px" top="20%" left="60%" />
+          <FloatingBall color="#3b82f6" size="500px" top="20%" left="60%" scrollYProgress={smoothProgress} speed={0.25} />
           <div className="z-10 text-center space-y-8 mb-20">
             <h2 className="text-5xl md:text-8xl font-black italic font-serif">Data in Motion</h2>
             <p className={cn("text-xl max-w-2xl mx-auto", isDarkMode ? "text-white/60" : "text-black/60")}>
@@ -431,14 +443,23 @@ export default function NeuralynHome() {
 
         {/* SLIDE 4: CALL TO ACTION */}
         <section className={cn("h-screen w-full snap-start relative flex flex-col items-center justify-center p-8 transition-colors", isDarkMode ? "bg-black" : "bg-white")}>
-          <div className="text-center space-y-12 max-w-4xl">
-            <h2 className="text-7xl md:text-[9rem] font-black leading-none uppercase tracking-tighter">Ready <br/> to Join?</h2>
+          <motion.div 
+            initial={{ opacity: 0, y: 60 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1] }}
+            className="text-center space-y-12 max-w-4xl"
+          >
+            <h2 className="text-7xl md:text-[9.5rem] font-black leading-none uppercase tracking-tighter">Ready <br/> to Join?</h2>
             <p className={cn("text-2xl font-medium", isDarkMode ? "text-white/40" : "text-black/40")}>Join 50,000+ pioneers building the future of tech commerce.</p>
             <div className="flex flex-col md:flex-row items-center justify-center gap-6">
-              <button className={cn("px-12 py-6 rounded-2xl text-xl font-black hover:scale-105 transition-transform", isDarkMode ? "bg-white text-black" : "bg-black text-white")}>Create Account</button>
-              <button className="px-12 py-6 border border-current rounded-2xl text-xl font-black hover:bg-current hover:text-white transition-all">Learn More</button>
+              <button className={cn("px-14 py-7 rounded-2xl text-xl font-black shadow-[0_20px_50px_rgba(0,0,0,0.3)] hover:scale-110 active:scale-95 transition-all", isDarkMode ? "bg-white text-black" : "bg-black text-white")}>
+                Create Account
+              </button>
+              <button className="px-14 py-7 border-2 border-current rounded-2xl text-xl font-black hover:bg-current hover:text-white transition-all">
+                Learn More
+              </button>
             </div>
-          </div>
+          </motion.div>
 
           <footer className={cn("absolute bottom-10 w-full px-8 md:px-28 flex flex-col md:flex-row items-center justify-between gap-8 border-t pt-10", isDarkMode ? "border-white/10" : "border-black/10")}>
             <div className="flex items-center gap-2">

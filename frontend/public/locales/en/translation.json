@@ -16,5 +16,69 @@
   },
   "products": {
     "order": "Place an Order"
+  },
+  "admin": {
+    "sidebar": {
+      "dashboard": "Dashboard",
+      "analytics": "Analytics",
+      "customers": "Customers",
+      "products": "Products",
+      "settings": "Settings",
+      "logout": "Logout",
+      "admin_root": "Admin Root",
+      "system_power": "System Power"
+    },
+    "topbar": {
+      "search_placeholder": "Search system logs, users, or settings...",
+      "last_sync": "Last Sync"
+    },
+    "dashboard": {
+      "control_center": "Control",
+      "center_accent": "Center",
+      "subtitle": "Unifying system stability and business intelligence.",
+      "node_active": "Neuralyn Node Active",
+      "stats": {
+        "revenue": "Total Revenue",
+        "orders": "Total Orders",
+        "customers": "Global Customers",
+        "uptime": "System Uptime",
+        "uptime_sub": "Network: Stable",
+        "revenue_sub": "Processed via Stripe",
+        "orders_sub": "Active in Pipeline",
+        "customers_sub": "Verified Identities"
+      },
+      "revenue_chart": {
+        "title": "Revenue Trajectory",
+        "forecast": "Live Forecast"
+      },
+      "category_split": {
+        "title": "Category Split",
+        "subtitle": "Inventory distribution across sectors."
+      },
+      "recent_pulse": "Recent Pulse",
+      "initializing": "Initializing Control Room..."
+    },
+    "users": {
+      "management_title": "Account",
+      "title_accent": "Management",
+      "subtitle": "Configure global user roles, access levels, and security status.",
+      "add_user": "Add Master User",
+      "search_placeholder": "Search by username, email, or role...",
+      "stats": {
+        "total": "Total",
+        "active": "Active",
+        "banned": "Banned"
+      },
+      "table": {
+        "identity": "Identity",
+        "authority": "Authority",
+        "status": "Status",
+        "registry": "Registry",
+        "operations": "Operations"
+      },
+      "loading": {
+        "synchronizing": "Synchronizing Identities..."
+      }
+    }
   }
 }

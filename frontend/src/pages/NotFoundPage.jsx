@@ -41,7 +41,7 @@ export default function NotFoundPage() {
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-10">
              <Link 
-               to="/shop" 
+               to="/home" 
                className="px-10 py-5 bg-primary-light text-white rounded-[2rem] font-black uppercase tracking-widest text-xs flex items-center gap-3 hover:scale-105 transition-all shadow-xl shadow-primary-light/30"
              >
                 <Home className="w-4 h-4" /> Return to Base

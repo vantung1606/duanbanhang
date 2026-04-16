@@ -73,7 +73,7 @@ function App() {
         </Route>
 
         {/* Landing Page (Standalone) */}
-        <Route path="/shop" element={<NeuralynHome />} />
+        <Route path="/home" element={<NeuralynHome />} />
         <Route path="/catalog" element={<Catalog />} />
         <Route path="/product/:slug" element={<ProductDetail />} />
         <Route path="/checkout" element={<CheckoutPage />} />
@@ -92,7 +92,7 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
 
         {/* Root Redirect */}
-        <Route path="/" element={<Navigate to="/shop" replace />} />
+        <Route path="/" element={<Navigate to="/home" replace />} />
       </Routes>
     </Router>
   );

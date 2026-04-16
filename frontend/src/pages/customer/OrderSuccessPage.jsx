@@ -71,7 +71,7 @@ export default function OrderSuccessPage() {
                 Track Order <ArrowRight className="w-4 h-4" />
              </Link>
              <Link 
-               to="/shop" 
+               to="/home" 
                className="flex-1 px-8 py-5 bg-white/50 dark:bg-white/10 rounded-[2rem] font-black uppercase tracking-widest text-xs flex items-center justify-center gap-2 hover:bg-emerald-500 hover:text-white transition-all border border-white/20 dark:border-white/10 shadow-sm"
              >
                 <ShoppingBag className="w-4 h-4" /> Keep Shopping

@@ -16,5 +16,69 @@
   },
   "products": {
     "order": "Đặt hàng ngay"
+  },
+  "admin": {
+    "sidebar": {
+      "dashboard": "Bảng điều khiển",
+      "analytics": "Phân tích hệ thống",
+      "customers": "Khách hàng",
+      "products": "Sản phẩm",
+      "settings": "Cài đặt",
+      "logout": "Đăng xuất",
+      "admin_root": "Quản trị viên",
+      "system_power": "Quyền hệ thống"
+    },
+    "topbar": {
+      "search_placeholder": "Tìm kiếm nhật ký, người dùng hoặc cài đặt...",
+      "last_sync": "Đồng bộ cuối"
+    },
+    "dashboard": {
+      "control_center": "Phòng",
+      "center_accent": "Điều khiển",
+      "subtitle": "Hệ thống quản trị và thông minh doanh nghiệp tập trung.",
+      "node_active": "Nút mạng hoạt động",
+      "stats": {
+        "revenue": "Tổng doanh thu",
+        "orders": "Tổng đơn hàng",
+        "customers": "Khách hàng toàn cầu",
+        "uptime": "Thời gian hoạt động",
+        "uptime_sub": "Mạng: Ổn định",
+        "revenue_sub": "Đã xử lý qua Stripe",
+        "orders_sub": "Đang trong tiến trình",
+        "customers_sub": "Danh tính đã xác minh"
+      },
+      "revenue_chart": {
+        "title": "Biểu đồ Doanh thu",
+        "forecast": "Dự báo trực tiếp"
+      },
+      "category_split": {
+        "title": "Phân loại danh mục",
+        "subtitle": "Phân phối kho hàng theo lĩnh vực."
+      },
+      "recent_pulse": "Nhịp đập gần đây",
+      "initializing": "Đang khởi tạo phòng điều khiển..."
+    },
+    "users": {
+      "management_title": "Quản lý",
+      "title_accent": "Tài khoản",
+      "subtitle": "Cấu hình vai trò người dùng, mức độ truy cập và bảo mật toàn cầu.",
+      "add_user": "Thêm quản trị viên",
+      "search_placeholder": "Tìm kiếm theo tên, email hoặc vai trò...",
+      "stats": {
+        "total": "Tổng số",
+        "active": "Hoạt động",
+        "banned": "Bị cấm"
+      },
+      "table": {
+        "identity": "Danh tính",
+        "authority": "Quyền hạn",
+        "status": "Trạng thái",
+        "registry": "Đăng ký",
+        "operations": "Thao tác"
+      },
+      "loading": {
+        "synchronizing": "Đang đồng bộ danh tính..."
+      }
+    }
   }
 }

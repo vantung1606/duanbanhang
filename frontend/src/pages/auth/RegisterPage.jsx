@@ -53,7 +53,7 @@ export default function RegisterPage() {
       
       {/* Ambient BG */}
       <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-[var(--accent-lime)]/5 blur-[120px] rounded-full" />
+        <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-accent/5 blur-[120px] rounded-full" />
         <div className="absolute bottom-[-10%] right-[-5%] w-[400px] h-[400px] bg-blue-600/5 blur-[100px] rounded-full" />
         <div className="absolute inset-0 opacity-[0.02]" style={{backgroundImage: 'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)', backgroundSize: '60px 60px'}} />
       </div>
@@ -67,8 +67,8 @@ export default function RegisterPage() {
           className="w-full max-w-md"
         >
           {/* Mobile Logo */}
-          <Link to="/shop" className="flex items-center gap-3 mb-10 lg:hidden">
-            <div className="w-8 h-8 rounded-lg bg-[var(--accent-lime)] flex items-center justify-center">
+          <Link to="/home" className="flex items-center gap-3 mb-10 lg:hidden">
+            <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center">
               <Zap className="w-4 h-4 text-black" />
             </div>
             <span className="text-xl font-black uppercase tracking-widest">TechChain</span>
@@ -76,7 +76,7 @@ export default function RegisterPage() {
 
           <div className="mb-10">
             <h2 className="text-4xl font-black tracking-tighter uppercase mb-2">Create Account</h2>
-            <p className="text-white/40 font-bold">Tham gia cộng đồng công nghệ TechChain.</p>
+            <p className="text-white/70 font-bold">Tham gia cộng đồng công nghệ TechChain.</p>
           </div>
 
           {error && (
@@ -91,7 +91,7 @@ export default function RegisterPage() {
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-2">
-              <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">Tên đăng nhập</label>
+              <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/70">Tên đăng nhập</label>
               <div className="relative">
                 <User className="absolute left-5 top-1/2 -translate-y-1/2 text-white/20 w-4 h-4" />
                 <input 
@@ -100,13 +100,13 @@ export default function RegisterPage() {
                   value={formData.username}
                   onChange={(e) => setFormData({ ...formData, username: e.target.value })}
                   placeholder="username"
-                  className="w-full bg-white/5 border border-white/10 focus:border-[var(--accent-lime)]/50 pl-14 pr-6 py-4 rounded-2xl text-white font-bold transition-all outline-none placeholder:text-white/20"
+                  className="w-full bg-white/5 border border-white/10 focus:border-accent pl-14 pr-6 py-4 rounded-2xl text-white font-bold transition-all outline-none placeholder:text-white/40 shadow-inner shadow-black/50"
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">Email</label>
+              <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/70">Email</label>
               <div className="relative">
                 <Mail className="absolute left-5 top-1/2 -translate-y-1/2 text-white/20 w-4 h-4" />
                 <input 
@@ -115,13 +115,13 @@ export default function RegisterPage() {
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   placeholder="email@example.com"
-                  className="w-full bg-white/5 border border-white/10 focus:border-[var(--accent-lime)]/50 pl-14 pr-6 py-4 rounded-2xl text-white font-bold transition-all outline-none placeholder:text-white/20"
+                  className="w-full bg-white/5 border border-white/10 focus:border-accent pl-14 pr-6 py-4 rounded-2xl text-white font-bold transition-all outline-none placeholder:text-white/40 shadow-inner shadow-black/50"
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">Mật khẩu</label>
+              <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/70">Mật khẩu</label>
               <div className="relative">
                 <Lock className="absolute left-5 top-1/2 -translate-y-1/2 text-white/20 w-4 h-4" />
                 <input 
@@ -130,7 +130,7 @@ export default function RegisterPage() {
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                   placeholder="••••••••"
-                  className="w-full bg-white/5 border border-white/10 focus:border-[var(--accent-lime)]/50 pl-14 pr-14 py-4 rounded-2xl text-white font-bold transition-all outline-none placeholder:text-white/20"
+                  className="w-full bg-white/5 border border-white/10 focus:border-accent pl-14 pr-14 py-4 rounded-2xl text-white font-bold transition-all outline-none placeholder:text-white/40 shadow-inner shadow-black/50"
                 />
                 <button 
                   type="button"
@@ -143,7 +143,7 @@ export default function RegisterPage() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">Xác nhận mật khẩu</label>
+              <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/70">Xác nhận mật khẩu</label>
               <div className="relative">
                 <Lock className="absolute left-5 top-1/2 -translate-y-1/2 text-white/20 w-4 h-4" />
                 <input 
@@ -152,7 +152,7 @@ export default function RegisterPage() {
                   value={formData.confirmPassword}
                   onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
                   placeholder="••••••••"
-                  className="w-full bg-white/5 border border-white/10 focus:border-[var(--accent-lime)]/50 pl-14 pr-6 py-4 rounded-2xl text-white font-bold transition-all outline-none placeholder:text-white/20"
+                  className="w-full bg-white/5 border border-white/10 focus:border-accent pl-14 pr-6 py-4 rounded-2xl text-white font-bold transition-all outline-none placeholder:text-white/40 shadow-inner shadow-black/50"
                 />
               </div>
             </div>
@@ -160,7 +160,7 @@ export default function RegisterPage() {
             <button 
               type="submit" 
               disabled={isLoading}
-              className="w-full bg-[var(--accent-lime)] text-black py-5 rounded-2xl font-black text-sm tracking-widest uppercase hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3 disabled:opacity-50 shadow-xl mt-4"
+              className="w-full bg-accent text-black py-5 rounded-2xl font-black text-sm tracking-widest uppercase hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3 disabled:opacity-50 shadow-[0_0_30px_rgba(180,255,0,0.2)] mt-4"
             >
               {isLoading ? (
                 <div className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin" />
@@ -171,9 +171,9 @@ export default function RegisterPage() {
           </form>
 
           <div className="mt-8 text-center">
-            <p className="text-white/40 font-bold text-sm">
+            <p className="text-white/70 font-bold text-sm">
               Đã có tài khoản?{' '}
-              <Link to="/login" className="text-[var(--accent-lime)] hover:underline font-black">
+              <Link to="/login" className="text-accent hover:text-accent/80 hover:underline font-black">
                 Đăng nhập
               </Link>
             </p>
@@ -183,8 +183,8 @@ export default function RegisterPage() {
 
       {/* Right Panel — Benefits */}
       <div className="hidden lg:flex lg:w-1/2 flex-col justify-between p-16 relative z-10">
-        <Link to="/shop" className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-[var(--accent-lime)] flex items-center justify-center">
+        <Link to="/home" className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-accent flex items-center justify-center">
             <Zap className="w-5 h-5 text-black" />
           </div>
           <span className="text-2xl font-black uppercase tracking-widest">TechChain</span>
@@ -193,7 +193,7 @@ export default function RegisterPage() {
         <div className="space-y-10">
           <h1 className="text-6xl xl:text-7xl font-black leading-none tracking-tighter uppercase">
             Join The<br />Premium<br />
-            <span className="text-[var(--accent-lime)]">Community.</span>
+            <span className="text-accent">Community.</span>
           </h1>
 
           <div className="space-y-4">
@@ -205,16 +205,16 @@ export default function RegisterPage() {
                 transition={{ delay: 0.3 + idx * 0.1 }}
                 className="flex items-center gap-4"
               >
-                <div className="w-7 h-7 rounded-full bg-[var(--accent-lime)]/10 border border-[var(--accent-lime)]/20 flex items-center justify-center flex-shrink-0">
-                  <CheckCircle2 className="w-4 h-4 text-[var(--accent-lime)]" />
+                <div className="w-7 h-7 rounded-full bg-accent/10 border border-accent/20 flex items-center justify-center flex-shrink-0">
+                  <CheckCircle2 className="w-4 h-4 text-accent" />
                 </div>
-                <p className="text-white/60 font-bold text-sm">{benefit}</p>
+                <p className="text-white/80 font-bold text-sm">{benefit}</p>
               </motion.div>
             ))}
           </div>
         </div>
 
-        <p className="text-[10px] text-white/20 font-bold tracking-widest uppercase">
+        <p className="text-[10px] text-white/50 font-bold tracking-widest uppercase">
           © 2025 TechChain · All Rights Reserved
         </p>
       </div>
