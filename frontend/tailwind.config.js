@@ -32,6 +32,12 @@ export default {
           rose: '#EC4899',
           orange: '#F97316',
           violet: '#8B5CF6',
+        },
+        shopper: {
+          emerald: '#10B981',
+          mint: '#F0FDF4',
+          'emerald-light': '#34D399',
+          'emerald-dark': '#059669',
         }
       },
       fontFamily: {
@@ -39,8 +45,10 @@ export default {
         serif: ['Instrument Serif', 'serif'],
       },
       boxShadow: {
-        '3d-soft': '0 20px 50px rgba(0,0,0,0.1)',
+        '3d-soft': '0 20px 50px rgba(0,0,0,0.05)',
         '3d-vibrant': '0 20px 50px rgba(236,72,153,0.3)',
+        '3d-emerald': '0 20px 50px rgba(16,185,129,0.2)',
+        '3d-mint': '0 15px 35px rgba(240,253,244,0.3)',
       },
       animation: {
         'float': 'float 6s ease-in-out infinite',

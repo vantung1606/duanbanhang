@@ -24,6 +24,18 @@
     font-feature-settings: "ss01", "ss02", "cv01", "cv02";
     overflow-x: hidden;
   }
+
+  .shopper-theme {
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+    --muted-foreground: 215 16% 47%;
+    --border: 214 32% 91%;
+    --accent-emerald: 161 72% 39%;
+    --accent-mint: 144 65% 96%;
+    
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+  }
 }
 
 @layer components {

@@ -27,7 +27,7 @@ export default function LoginPage() {
       if (data.role === 'ADMIN') navigate('/admin');
       else if (data.role === 'MANAGER') navigate('/manager');
       else if (data.role === 'STAFF') navigate('/staff');
-      else navigate('/account');
+      else navigate('/shop/app');
     } catch (err) {
       setError('Tên đăng nhập hoặc mật khẩu không đúng. Vui lòng thử lại.');
     } finally {
