@@ -25,6 +25,10 @@ import ManagerPromotionsPage from './pages/ManagerPromotionsPage';
 import ManagerCategoriesPage from './pages/ManagerCategoriesPage';
 import ManagerLogsPage from './pages/ManagerLogsPage';
 import ManagerProductsPage from './pages/ManagerProductsPage';
+import UserDashboardLayout from './layouts/customer/UserDashboardLayout';
+import UserOverviewPage from './pages/customer/dashboard/UserOverviewPage';
+import UserOrdersPage from './pages/customer/dashboard/UserOrdersPage';
+import UserAddressesPage from './pages/customer/dashboard/UserAddressesPage';
 
 // Auth Pages
 import LoginPage from './pages/auth/LoginPage';
@@ -76,7 +80,14 @@ function App() {
         <Route path="/product/:slug" element={<ProductDetail />} />
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/checkout/success" element={<OrderSuccessPage />} />
-        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/profile" element={<Navigate to="/account" replace />} />
+        <Route path="/account" element={<UserDashboardLayout />}>
+          <Route index element={<UserOverviewPage />} />
+          <Route path="orders" element={<UserOrdersPage />} />
+          <Route path="addresses" element={<UserAddressesPage />} />
+          <Route path="security" element={<div className="p-20 text-center font-black uppercase tracking-widest text-white/20 border-2 border-dashed border-white/10 rounded-[3rem]">Security Module Soon</div>} />
+          <Route path="payments" element={<div className="p-20 text-center font-black uppercase tracking-widest text-white/20 border-2 border-dashed border-white/10 rounded-[3rem]">Payment Methods Soon</div>} />
+        </Route>
 
         {/* Shop App Section */}
         <Route path="/shop/app" element={<CustomerLayout />}>

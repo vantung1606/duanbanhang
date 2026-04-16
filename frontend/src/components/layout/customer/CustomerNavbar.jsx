@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { 
   ShoppingCart, 
   Menu, 
@@ -11,6 +11,8 @@ import {
 import { motion } from 'framer-motion';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { useAuthStore } from '../../../store/authStore';
+import { User, LogOut as LogOutIcon } from 'lucide-react';
 
 function cn(...inputs) {
   return twMerge(clsx(inputs));
@@ -19,6 +21,8 @@ function cn(...inputs) {
 export default function CustomerNavbar() {
   const [isDark, setIsDark] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { isAuthenticated, user, logout } = useAuthStore();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -77,9 +81,43 @@ export default function CustomerNavbar() {
             </span>
           </button>
 
-          <button className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-6 py-2.5 rounded-full font-black text-xs tracking-widest hover:scale-105 transition-transform shadow-lg">
-            SIGN UP
-          </button>
+          {isAuthenticated ? (
+            <div className="flex items-center gap-3">
+              <NavLink 
+                to="/account" 
+                className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/40 dark:bg-white/10 hover:bg-white/60 transition-all group"
+              >
+                <div className="w-8 h-8 rounded-full bg-portfolio-rose/20 flex items-center justify-center">
+                  <User className="w-4 h-4 text-portfolio-rose" />
+                </div>
+                <span className="text-xs font-bold text-slate-700 dark:text-gray-200 hidden lg:block uppercase tracking-wider">
+                  {user?.username}
+                </span>
+              </NavLink>
+              <button 
+                onClick={() => { logout(); navigate('/shop'); }}
+                className="w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center hover:bg-red-500/20 transition-all text-red-500 group"
+                title="Logout"
+              >
+                <LogOutIcon className="w-4 h-4 group-hover:scale-110 transition-transform" />
+              </button>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2 text-[10px] font-black tracking-widest uppercase">
+              <NavLink 
+                to="/login" 
+                className="px-4 py-2.5 text-slate-600 dark:text-gray-400 hover:text-portfolio-rose transition-colors"
+              >
+                LOGIN
+              </NavLink>
+              <NavLink 
+                to="/register" 
+                className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-6 py-2.5 rounded-full hover:scale-105 transition-transform shadow-lg"
+              >
+                SIGN UP
+              </NavLink>
+            </div>
+          )}
         </div>
       </motion.div>
     </nav>

@@ -10,6 +10,8 @@ import {
 } from 'lucide-react';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { useNavigate } from 'react-router-dom';
+import { useAuthStore } from '../../../store/authStore';
 
 function cn(...inputs) {
   return twMerge(clsx(inputs));
@@ -24,6 +26,14 @@ const menuItems = [
 ];
 
 export default function ManagerSidebar() {
+  const { logout } = useAuthStore();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/shop');
+  };
+
   return (
     <aside className="w-72 h-screen fixed left-0 top-0 z-40 p-6 flex flex-col transition-all duration-300">
       {/* Glassmorphic Container - Indigo Theme */}
@@ -77,7 +87,11 @@ export default function ManagerSidebar() {
               <p className="font-bold text-sm text-slate-800 dark:text-white truncate">Sarah Connor</p>
               <p className="text-[10px] font-black uppercase text-indigo-500 tracking-tighter">Sales Director</p>
             </div>
-            <button className="p-2 hover:bg-red-500/10 rounded-xl transition-colors group">
+            <button 
+              onClick={handleLogout}
+              className="p-2 hover:bg-red-500/10 rounded-xl transition-colors group"
+              title="Logout"
+            >
               <LogOut className="w-5 h-5 text-red-500 group-hover:scale-110 transition-transform" />
             </button>
           </div>
