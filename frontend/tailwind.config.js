@@ -8,21 +8,17 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: {
-          light: '#F0F2F5',
-          dark: '#1A1C1E',
+        background: 'hsl(var(--background))',
+        foreground: 'hsl(var(--foreground))',
+        muted: {
+          foreground: 'hsl(var(--muted-foreground))',
         },
+        card: 'hsl(0 0% 5%)',
+        border: 'hsl(var(--border))',
+        'hero-subtitle': 'var(--hero-subtitle)',
         primary: {
-          light: '#A78BFA', // Soft Lavender
+          light: '#A78BFA',
           dark: '#8B5CF6',
-        },
-        secondary: {
-          light: '#34D399', // Mint
-          dark: '#10B981',
-        },
-        text: {
-          light: '#4B5563',
-          dark: '#E5E7EB',
         },
         clay: {
           white: '#F0F2F5',
@@ -30,20 +26,32 @@ export default {
           highlight: '#FFFFFF',
           darkShadow: '#121416',
           darkHighlight: '#22252A',
+        },
+        portfolio: {
+          purple: '#6366F1',
+          rose: '#EC4899',
+          orange: '#F97316',
+          violet: '#8B5CF6',
         }
       },
-      boxShadow: {
-        'neumo-sm': '6px 6px 12px #D1D9E6, -6px -6px 12px #FFFFFF',
-        'neumo-md': '10px 10px 20px #D1D9E6, -10px -10px 20px #FFFFFF',
-        'neumo-inner': 'inset 6px 6px 12px #D1D9E6, inset -6px -6px 12px #FFFFFF',
-        'neumo-dark-sm': '6px 6px 12px #121416, -6px -6px 12px #22252A',
-        'neumo-dark-md': '10px 10px 20px #121416, -10px -10px 20px #22252A',
-        'neumo-dark-inner': 'inset 6px 6px 12px #121416, inset -6px -6px 12px #22252A',
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'],
+        serif: ['Instrument Serif', 'serif'],
       },
-      borderRadius: {
-        'clay': '2rem',
-        'clay-sm': '1rem',
-      }
+      boxShadow: {
+        '3d-soft': '0 20px 50px rgba(0,0,0,0.1)',
+        '3d-vibrant': '0 20px 50px rgba(236,72,153,0.3)',
+      },
+      animation: {
+        'float': 'float 6s ease-in-out infinite',
+        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+      },
+      keyframes: {
+        float: {
+          '0%, 100%': { transform: 'translateY(0px)' },
+          '50%': { transform: 'translateY(-20px)' },
+        }
+      },
     },
   },
   plugins: [],

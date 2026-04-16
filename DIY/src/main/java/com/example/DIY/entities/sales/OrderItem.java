@@ -28,5 +28,5 @@ public class OrderItem extends BaseEntity {
     private Integer quantity;
 
     @Column(nullable = false, precision = 12, scale = 2)
-    private BigDecimal priceAtTimeOfPurchase;
+    private BigDecimal price;
 }

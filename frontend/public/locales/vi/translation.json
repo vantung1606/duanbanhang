@@ -1,0 +1,20 @@
+{
+  "nav": {
+    "home": "Trang chủ",
+    "marketplace": "Vũ trụ Công nghệ",
+    "stats": "Nhịp đập Hệ thống",
+    "resources": "Bản thiết kế",
+    "create": "Xưởng Chế tác",
+    "login": "Đăng nhập",
+    "register": "Đăng ký"
+  },
+  "hero": {
+    "title": "Sở hữu và trao đổi siêu phẩm",
+    "accent": "Công nghệ",
+    "subtitle": "Thị trường kỹ thuật số lớn nhất thế giới cho các thiết bị điện tử cao cấp và tương lai.",
+    "cta": "Khám phá Chợ"
+  },
+  "products": {
+    "order": "Đặt hàng ngay"
+  }
+}

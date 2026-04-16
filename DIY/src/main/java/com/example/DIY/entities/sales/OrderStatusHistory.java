@@ -22,9 +22,9 @@ public class OrderStatusHistory extends BaseEntity {
     @Column(nullable = false)
     private Order.OrderStatus status;
 
-    private String comment;
+    private String note;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "changed_by", nullable = false)
+    @JoinColumn(name = "changed_by")
     private User changedBy;
 }

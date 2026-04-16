@@ -6,39 +6,87 @@ import ManagerLayout from './layouts/manager/ManagerLayout';
 import StaffLayout from './layouts/staff/StaffLayout';
 import CustomerLayout from './layouts/customer/CustomerLayout';
 
+// Home Pages
+import NeuralynHome from './pages/customer/NeuralynHome';
+import Catalog from './pages/customer/Catalog';
+import ProductDetail from './pages/customer/ProductDetail';
+import CustomerHome from './pages/customer/CustomerHome';
+import OrderSuccessPage from './pages/customer/OrderSuccessPage';
+import NotFoundPage from './pages/NotFoundPage';
+import CartSidebar from './components/customer/CartSidebar';
+import CheckoutPage from './pages/customer/CheckoutPage';
+import ProfilePage from './pages/customer/ProfilePage';
+import StaffOrdersPage from './pages/StaffOrdersPage';
+import StaffOrderDetailPage from './pages/StaffOrderDetailPage';
+import ManagerDashboardPage from './pages/ManagerDashboardPage';
+import AdminDashboardPage from './pages/AdminDashboardPage';
+import AdminUsersPage from './pages/AdminUsersPage';
+import ManagerPromotionsPage from './pages/ManagerPromotionsPage';
+import ManagerCategoriesPage from './pages/ManagerCategoriesPage';
+import ManagerLogsPage from './pages/ManagerLogsPage';
+import ManagerProductsPage from './pages/ManagerProductsPage';
+
+// Auth Pages
+import LoginPage from './pages/auth/LoginPage';
+import RegisterPage from './pages/auth/RegisterPage';
+
 // Mock Pages for each role
 const AdminHome = () => <div className="space-y-4"><h1 className="text-4xl font-black text-slate-800 dark:text-white">Admin Hub</h1><div className="h-64 rounded-3xl bg-primary-light/10 border-2 border-dashed border-primary-light/30 flex items-center justify-center font-bold text-primary-light">System Control Room Mockup</div></div>;
 const ManagerHome = () => <div className="space-y-4"><h1 className="text-4xl font-black text-slate-800 dark:text-white">Manager Insights</h1><div className="h-64 rounded-3xl bg-indigo-500/10 border-2 border-dashed border-indigo-500/30 flex items-center justify-center font-bold text-indigo-500">Business Reports Mockup</div></div>;
 const StaffHome = () => <div className="space-y-4"><h1 className="text-4xl font-black text-slate-800 dark:text-white">Staff Operations</h1><div className="h-64 rounded-3xl bg-emerald-500/10 border-2 border-dashed border-emerald-500/30 flex items-center justify-center font-bold text-emerald-500">Active Tasks Mockup</div></div>;
-const CustomerHome = () => <div className="space-y-4"><h1 className="text-4xl font-black text-slate-800 dark:text-white">Shop Tech</h1><div className="grid grid-cols-1 md:grid-cols-3 gap-6"><div className="h-48 rounded-3xl bg-rose-500/10 border-2 border-dashed border-rose-500/30 flex items-center justify-center font-bold text-rose-500">Featured Mobile</div><div className="h-48 rounded-3xl bg-rose-500/10 border-2 border-dashed border-rose-500/30 flex items-center justify-center font-bold text-rose-500">Featured Laptop</div><div className="h-48 rounded-3xl bg-rose-500/10 border-2 border-dashed border-rose-500/30 flex items-center justify-center font-bold text-rose-500">New Audio</div></div></div>;
 
 function App() {
   return (
     <Router>
+      <CartSidebar />
       <Routes>
         {/* Admin Section */}
         <Route path="/admin" element={<AdminLayout />}>
-          <Route index element={<AdminHome />} />
+          <Route index element={<AdminDashboardPage />} />
+          <Route path="analytics" element={<div className="p-10 text-center font-black uppercase tracking-widest text-slate-400 border-2 border-dashed border-white/10 rounded-[3rem]">Analytics Module Soon</div>} />
+          <Route path="customers" element={<AdminUsersPage />} />
+          <Route path="products" element={<ManagerProductsPage />} />
+          <Route path="settings" element={<div className="p-10 text-center font-black uppercase tracking-widest text-slate-400 border-2 border-dashed border-white/10 rounded-[3rem]">Settings Module Soon</div>} />
           <Route path="*" element={<Navigate to="/admin" replace />} />
         </Route>
 
         {/* Manager Section */}
         <Route path="/manager" element={<ManagerLayout />}>
-          <Route index element={<ManagerHome />} />
+          <Route index element={<ManagerDashboardPage />} />
+          <Route path="sales" element={<div className="p-10 text-center font-black uppercase tracking-widest text-slate-400 border-2 border-dashed border-white/10 rounded-[3rem]">Sales Reports Module Soon</div>} />
+          <Route path="categories" element={<ManagerCategoriesPage />} />
+          <Route path="promotions" element={<ManagerPromotionsPage />} />
+          <Route path="logs" element={<ManagerLogsPage />} />
           <Route path="*" element={<Navigate to="/manager" replace />} />
         </Route>
 
         {/* Staff Section */}
         <Route path="/staff" element={<StaffLayout />}>
-          <Route index element={<StaffHome />} />
+          <Route index element={<StaffOrdersPage />} />
+          <Route path="order/:id" element={<StaffOrderDetailPage />} />
+          <Route path="inventory" element={<ManagerProductsPage />} />
+          <Route path="deliveries" element={<div className="p-10 text-center font-black uppercase tracking-widest text-slate-400 border-2 border-dashed border-white/10 rounded-[3rem]">Deliveries Module Soon</div>} />
+          <Route path="history" element={<div className="p-10 text-center font-black uppercase tracking-widest text-slate-400 border-2 border-dashed border-white/10 rounded-[3rem]">Action History Module Soon</div>} />
           <Route path="*" element={<Navigate to="/staff" replace />} />
         </Route>
 
-        {/* Customer/Public Section */}
-        <Route path="/shop" element={<CustomerLayout />}>
+        {/* Landing Page (Standalone) */}
+        <Route path="/shop" element={<NeuralynHome />} />
+        <Route path="/catalog" element={<Catalog />} />
+        <Route path="/product/:slug" element={<ProductDetail />} />
+        <Route path="/checkout" element={<CheckoutPage />} />
+        <Route path="/checkout/success" element={<OrderSuccessPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
+
+        {/* Shop App Section */}
+        <Route path="/shop/app" element={<CustomerLayout />}>
           <Route index element={<CustomerHome />} />
-          <Route path="*" element={<Navigate to="/shop" replace />} />
+          <Route path="*" element={<Navigate to="/shop/app" replace />} />
         </Route>
+
+        {/* Auth Routes */}
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
 
         {/* Root Redirect */}
         <Route path="/" element={<Navigate to="/shop" replace />} />

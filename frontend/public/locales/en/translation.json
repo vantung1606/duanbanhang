@@ -1,0 +1,20 @@
+{
+  "nav": {
+    "home": "Home",
+    "marketplace": "Universe",
+    "stats": "Pulse",
+    "resources": "Blueprints",
+    "create": "Labs",
+    "login": "Login",
+    "register": "Register"
+  },
+  "hero": {
+    "title": "Collect and sell super rate",
+    "accent": "TechGear",
+    "subtitle": "The world's first and largest digital marketplace for premium high-end electronics and future-ready gadgets.",
+    "cta": "Explore Marketplace"
+  },
+  "products": {
+    "order": "Place an Order"
+  }
+}

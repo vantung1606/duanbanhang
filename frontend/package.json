@@ -10,11 +10,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fontsource/instrument-serif": "^5.2.8",
+    "@fontsource/inter": "^5.2.8",
     "@shadcn/ui": "^0.0.4",
     "axios": "^1.7.2",
     "clsx": "^2.1.1",
     "framer-motion": "^12.38.0",
     "i18next": "^26.0.5",
+    "i18next-browser-languagedetector": "^8.2.1",
+    "i18next-http-backend": "^3.0.4",
     "lucide-react": "^0.395.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
