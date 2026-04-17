@@ -29,8 +29,7 @@ import ShopperHubPage from './pages/customer/ShopperHubPage';
 import ShopperProfilePage from './pages/customer/ShopperProfilePage';
 
 // Auth Pages
-import LoginPage from './pages/auth/LoginPage';
-import RegisterPage from './pages/auth/RegisterPage';
+import AuthPage from './pages/auth/AuthPage';
 
 // Mock Pages for each role
 const AdminHome = () => <div className="space-y-4"><h1 className="text-4xl font-black text-slate-800 dark:text-white">Admin Hub</h1><div className="h-64 rounded-3xl bg-primary-light/10 border-2 border-dashed border-primary-light/30 flex items-center justify-center font-bold text-primary-light">System Control Room Mockup</div></div>;
@@ -39,7 +38,7 @@ const StaffHome = () => <div className="space-y-4"><h1 className="text-4xl font-
 
 function App() {
   return (
-    <Router>
+    <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <CartSidebar />
       <Routes>
         {/* Admin Section */}
@@ -88,8 +87,8 @@ function App() {
         <Route path="/profile" element={<Navigate to="/shop/app/me" replace />} />
 
         {/* Auth Routes */}
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/login" element={<AuthPage />} />
+        <Route path="/register" element={<AuthPage />} />
 
         {/* Root Redirect */}
         <Route path="/" element={<Navigate to="/home" replace />} />

@@ -1,492 +1,261 @@
 import { useRef, useState, useEffect } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform, useSpring } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion';
 import { 
-  ChevronDown, 
-  ArrowRight, 
-  Zap, 
-  Globe, 
-  Cpu, 
-  Lock, 
-  ShieldCheck, 
-  BarChart3, 
-  Search, 
-  Languages, 
-  Sun, 
-  Moon,
-  Laptop,
-  Smartphone,
-  Watch,
-  Headphones,
-  ShoppingBag,
-  User
+  Zap, ArrowRight, Cpu, ShieldCheck, Database, Terminal, 
+  ShoppingBag, Sun, Moon, Sparkles, Box, RefreshCcw
 } from 'lucide-react';
 import { cn, formatCurrency } from '../../lib/utils';
-import FloatingBall from '../../components/common/FloatingBall';
+import { useTranslation } from 'react-i18next';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuthStore } from '../../store/authStore';
+import useCartStore from '../../store/cart-store';
 
-const MegaMenu = ({ isOpen }) => {
-  const categories = [
-    { title: 'Laptop', icon: Laptop, items: ['Gaming', 'Office', 'Workstation', 'Student'] },
-    { title: 'Mobile', icon: Smartphone, items: ['iPhone', 'Android', 'Tablets', 'Foldables'] },
-    { title: 'Accessories', icon: Headphones, items: ['Headphones', 'Keyboards', 'Mice', 'Chargers'] },
-    { title: 'Wearables', icon: Watch, items: ['Smartwatch', 'Fitness Tracker', 'Smart Ring'] },
-  ];
+// --- Elite Canvas Scrubber Engine (Ghost Edition) ---
+const CanvasScrubber = ({ progress, videoSrc, onDuration }) => {
+  const canvasRef = useRef(null);
+  const videoRef = useRef(null);
+  const scrollValue = useRef(0);
+  const currentVideoTime = useRef(0);
+  const targetVideoTime = useRef(0);
+
+  useEffect(() => {
+    const video = document.createElement('video');
+    video.src = videoSrc;
+    video.muted = true;
+    video.playsInline = true;
+    video.preload = 'auto';
+    videoRef.current = video;
+
+    video.onloadedmetadata = () => onDuration(video.duration);
+
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d', { alpha: true });
+    
+    let raf;
+    const render = () => {
+      // Smoothing Logic (LERP)
+      scrollValue.current = progress.get();
+      // Map ENTIRE 100% of scroll to full video for persistent journey
+      targetVideoTime.current = scrollValue.current * video.duration;
+      
+      currentVideoTime.current += (targetVideoTime.current - currentVideoTime.current) * 0.12;
+
+      if (video.readyState >= 2) {
+        video.currentTime = currentVideoTime.current;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      }
+      raf = requestAnimationFrame(render);
+    };
+
+    raf = requestAnimationFrame(render);
+    return () => {
+      cancelAnimationFrame(raf);
+      video.pause();
+      video.src = "";
+    };
+  }, [videoSrc, progress]);
 
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 15 }}
-          className="absolute top-full left-0 right-0 mt-2 p-8 bg-white/10 dark:bg-black/80 backdrop-blur-2xl border border-white/10 rounded-3xl shadow-2xl z-50 grid grid-cols-4 gap-8"
-        >
-          {categories.map((cat) => (
-            <div key={cat.title} className="space-y-4">
-              <div className="flex items-center gap-2 text-primary-light">
-                <cat.icon className="w-5 h-5 text-accent" />
-                <h4 className="font-bold uppercase tracking-widest text-xs text-white">{cat.title}</h4>
-              </div>
-              <ul className="space-y-2">
-                {cat.items.map(item => (
-                  <li key={item} className="text-sm text-white/60 hover:text-white cursor-pointer transition-colors">
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </motion.div>
-      )}
-    </AnimatePresence>
+    <canvas 
+      ref={canvasRef} 
+      width={1920} 
+      height={1080} 
+      className="w-full h-full object-contain mix-blend-screen opacity-90 drop-shadow-[0_0_60px_rgba(16,185,129,0.3)] shadow-emerald-500/20"
+      style={{ filter: 'contrast(1.1) brightness(1.1)' }}
+    />
   );
 };
 
-const FeatureCard = ({ icon: Icon, title, desc }) => (
-  <motion.div 
-    whileHover={{ y: -10 }}
-    className="p-8 rounded-[2rem] bg-white/5 backdrop-blur-3xl border border-white/10 flex flex-col gap-4"
-  >
-    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-white/20 to-transparent flex items-center justify-center">
-      <Icon className="w-6 h-6 text-white" />
-    </div>
-    <h3 className="text-xl font-bold text-white">{title}</h3>
-    <p className="text-white/60 text-sm leading-relaxed">{desc}</p>
-  </motion.div>
-);
-
-const BottomProductCard = ({ image, title, price, delay, t, addItem }) => (
+// --- Elite Ghost Components ---
+const GhostBento = ({ icon: Icon, title, desc, className, delay }) => (
   <motion.div
-    variants={{
-      hidden: { opacity: 0, y: 30 },
-      visible: { opacity: 1, y: 0 }
-    }}
-    transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-    whileHover={{ y: -12, transition: { duration: 0.5, ease: "easeOut" } }}
-    className="w-full bg-white/10 backdrop-blur-2xl rounded-[2.5rem] p-4 border border-white/20 relative group overflow-hidden"
+    initial={{ opacity: 0, y: 30 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 1, delay }}
+    className={cn(
+      "group relative p-12 rounded-[3.5rem] bg-white/[0.01] border border-white/5 backdrop-blur-[2px] transition-all duration-700 hover:bg-white/[0.05] hover:border-emerald-500/20 shadow-2xl overflow-hidden",
+      className
+    )}
   >
-    <div className="aspect-[4/3] rounded-[2rem] overflow-hidden bg-black/40 mb-4">
-      <img src={image} alt={title} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" />
-    </div>
-    <div className="flex items-center justify-between px-2 mb-2">
-      <div>
-        <h4 className="text-white font-bold">{title}</h4>
-        <p className="text-white/50 text-xs">Premium Device</p>
-      </div>
-      <div className="bg-white/10 rounded-full px-3 py-1 text-[10px] font-black text-white tracking-widest">{formatCurrency(parseFloat(price.replace(/,/g, '')))}</div>
-    </div>
-    <button 
-      onClick={() => addItem(
-        { id: Math.random(), name: title, slug: title.toLowerCase().replace(/ /g, '-'), thumbnailUrl: image }, 
-        { 
-          id: Math.random(), 
-          price: parseFloat(price.replace(/,/g, '')), 
-          sku: 'SKU',
-          attributeValues: [
-            { attributeName: "Color", value: "Neural Onyx" },
-            { attributeName: "Edition", value: "Founder" }
-          ]
-        }
-      )}
-      className="w-full bg-white text-black py-4 rounded-full text-sm font-bold mt-2 hover:bg-white/90 transition-colors shadow-lg active:scale-95 transition-all"
-    >
-      {t('products.order')}
-    </button>
+     <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/[0.02] to-transparent" />
+     <div className="relative z-10">
+        <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-10 group-hover:scale-110 transition-transform">
+           <Icon className="w-7 h-7 text-emerald-400/60" />
+        </div>
+        <h4 className="text-2xl font-black uppercase tracking-tight text-white mb-4 leading-none">{title}</h4>
+        <p className="text-white/30 font-medium leading-relaxed max-w-sm">{desc}</p>
+     </div>
   </motion.div>
 );
 
 export default function NeuralynHome() {
   const { t, i18n } = useTranslation();
   const [isDarkMode, setIsDarkMode] = useState(true);
-  const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [showSearch, setShowSearch] = useState(false);
   const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({ container: containerRef });
-  const smoothProgress = useSpring(scrollYProgress, { damping: 45, stiffness: 60 });
+  const [videoDuration, setVideoDuration] = useState(0);
   
-  const { toggleCart, getTotalItems, addItem } = useCartStore();
-  const { isAuthenticated, user, logout } = useAuthStore();
+  // High-Resolution Scroll Engine
+  const { scrollYProgress } = useScroll({ container: containerRef });
+  const smoothProgress = useSpring(scrollYProgress, { damping: 60, stiffness: 100 });
+
+  const { toggleCart, getTotalItems } = useCartStore();
+  const { isAuthenticated, logout } = useAuthStore();
   const navigate = useNavigate();
-
-  const toggleLanguage = () => {
-    const nextLng = i18n.language === 'vi' ? 'en' : 'vi';
-    i18n.changeLanguage(nextLng);
-  };
-
-  const navLinks = [
-    { key: 'marketplace', hasMega: true },
-    { key: 'stats' },
-    { key: 'resources' },
-    { key: 'create' }
-  ];
 
   return (
     <div className={cn(
-      "transition-colors duration-700 selection:bg-white selection:text-black min-h-screen relative",
-      isDarkMode ? "bg-[#0a0a0a] text-white" : "bg-slate-50 text-slate-900"
+      "min-h-screen relative overflow-hidden transition-all duration-1000",
+      isDarkMode ? "bg-[#01140F] text-white" : "bg-emerald-50 text-emerald-900"
     )}>
       
-      
-      {/* Background Fixed Video */}
-      <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-        <video autoPlay loop muted playsInline preload="auto" className="w-full h-full object-cover opacity-30 brightness-50">
-          <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260307_083826_e938b29f-a43a-41ec-a153-3d4730578ab8.mp4" type="video/mp4" />
-        </video>
-        <div className={cn(
-          "absolute inset-0 transition-opacity duration-700",
-          isDarkMode ? "bg-gradient-to-b from-transparent via-black/20 to-black" : "bg-white/70"
-        )} />
+      {/* 
+        GHOST LAYER: Fixed Persistent Machine 
+        This layer stays still while the website content trills over it.
+      */}
+      <div className="fixed inset-0 z-0 pointer-events-none flex items-center justify-center p-12">
+         {/* Jade Radial Glow */}
+         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[1200px] aspect-square bg-emerald-500/10 blur-[200px] rounded-full opacity-60" />
+         
+         <div className="w-full max-w-[1200px] aspect-video relative">
+            <CanvasScrubber 
+              progress={smoothProgress} 
+              videoSrc="/assets/videos/homevideo.mp4" 
+              onDuration={setVideoDuration} 
+            />
+         </div>
       </div>
 
-      <div 
-        ref={containerRef}
-        className="relative z-10 h-screen overflow-y-auto snap-y snap-mandatory scroll-smooth hide-scrollbar"
-      >
+      <div ref={containerRef} className="relative z-10 h-screen overflow-y-auto snap-y snap-mandatory scroll-smooth no-scrollbar">
         
-        {/* Advanced Header */}
-        <nav className={cn(
-          "fixed top-0 left-0 right-0 z-[100] px-8 md:px-28 py-6 flex items-center justify-between transition-all border-b",
-          isDarkMode ? "bg-black/40 border-white/10 backdrop-blur-2xl" : "bg-white/50 border-black/5 backdrop-blur-2xl"
-        )}>
-          {/* Left: Logo & Nav */}
-          <div className="flex items-center gap-12">
-            <div className="flex items-center gap-2 group cursor-pointer">
-              <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center transition-colors", isDarkMode ? "bg-white" : "bg-black")}>
-                <span className={cn("font-black text-xs", isDarkMode ? "text-black" : "text-white")}>N.</span>
+        {/* Minimal Floating Header */}
+        <nav className="fixed top-0 left-0 right-0 z-[100] px-8 lg:px-20 py-12 flex items-center justify-between pointer-events-none">
+           <div className="flex items-center gap-4 pointer-events-auto cursor-pointer group">
+              <div className="w-12 h-12 rounded-2xl bg-white text-black flex items-center justify-center shadow-2xl group-hover:rotate-12 transition-transform">
+                <Zap className="w-6 h-6 fill-black" />
               </div>
-              <span className="text-lg font-black tracking-tight uppercase">Neuralyn</span>
-            </div>
-            
-            <div className="hidden lg:flex items-center gap-8">
-              {navLinks.map(link => (
-                <div 
-                  key={link.key} 
-                  className="relative"
-                  onMouseEnter={() => link.hasMega && setIsMegaMenuOpen(true)}
-                  onMouseLeave={() => link.hasMega && setIsMegaMenuOpen(false)}
-                >
-                  <a href="#" className={cn(
-                    "text-sm font-bold flex items-center gap-1 transition-colors",
-                    isDarkMode ? "text-white/60 hover:text-white" : "text-black/60 hover:text-black"
-                  )}>
-                    {t(`nav.${link.key}`)}
-                    {link.hasMega && <ChevronDown className="w-3 h-3" />}
-                  </a>
-                  {link.hasMega && <MegaMenu isOpen={isMegaMenuOpen} />}
-                </div>
-              ))}
-            </div>
-          </div>
+              <span className="text-2xl font-black uppercase tracking-tighter text-white">Neuralyn</span>
+           </div>
 
-          {/* Right: Search, Theme, Lang, CTA */}
-          <div className="flex items-center gap-4 md:gap-8">
-            {/* Smart Search */}
-            <div className="relative hidden md:block">
-              <motion.div 
-                animate={{ width: showSearch ? 240 : 40 }}
-                className={cn(
-                  "h-10 rounded-full flex items-center px-3 gap-2 overflow-hidden transition-all",
-                  isDarkMode ? "bg-white/10 border-white/10" : "bg-black/5 border-black/10"
-                )}
-              >
-                <Search 
-                  className="w-4 h-4 cursor-pointer flex-shrink-0" 
-                  onClick={() => setShowSearch(!showSearch)} 
-                />
-                <input 
-                  type="text" 
-                  placeholder="Search products..."
-                  className="bg-transparent border-none outline-none text-sm w-full"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </motion.div>
-              {searchQuery && showSearch && (
-                <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-zinc-900 rounded-2xl p-4 shadow-2xl border border-white/10">
-                  <p className="text-[10px] font-bold text-muted-foreground uppercase mb-2">Suggestions</p>
-                  <div className="space-y-2">
-                    {['iPhone 15 Pro', 'Vision Pro', 'Macbook Pro M3'].map(s => (
-                      <div key={s} className="text-sm hover:text-accent cursor-pointer flex items-center justify-between group">
-                        {s} <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100" />
-                      </div>
-                    ))}
-                  </div>
-                </div>
+           <div className="flex items-center gap-8 pointer-events-auto">
+              <button onClick={toggleCart} className="w-12 h-12 rounded-full bg-white/5 backdrop-blur-3xl border border-white/10 flex items-center justify-center relative hover:bg-emerald-500/20 transition-colors">
+                <ShoppingBag className="w-4 h-4" />
+                {getTotalItems() > 0 && <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-emerald-500 text-[10px] font-black flex items-center justify-center">{getTotalItems()}</span>}
+              </button>
+              {isAuthenticated ? (
+                <button onClick={() => { logout(); navigate('/login'); }} className="px-8 py-3 rounded-full bg-white/5 text-slate-400 text-[10px] font-black uppercase tracking-widest border border-white/10 hover:bg-red-500/10 hover:text-red-400 transition-all">Protocol Exit</button>
+              ) : (
+                <Link to="/login" className="px-10 py-3 rounded-full bg-white text-black text-[10px] font-black uppercase tracking-widest hover:scale-110 active:scale-95 transition-all shadow-2xl">Connect</Link>
               )}
-            </div>
-
-            {/* Mini Cart Toggle */}
-            <button 
-              onClick={toggleCart}
-              className="w-10 h-10 rounded-full flex items-center justify-center bg-white/5 hover:bg-white/10 transition-colors relative"
-            >
-              <ShoppingBag className="w-4 h-4" />
-              {getTotalItems() > 0 && (
-                <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-accent text-[8px] font-black text-black flex items-center justify-center">
-                  {getTotalItems()}
-                </span>
-              )}
-            </button>
-
-            {/* Language Switcher */}
-            <button 
-              onClick={toggleLanguage}
-              className="w-10 h-10 rounded-full flex items-center justify-center bg-white/5 hover:bg-white/10 transition-colors gap-1"
-            >
-              <Languages className="w-4 h-4" />
-              <span className="text-[10px] font-bold uppercase">{i18n.language}</span>
-            </button>
-
-            {/* Theme Toggle */}
-            <button 
-              onClick={() => setIsDarkMode(!isDarkMode)}
-              className="w-10 h-10 rounded-full flex items-center justify-center bg-white/5 hover:bg-white/10 transition-colors"
-            >
-              {isDarkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-            </button>
-
-            {isAuthenticated ? (
-              <div className="flex items-center gap-3">
-                <Link 
-                  to="/profile"
-                  className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-xs font-black uppercase tracking-widest hover:bg-white/10 transition-all"
-                >
-                  <User className="w-3 h-3" /> {user?.username}
-                </Link>
-                <button 
-                  onClick={() => { logout(); navigate('/shop'); }}
-                  className="px-4 py-2 text-xs font-black uppercase tracking-widest text-red-400 hover:text-red-300 transition-colors"
-                >
-                  Logout
-                </button>
-              </div>
-            ) : (
-              <div className="hidden sm:flex items-center gap-4">
-                <Link to="/login" className="px-4 py-2 text-sm font-bold text-white/60 hover:text-white transition-colors">
-                  {t('nav.login')}
-                </Link>
-                <Link 
-                  to="/register" 
-                  className={cn(
-                    "px-6 py-2 rounded-xl text-sm font-bold transition-all hover:scale-105 active:scale-95",
-                    isDarkMode ? "bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.3)]" : "bg-black text-white shadow-[0_0_20px_rgba(0,0,0,0.1)]"
-                  )}
-                >
-                  {t('nav.register')}
-                </Link>
-              </div>
-            )}
-          </div>
+           </div>
         </nav>
 
-        {/* SLIDE 1: HERO */}
-        <section className="h-screen w-full snap-start flex flex-col items-center justify-between relative px-6 overflow-hidden pt-36 pb-12">
-          <FloatingBall color="#ff0080" size="400px" top="-10%" left="-5%" scrollYProgress={smoothProgress} speed={0.4} />
-          <FloatingBall color="#7000ff" size="300px" top="60%" left="80%" delay={2} scrollYProgress={smoothProgress} speed={0.3} />
-          <FloatingBall color="#00ffcc" size="250px" top="20%" left="30%" delay={1} scrollYProgress={smoothProgress} speed={0.5} />
-
-          <motion.div 
-            initial="hidden"
-            whileInView="visible"
-            variants={{
-              visible: { 
-                transition: { 
-                  staggerChildren: 0.3,
-                  delayChildren: 0.3
-                } 
-              }
-            }}
-            viewport={{ once: true }}
-            className="relative z-20 text-center flex flex-col items-center max-w-5xl"
-          >
-            <motion.h1 
-              key={i18n.language}
-              variants={{
-                hidden: { opacity: 0, y: 60, scale: 0.98 },
-                visible: { opacity: 1, y: 0, scale: 1 }
-              }}
-              transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1] }}
-              className="text-6xl md:text-[6.5rem] font-black leading-[0.95] mb-8 tracking-[-0.05em] text-white"
+        {/* SECTION 1: HERO - THE REVEAL */}
+        <section className="h-screen w-full snap-start flex flex-col items-center justify-center relative px-6 text-center">
+            {/* Minimal overlays so machine is clear */}
+            <motion.div
+               initial={{ opacity: 0, y: 20 }}
+               animate={{ opacity: 1, y: 0 }}
+               transition={{ duration: 1.5, delay: 0.5 }}
+               className="space-y-4"
             >
-              {t('hero.title')} <br/> <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FACC15] to-accent/90">{t('hero.accent')}</span>
-            </motion.h1>
-            <motion.p 
-              variants={{
-                hidden: { opacity: 0, y: 30 },
-                visible: { opacity: 1, y: 0 }
-              }}
-              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-              className={cn("text-lg md:text-2xl font-medium max-w-2xl mb-12", isDarkMode ? "text-white/70" : "text-black/70")}
-            >
-              {t('hero.subtitle')}
-            </motion.p>
-            <motion.div 
-              variants={{
-                hidden: { opacity: 0, scale: 0.8 },
-                visible: { opacity: 1, scale: 1 }
-              }}
-              transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
-              className="flex items-center gap-4"
-            >
-              <button className="bg-gradient-to-r from-[#F97316] to-[#A855F7] px-12 py-6 rounded-full text-lg font-black shadow-[0_0_40px_rgba(249,115,22,0.3)] hover:scale-110 active:scale-95 transition-all flex items-center gap-3 text-white">
-                {t('hero.cta')} <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center"><ArrowRight className="w-5 h-5"/></div>
-              </button>
+               <h1 className="text-[14vw] font-black uppercase tracking-tight leading-none mix-blend-overlay">
+                  NEXUS
+               </h1>
+               <div className="flex items-center justify-center gap-6">
+                  <div className="h-px w-24 bg-emerald-500/30" />
+                  <span className="text-xs font-black uppercase tracking-[0.8em] text-emerald-400">Elite Grade Hardware</span>
+                  <div className="h-px w-24 bg-emerald-500/30" />
+               </div>
             </motion.div>
-          </motion.div>
 
-          {/* Bottom Cards Section */}
-          <motion.div 
-            initial="hidden"
-            whileInView="visible"
-            variants={{
-              visible: { 
-                transition: { 
-                  staggerChildren: 0.2,
-                  delayChildren: 0.8
-                } 
-              }
-            }}
-            viewport={{ once: true }}
-            className="w-full max-w-7xl px-6 grid grid-cols-1 md:grid-cols-3 gap-8 relative z-30"
-          >
-            <BottomProductCard addItem={addItem} t={t} title="Apple Vision Pro" price="89,990,000" image="https://images.unsplash.com/photo-1707053591461-8274f88062e7?auto=format&fit=crop&q=80&w=600" />
-            <BottomProductCard addItem={addItem} t={t} title="MacBook Air M3" price="27,990,000" image="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&q=80&w=600" />
-            <BottomProductCard addItem={addItem} t={t} title="iPhone 15 Pro" price="28,990,000" image="https://images.unsplash.com/photo-1696446701796-da61225697cc?auto=format&fit=crop&q=80&w=600" />
-          </motion.div>
+            {/* Hint to scroll */}
+            <div className="absolute bottom-16 flex flex-col items-center gap-4 opacity-20">
+               <span className="text-[10px] font-black uppercase tracking-[0.3em]">Scroll into the machine</span>
+               <div className="w-[1px] h-20 bg-gradient-to-b from-white to-transparent" />
+            </div>
         </section>
 
-        {/* SLIDE 2: FUTURE ECOSYSTEM */}
-        <section className="h-screen w-full snap-start relative flex flex-col items-center justify-center px-8 md:px-28">
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.97 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1] }}
-            className="max-w-7xl w-full grid grid-cols-1 md:grid-cols-2 gap-20 items-center"
-          >
-            <div className="space-y-8">
-              <span className="text-accent font-black uppercase tracking-widest text-sm">Next Generation</span>
-              <h2 className="text-5xl md:text-7xl font-black leading-tight">Advanced <br/> Ecosystem.</h2>
-              <p className={cn("text-xl leading-relaxed max-w-xl", isDarkMode ? "text-white/50" : "text-black/50")}>
-                We believe in the power of seamless integration. Our platform connects your devices, your data, and your life with absolute precision.
-              </p>
-              <div className="flex gap-6">
-                <div className="flex flex-col">
-                  <span className="text-4xl font-black">250k+</span>
-                  <span className={cn("text-sm font-bold", isDarkMode ? "text-white/40" : "text-black/40")}>Active Users</span>
-                </div>
-                <div className="w-px h-12 bg-white/20" />
-                <div className="flex flex-col">
-                  <span className="text-4xl font-black">1.2M</span>
-                  <span className={cn("text-sm font-bold", isDarkMode ? "text-white/40" : "text-black/40")}>Gadgets Sold</span>
-                </div>
+        {/* SECTION 2: GHOST BENTO (TRANSPARENT DISCOVERY) */}
+        <section className="min-h-screen w-full snap-start py-40 px-8 lg:px-24">
+           {/* All containers are transparent so machine behind is visible */}
+           <div className="max-w-7xl mx-auto">
+              <div className="mb-32">
+                 <h2 className="text-6xl lg:text-[9rem] font-black uppercase tracking-tighter text-white/50 leading-none">
+                    Hardware <br/> <span className="text-emerald-500">Integrity.</span>
+                 </h2>
               </div>
-            </div>
-            <div className="grid grid-cols-2 gap-6">
-              <FeatureCard icon={Zap} title="Hyper Speed" desc="Instant sync across all your primary devices." />
-              <FeatureCard icon={Lock} title="Iron Vault" desc="Secured with decentralized encryption." />
-              <FeatureCard icon={Globe} title="Global Sync" desc="Available in 120+ countries worldwide." />
-              <FeatureCard icon={Cpu} title="AI Engine" desc="Predictive analytics for your daily usage." />
-            </div>
-          </motion.div>
-        </section>
 
-        {/* SLIDE 3: GLOBAL ANALYTICS */}
-        <section className="h-screen w-full snap-start relative flex flex-col items-center justify-center p-8 overflow-hidden">
-          <FloatingBall color="#3b82f6" size="500px" top="20%" left="60%" scrollYProgress={smoothProgress} speed={0.25} />
-          <div className="z-10 text-center space-y-8 mb-20">
-            <h2 className="text-5xl md:text-8xl font-black italic font-serif">Data in Motion</h2>
-            <p className={cn("text-xl max-w-2xl mx-auto", isDarkMode ? "text-white/60" : "text-black/60")}>
-              Monitor your infrastructure with deep intelligence and real-time insights that actually matter.
-            </p>
-          </div>
-          
-          <div className="w-full max-w-7xl aspect-[21/9] bg-white/5 backdrop-blur-3xl rounded-[3rem] border border-white/10 relative overflow-hidden">
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-full h-px bg-gradient-to-r from-transparent via-white/20 to-transparent absolute top-1/4" />
-              <div className="w-full h-px bg-gradient-to-r from-transparent via-white/20 to-transparent absolute top-1/2" />
-              <div className="w-full h-px bg-gradient-to-r from-transparent via-white/20 to-transparent absolute top-3/4" />
-              
-              <motion.div 
-                animate={{ scale: [1, 1.05, 1] }}
-                transition={{ duration: 4, repeat: Infinity }}
-                className="w-[80%] h-[60%] border-2 border-white/10 rounded-full flex items-center justify-center"
-              >
-                <div className="w-[60%] h-[60%] border-2 border-white/20 rounded-full flex items-center justify-center">
-                  <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-[0_0_50px_rgba(255,255,255,0.5)]">
-                    <BarChart3 className="text-black w-8 h-8" />
-                  </div>
-                </div>
-              </motion.div>
-            </div>
-          </div>
-        </section>
-
-        {/* SLIDE 4: CALL TO ACTION */}
-        <section className={cn("h-screen w-full snap-start relative flex flex-col items-center justify-center p-8 transition-colors", isDarkMode ? "bg-black" : "bg-white")}>
-          <motion.div 
-            initial={{ opacity: 0, y: 60 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1] }}
-            className="text-center space-y-12 max-w-4xl"
-          >
-            <h2 className="text-7xl md:text-[9.5rem] font-black leading-none uppercase tracking-tighter">Ready <br/> to Join?</h2>
-            <p className={cn("text-2xl font-medium", isDarkMode ? "text-white/40" : "text-black/40")}>Join 50,000+ pioneers building the future of tech commerce.</p>
-            <div className="flex flex-col md:flex-row items-center justify-center gap-6">
-              <button className={cn("px-14 py-7 rounded-2xl text-xl font-black shadow-[0_20px_50px_rgba(0,0,0,0.3)] hover:scale-110 active:scale-95 transition-all", isDarkMode ? "bg-white text-black" : "bg-black text-white")}>
-                Create Account
-              </button>
-              <button className="px-14 py-7 border-2 border-current rounded-2xl text-xl font-black hover:bg-current hover:text-white transition-all">
-                Learn More
-              </button>
-            </div>
-          </motion.div>
-
-          <footer className={cn("absolute bottom-10 w-full px-8 md:px-28 flex flex-col md:flex-row items-center justify-between gap-8 border-t pt-10", isDarkMode ? "border-white/10" : "border-black/10")}>
-            <div className="flex items-center gap-2">
-              <div className={cn("w-6 h-6 rounded flex items-center justify-center", isDarkMode ? "bg-white" : "bg-black")}>
-                <span className={cn("font-black text-[8px]", isDarkMode ? "text-black" : "text-white")}>N.</span>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 auto-rows-[450px]">
+                 <GhostBento 
+                    delay={0.1}
+                    icon={Cpu} 
+                    title="Liquid Protocol" 
+                    desc="Maximum thermal efficiency through custom emerald-liquid cooling loops. Designed for the infinite loop."
+                 />
+                 <GhostBento 
+                    className="md:col-span-1 lg:col-span-1"
+                    delay={0.2}
+                    icon={ShieldCheck} 
+                    title="Biometric Core" 
+                    desc="Zero-compromise security layers verified directly into the hardware DNA."
+                 />
+                 <GhostBento 
+                    className="md:col-span-2 lg:col-span-1"
+                    delay={0.3}
+                    icon={Database} 
+                    title="Neural Cloud" 
+                    desc="Distributed data retrieval optimized for real-time neural processing nodes."
+                 />
+                 <GhostBento 
+                    className="md:col-span-2 lg:col-span-2"
+                    delay={0.4}
+                    icon={Box} 
+                    title="Premium Obsidian" 
+                    desc="Housed in obsidian-coated high-density chassis for absolute signal protection and durability."
+                 />
+                 <GhostBento 
+                    delay={0.5}
+                    icon={Terminal} 
+                    title="Direct Uplink" 
+                    desc="Low-latency command execution via our bespoke cloud-terminal suites."
+                 />
               </div>
-              <span className="text-sm font-black uppercase">Neuralyn</span>
+           </div>
+        </section>
+
+        {/* SECTION 3: FINAL CALL */}
+        <section className="h-screen w-full snap-end flex flex-col items-center justify-center p-8 bg-gradient-to-t from-black via-transparent to-transparent">
+            <div className="z-10 text-center space-y-20">
+               <div className="space-y-4">
+                  <h3 className="text-7xl lg:text-[14rem] font-black uppercase tracking-tighter text-white leading-none">
+                     OWN THE <br/> <span className="text-emerald-500">FUTURE.</span>
+                  </h3>
+                  <p className="text-sm font-black tracking-[0.6em] uppercase text-white/20">Protocol Access Stage v3.0</p>
+               </div>
+               
+               <div className="flex flex-col md:flex-row items-center justify-center gap-10">
+                  <button className="px-24 py-10 bg-white text-emerald-950 rounded-full font-black uppercase tracking-[0.4em] text-sm hover:scale-110 active:scale-95 transition-all shadow-2xl">
+                     Initialize
+                  </button>
+               </div>
             </div>
-            <div className={cn("flex gap-10 text-xs font-bold uppercase tracking-widest", isDarkMode ? "text-white/40" : "text-black/40")}>
-              <a href="#">Privacy</a>
-              <a href="#">Security</a>
-              <a href="#">Support</a>
-              <a href="#">API</a>
-            </div>
-            <div className={cn("text-xs font-medium", isDarkMode ? "text-white/20" : "text-black/20")}>© 2026 NEURALYN INTELLIGENCE CORP. ALL RIGHTS RESERVED.</div>
-          </footer>
+
+            <footer className="absolute bottom-12 w-full px-8 lg:px-24 flex flex-col md:flex-row items-center justify-between text-[10px] font-black uppercase tracking-[0.4em] text-emerald-900 gap-10">
+               <div className="flex gap-12">
+                  <span className="hover:text-emerald-400 cursor-pointer transition-colors">Security</span>
+                  <span className="hover:text-emerald-400 cursor-pointer transition-colors">Hardware</span>
+                  <span className="hover:text-emerald-400 cursor-pointer transition-colors">Infrastructure</span>
+               </div>
+               <span>© 2026 Neuralyn Intelligence Platform</span>
+            </footer>
         </section>
       </div>
 
       <style dangerouslySetInnerHTML={{ __html: `
-        .hide-scrollbar::-webkit-scrollbar {
-          display: none;
-        }
-        .hide-scrollbar {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
       `}} />
     </div>
   );
