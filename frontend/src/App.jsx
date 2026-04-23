@@ -36,6 +36,7 @@ import ShopperProfilePage from './pages/customer/ShopperProfilePage';
 // Auth Pages
 import AuthPage from './pages/auth/AuthPage';
 import ForgotPasswordPage from './pages/auth/ForgotPasswordPage';
+import ProtectedRoute from './components/common/ProtectedRoute';
 
 // Mock Pages for each role
 const AdminHome = () => <div className="space-y-4"><h1 className="text-4xl font-black text-slate-800 dark:text-white">Admin Hub</h1><div className="h-64 rounded-3xl bg-primary-light/10 border-2 border-dashed border-primary-light/30 flex items-center justify-center font-bold text-primary-light">System Control Room Mockup</div></div>;
@@ -48,7 +49,7 @@ function App() {
       <CartSidebar />
       <Routes>
         {/* Admin Section */}
-        <Route path="/admin" element={<AdminLayout />}>
+        <Route path="/admin" element={<ProtectedRoute allowedRoles={['ADMIN']}><AdminLayout /></ProtectedRoute>}>
           <Route index element={<AdminDashboardPage />} />
           <Route path="users" element={<AdminCustomersPage />} />
           <Route path="staff" element={<AdminStaffPage />} />
@@ -63,7 +64,7 @@ function App() {
         </Route>
 
         {/* Manager Section */}
-        <Route path="/manager" element={<ManagerLayout />}>
+        <Route path="/manager" element={<ProtectedRoute allowedRoles={['MANAGER', 'ADMIN']}><ManagerLayout /></ProtectedRoute>}>
           <Route index element={<ManagerDashboardPage />} />
           <Route path="sales" element={<div className="p-10 text-center font-black uppercase tracking-widest text-slate-400 border-2 border-dashed border-white/10 rounded-[3rem]">Sales Reports Module Soon</div>} />
           <Route path="categories" element={<ManagerCategoriesPage />} />
@@ -73,7 +74,7 @@ function App() {
         </Route>
 
         {/* Staff Section */}
-        <Route path="/staff" element={<StaffLayout />}>
+        <Route path="/staff" element={<ProtectedRoute allowedRoles={['STAFF', 'ADMIN']}><StaffLayout /></ProtectedRoute>}>
           <Route index element={<StaffOrdersPage />} />
           <Route path="analytics" element={<StaffAnalyticsPage />} />
           <Route path="reports" element={<StaffReportsPage />} />
@@ -91,7 +92,7 @@ function App() {
         <Route path="/product/:slug" element={<ProductDetail />} />
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/checkout/success" element={<OrderSuccessPage />} />
-        <Route path="/shop/app" element={<CustomerLayout />}>
+        <Route path="/shop/app" element={<ProtectedRoute allowedRoles={['USER', 'ADMIN', 'MANAGER', 'STAFF']}><CustomerLayout /></ProtectedRoute>}>
           <Route index element={<ShopperHubPage />} />
           <Route path="me" element={<ShopperProfilePage />} />
           <Route path="*" element={<Navigate to="/shop/app" replace />} />
