@@ -10,62 +10,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
 import useCartStore from '../../store/cart-store';
 
-// --- Elite Canvas Scrubber Engine (Ghost Edition) ---
-const CanvasScrubber = ({ progress, videoSrc, onDuration }) => {
-  const canvasRef = useRef(null);
-  const videoRef = useRef(null);
-  const scrollValue = useRef(0);
-  const currentVideoTime = useRef(0);
-  const targetVideoTime = useRef(0);
-
-  useEffect(() => {
-    const video = document.createElement('video');
-    video.src = videoSrc;
-    video.muted = true;
-    video.playsInline = true;
-    video.preload = 'auto';
-    videoRef.current = video;
-
-    video.onloadedmetadata = () => onDuration(video.duration);
-
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d', { alpha: true });
-    
-    let raf;
-    const render = () => {
-      // Smoothing Logic (LERP)
-      scrollValue.current = progress.get();
-      // Map ENTIRE 100% of scroll to full video for persistent journey
-      targetVideoTime.current = scrollValue.current * video.duration;
-      
-      currentVideoTime.current += (targetVideoTime.current - currentVideoTime.current) * 0.12;
-
-      if (video.readyState >= 2) {
-        video.currentTime = currentVideoTime.current;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-      }
-      raf = requestAnimationFrame(render);
-    };
-
-    raf = requestAnimationFrame(render);
-    return () => {
-      cancelAnimationFrame(raf);
-      video.pause();
-      video.src = "";
-    };
-  }, [videoSrc, progress]);
-
-  return (
-    <canvas 
-      ref={canvasRef} 
-      width={1920} 
-      height={1080} 
-      className="w-full h-full object-contain mix-blend-screen opacity-90 drop-shadow-[0_0_60px_rgba(16,185,129,0.3)] shadow-emerald-500/20"
-      style={{ filter: 'contrast(1.1) brightness(1.1)' }}
-    />
-  );
-};
 
 // --- Elite Ghost Components ---
 const GhostBento = ({ icon: Icon, title, desc, className, delay }) => (
@@ -94,7 +38,6 @@ export default function NeuralynHome() {
   const { t, i18n } = useTranslation();
   const [isDarkMode, setIsDarkMode] = useState(true);
   const containerRef = useRef(null);
-  const [videoDuration, setVideoDuration] = useState(0);
   
   // High-Resolution Scroll Engine
   const { scrollYProgress } = useScroll({ container: containerRef });
@@ -117,14 +60,6 @@ export default function NeuralynHome() {
       <div className="fixed inset-0 z-0 pointer-events-none flex items-center justify-center p-12">
          {/* Jade Radial Glow */}
          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[1200px] aspect-square bg-emerald-500/10 blur-[200px] rounded-full opacity-60" />
-         
-         <div className="w-full max-w-[1200px] aspect-video relative">
-            <CanvasScrubber 
-              progress={smoothProgress} 
-              videoSrc="/assets/videos/homevideo.mp4" 
-              onDuration={setVideoDuration} 
-            />
-         </div>
       </div>
 
       <div ref={containerRef} className="relative z-10 h-screen overflow-y-auto snap-y snap-mandatory scroll-smooth no-scrollbar">

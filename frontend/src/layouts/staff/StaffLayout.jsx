@@ -1,21 +1,36 @@
+import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import StaffSidebar from '../../components/layout/staff/StaffSidebar';
 import StaffTopBar from '../../components/layout/staff/StaffTopBar';
 
 export default function StaffLayout() {
-  return (
-    <div className="min-h-screen bg-background-light dark:bg-background-dark flex transition-colors duration-500 overflow-hidden font-sans">
-      {/* Background Orbs - Emerald theme accent */}
-      <div className="fixed top-[-10%] right-[10%] w-[40%] h-[50%] bg-emerald-500/5 blur-[120px] rounded-full z-0 pointer-events-none animate-pulse" />
-      <div className="fixed top-[20%] left-[-5%] w-[30%] h-[40%] bg-emerald-500/5 blur-[100px] rounded-full z-0 pointer-events-none animate-pulse" style={{ animationDelay: '1.5s' }} />
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-      <StaffSidebar />
+  return (
+    <div 
+      className="min-h-screen flex transition-colors duration-500 overflow-hidden font-sans text-[#2b3a55]"
+      style={{
+        backgroundImage: "url('/assets/images/ethereal_bg.png')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundAttachment: "fixed"
+      }}
+    >
+      <StaffSidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
       
-      <main className="flex-1 ml-72 relative z-10 flex flex-col h-screen overflow-hidden">
-        <StaffTopBar />
+      {/* Mobile Overlay */}
+      {isSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-slate-900/20 backdrop-blur-sm z-30 lg:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
+      <main className="flex-1 lg:ml-72 w-full relative z-10 flex flex-col h-screen overflow-hidden">
+        <StaffTopBar onMenuClick={() => setIsSidebarOpen(true)} />
         
-        <div className="flex-1 overflow-y-auto custom-scrollbar px-10 pb-10">
-          <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <div className="flex-1 overflow-y-auto custom-scrollbar px-4 lg:px-10 pb-10">
+          <div className="w-full space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
             <Outlet />
           </div>
         </div>

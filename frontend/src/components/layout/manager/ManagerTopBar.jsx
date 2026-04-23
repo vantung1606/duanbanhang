@@ -1,7 +1,7 @@
-import { Search, Bell, Sun, Moon, Calendar, Info } from 'lucide-react';
+import { Search, Bell, Sun, Moon, Info, Menu } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
-export default function ManagerTopBar() {
+export default function ManagerTopBar({ onMenuClick }) {
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
@@ -16,36 +16,43 @@ export default function ManagerTopBar() {
   };
 
   return (
-    <header className="h-28 flex items-center justify-between px-10 relative z-30 pointer-events-none">
-      <div className="flex-1 max-w-2xl pointer-events-auto">
-        <div className="relative group">
+    <header className="h-24 lg:h-28 flex items-center justify-between px-4 lg:px-10 relative z-30 pointer-events-none">
+      <div className="flex items-center gap-4 pointer-events-auto">
+        <button 
+          onClick={onMenuClick}
+          className="lg:hidden w-12 h-12 rounded-2xl bg-white/40 dark:bg-black/40 backdrop-blur-md flex items-center justify-center border border-white/60 dark:border-white/5 shadow-sm active:scale-95 transition-all"
+        >
+          <Menu className="w-5 h-5 text-slate-700 dark:text-gray-200" />
+        </button>
+        
+        <div className="hidden md:block relative group w-64 lg:w-96">
           <input 
             type="text" 
-            placeholder="Search performance data, reports, or categories..." 
-            className="w-full bg-slate-200/50 dark:bg-black/20 backdrop-blur-md px-14 py-4 rounded-3xl border border-white/20 dark:border-white/5 shadow-neumo-inner focus:outline-none focus:ring-2 focus:ring-indigo-500/30 transition-all font-medium text-slate-700 dark:text-gray-200"
+            placeholder="Tìm kiếm dữ liệu hiệu suất..." 
+            className="w-full bg-white/40 dark:bg-black/20 backdrop-blur-md px-12 py-3 lg:py-4 rounded-[2rem] border border-white/60 dark:border-white/5 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 transition-all font-medium text-slate-700 dark:text-gray-200 text-sm"
           />
-          <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400 group-hover:text-indigo-500 transition-colors w-5 h-5" />
+          <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-hover:text-indigo-500 transition-colors w-4 h-4 lg:w-5 lg:h-5" />
         </div>
       </div>
 
-      <div className="flex items-center gap-4 pointer-events-auto">
-        <button className="w-12 h-12 rounded-2xl bg-background-light/40 dark:bg-background-dark/40 backdrop-blur-md flex items-center justify-center border border-white/20 dark:border-white/5 shadow-neumo-sm hover:scale-105 active:scale-95 transition-all group">
+      <div className="flex items-center gap-2 lg:gap-4 pointer-events-auto">
+        <button className="hidden sm:flex w-10 h-10 lg:w-12 lg:h-12 rounded-2xl bg-white/40 dark:bg-black/40 backdrop-blur-md items-center justify-center border border-white/60 dark:border-white/5 shadow-sm hover:scale-105 active:scale-95 transition-all group">
           <Info className="w-5 h-5 text-slate-500 group-hover:text-indigo-500 transition-colors" />
         </button>
         <button 
           onClick={toggleTheme}
-          className="w-12 h-12 rounded-2xl bg-background-light/40 dark:bg-background-dark/40 backdrop-blur-md flex items-center justify-center border border-white/20 dark:border-white/5 shadow-neumo-sm hover:scale-105 active:scale-95 transition-all group"
+          className="w-10 h-10 lg:w-12 lg:h-12 rounded-2xl bg-white/40 dark:bg-black/40 backdrop-blur-md flex items-center justify-center border border-white/60 dark:border-white/5 shadow-sm hover:scale-105 active:scale-95 transition-all group"
         >
           {isDark ? (
-            <Sun className="w-5 h-5 text-amber-400 group-hover:scale-110 transition-transform" />
+            <Sun className="w-4 h-4 lg:w-5 lg:h-5 text-amber-400 group-hover:scale-110 transition-transform" />
           ) : (
-            <Moon className="w-5 h-5 text-indigo-500 group-hover:scale-110 transition-transform" />
+            <Moon className="w-4 h-4 lg:w-5 lg:h-5 text-indigo-500 group-hover:scale-110 transition-transform" />
           )}
         </button>
         <div className="relative">
-          <button className="w-12 h-12 rounded-2xl bg-background-light/40 dark:bg-background-dark/40 backdrop-blur-md flex items-center justify-center border border-white/20 dark:border-white/5 shadow-neumo-sm hover:scale-105 active:scale-95 transition-all group">
-            <Bell className="w-5 h-5 text-slate-500 group-hover:text-indigo-500 transition-colors" />
-            <span className="absolute -top-1 -right-1 w-5 h-5 bg-indigo-500 text-[10px] font-black text-white rounded-full flex items-center justify-center border-2 border-background-light shadow-sm">
+          <button className="w-10 h-10 lg:w-12 lg:h-12 rounded-2xl bg-white/40 dark:bg-black/40 backdrop-blur-md flex items-center justify-center border border-white/60 dark:border-white/5 shadow-sm hover:scale-105 active:scale-95 transition-all group">
+            <Bell className="w-4 h-4 lg:w-5 lg:h-5 text-slate-500 group-hover:text-indigo-500 transition-colors" />
+            <span className="absolute -top-1 -right-1 w-4 h-4 lg:w-5 lg:h-5 bg-indigo-500 text-[9px] lg:text-[10px] font-black text-white rounded-full flex items-center justify-center border-2 border-background-light shadow-sm">
               3
             </span>
           </button>

@@ -27,7 +27,9 @@ Please refer to the following directories for specific guidelines:
 - `.claude/rules/common/`: General coding and workflow standards.
 - `.claude/rules/java/`: Java and Spring Boot specific patterns.
 - `.claude/rules/typescript/`: React and TypeScript/JavaScript standards.
-- `.agent/skills/`: Specialized guides for API design, TDD, and security.
+- `.agent/skills/`: Cross-cutting skills (API design, security).
+- `DIY/.agent/skills/`: Backend-specific skills (Spring Boot, JPA, MySQL).
+- `frontend/.agent/skills/`: Frontend-specific skills (React, Vite, CSS).
 
 ### Core Principles
 - **TDD Preferred:** Write tests before or alongside implementation.

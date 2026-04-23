@@ -1,125 +1,70 @@
-import { Search, Bell, Sun, Moon, Calendar, Settings, Languages } from 'lucide-react';
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
+import { Search, Bell, Menu } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { NavLink } from 'react-router-dom';
+import { cn } from '../../../lib/utils';
 
-export default function AdminTopBar() {
-  const { t, i18n } = useTranslation();
-  const [isDark, setIsDark] = useState(false);
-
-  useEffect(() => {
-    if (document.documentElement.classList.contains('dark')) {
-      setIsDark(true);
-    }
-  }, []);
-
-  const toggleTheme = () => {
-    document.documentElement.classList.toggle('dark');
-    setIsDark(!isDark);
-  };
-
-  const toggleLanguage = () => {
-    const newLang = i18n.language === 'vi' ? 'en' : 'vi';
-    i18n.changeLanguage(newLang);
-  };
-
+export default function AdminTopBar({ onMenuClick }) {
   return (
-    <header className="h-28 flex items-center justify-between px-10 relative z-30">
-      <div className="flex-1 max-w-2xl">
-        <motion.div 
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="relative group"
+    <header className="h-[4.5rem] bg-white rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.02)] border border-slate-100 flex items-center justify-between px-6 relative z-30 sticky top-6">
+      
+      {/* Left Navigation */}
+      <div className="flex items-center gap-4 lg:gap-8">
+        <button 
+          onClick={onMenuClick}
+          className="lg:hidden p-2 -ml-2 text-slate-500 hover:text-slate-800 transition-colors"
         >
+          <Menu className="w-6 h-6" />
+        </button>
+        <h1 className="text-xl font-black text-slate-800 tracking-tight lg:ml-2">Aether<span className="font-medium text-slate-500 hidden sm:inline">Dash</span></h1>
+        
+        <nav className="hidden lg:flex items-center gap-6 border-l border-slate-200 pl-6 h-8">
+          {['Overview', 'Analytics', 'Reports', 'Settings'].map((item) => (
+            <NavLink
+              key={item}
+              to={item === 'Overview' ? '/admin' : `/admin/${item.toLowerCase()}`}
+              end={item === 'Overview'}
+              className={({ isActive }) => cn(
+                "text-sm font-bold transition-all relative",
+                isActive ? "text-slate-800" : "text-slate-400 hover:text-slate-600"
+              )}
+            >
+              {({ isActive }) => (
+                <>
+                  {item}
+                  {isActive && (
+                    <motion.div layoutId="topbar-active" className="absolute -bottom-[1.15rem] left-0 right-0 h-[2px] bg-slate-800" />
+                  )}
+                </>
+              )}
+            </NavLink>
+          ))}
+        </nav>
+      </div>
+
+      {/* Right Controls */}
+      <div className="flex items-center gap-4">
+        
+        <div className="relative group w-48 lg:w-64">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
           <input 
             type="text" 
-            placeholder={t('admin.topbar.search_placeholder')}
-            className="w-full bg-white/70 dark:bg-black/20 backdrop-blur-3xl px-14 py-4 rounded-3xl border border-slate-200 dark:border-white/5 shadow-3d-soft focus:outline-none focus:ring-2 focus:ring-primary-light/30 transition-all font-medium text-slate-700 dark:text-gray-200 placeholder:text-slate-400"
+            placeholder="Search..."
+            className="w-full bg-slate-50/80 hover:bg-slate-100 focus:bg-slate-100 border-none px-10 py-2.5 rounded-full text-sm font-bold text-slate-700 placeholder:text-slate-400 transition-all outline-none"
           />
-          <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400 group-hover:text-primary-light transition-colors w-5 h-5" />
-        </motion.div>
-      </div>
-
-      <div className="flex items-center gap-4">
-        <motion.button 
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="w-12 h-12 rounded-2xl bg-white/70 dark:bg-black/20 backdrop-blur-xl flex items-center justify-center border border-slate-200 dark:border-white/5 shadow-3d-soft hover:shadow-primary-light/10 transition-all group"
-        >
-          <Calendar className="w-5 h-5 text-slate-500 group-hover:text-primary-light transition-colors" />
-        </motion.button>
-
-        <motion.button 
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleTheme(); }}
-          type="button"
-          className="w-12 h-12 rounded-2xl bg-white/70 dark:bg-black/20 backdrop-blur-xl flex items-center justify-center border border-slate-200 dark:border-white/5 shadow-3d-soft transition-all group overflow-hidden"
-        >
-          <AnimatePresence mode="wait">
-            {isDark ? (
-              <motion.div
-                key="sun"
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: -20, opacity: 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                <Sun className="w-5 h-5 text-amber-400" />
-              </motion.div>
-            ) : (
-              <motion.div
-                key="moon"
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: -20, opacity: 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                <Moon className="w-5 h-5 text-indigo-500" />
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </motion.button>
-
-        {/* Language Toggle */}
-        <motion.button 
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={toggleLanguage}
-          className="px-4 h-12 rounded-2xl bg-white/70 dark:bg-black/20 backdrop-blur-xl flex items-center gap-2 border border-slate-200 dark:border-white/5 shadow-3d-soft hover:shadow-primary-light/10 transition-all group"
-        >
-          <Languages className="w-4 h-4 text-slate-500 group-hover:text-primary-light transition-colors" />
-          <span className="text-[10px] font-black uppercase tracking-widest text-slate-700 dark:text-gray-200 whitespace-nowrap">
-            {i18n.language === 'vi' ? 'VI' : 'EN'}
-          </span>
-        </motion.button>
-
-        <div className="relative">
-          <motion.button 
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="w-12 h-12 rounded-2xl bg-white/70 dark:bg-black/20 backdrop-blur-xl flex items-center justify-center border border-slate-200 dark:border-white/5 shadow-3d-soft transition-all group"
-          >
-            <Bell className="w-5 h-5 text-slate-500 group-hover:text-primary-light transition-colors" />
-            <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-[10px] font-black text-white rounded-full flex items-center justify-center border-2 border-white dark:border-slate-900 shadow-sm animate-pulse">
-              9+
-            </span>
-          </motion.button>
         </div>
 
-        <div className="w-px h-8 bg-slate-300 dark:bg-slate-700 mx-2" />
-        
-        <motion.div 
-          whileHover={{ scale: 1.05 }}
-          className="flex items-center gap-3 pl-2"
-        >
-          <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-primary-light to-primary-dark p-[2px] shadow-lg shadow-primary-light/20 cursor-pointer">
-            <div className="w-full h-full rounded-[0.9rem] bg-white dark:bg-slate-900 overflow-hidden p-1">
-              <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Admin" alt="User" className="w-full h-full rounded-lg" />
-            </div>
-          </div>
-        </motion.div>
+        <button className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-slate-50 transition-colors text-slate-400 hover:text-slate-600 relative">
+          <Bell className="w-5 h-5" />
+          <span className="absolute top-2 right-2 w-2 h-2 bg-slate-800 rounded-full border border-white" />
+        </button>
+
+        <div className="w-px h-6 bg-slate-200 mx-1" />
+
+        <div className="w-10 h-10 rounded-full bg-slate-100 overflow-hidden cursor-pointer border border-slate-200">
+          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Adrian" alt="Adrian" className="w-full h-full object-cover" />
+        </div>
       </div>
+
     </header>
   );
 }

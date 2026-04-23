@@ -18,14 +18,14 @@ function cn(...inputs) {
 }
 
 const menuItems = [
-  { icon: LineChart, label: 'Performance', path: '/manager' },
-  { icon: TrendingUp, label: 'Sales Reports', path: '/manager/sales' },
-  { icon: Layers, label: 'Categories', path: '/manager/categories' },
-  { icon: Tag, label: 'Promotions', path: '/manager/promotions' },
-  { icon: FileText, label: 'Logs', path: '/manager/logs' },
+  { icon: LineChart, label: 'Hiệu Suất', path: '/manager' },
+  { icon: TrendingUp, label: 'Báo Cáo Bán Hàng', path: '/manager/sales' },
+  { icon: Layers, label: 'Danh Mục', path: '/manager/categories' },
+  { icon: Tag, label: 'Khuyến Mãi', path: '/manager/promotions' },
+  { icon: FileText, label: 'Nhật Ký Hệ Thống', path: '/manager/logs' },
 ];
 
-export default function ManagerSidebar() {
+export default function ManagerSidebar({ isOpen, setIsOpen }) {
   const { logout } = useAuthStore();
   const navigate = useNavigate();
 
@@ -35,19 +35,22 @@ export default function ManagerSidebar() {
   };
 
   return (
-    <aside className="w-72 h-screen fixed left-0 top-0 z-40 p-6 flex flex-col transition-all duration-300">
-      {/* Glassmorphic Container - Indigo Theme */}
-      <div className="flex-1 bg-background-light/40 dark:bg-background-dark/40 backdrop-blur-xl rounded-[2.5rem] border border-white/20 dark:border-white/5 shadow-neumo-md flex flex-col overflow-hidden">
+    <aside className={cn(
+      "w-72 h-screen fixed left-0 top-0 z-40 p-4 lg:p-6 flex flex-col transition-transform duration-300",
+      isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+    )}>
+      {/* Light Glassmorphic Container */}
+      <div className="flex-1 bg-white/70 dark:bg-black/40 backdrop-blur-2xl rounded-[2.5rem] border border-white/60 dark:border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] flex flex-col overflow-hidden">
         
         {/* Logo Section */}
         <div className="p-8 pb-4">
           <div className="flex items-center gap-4 mb-2">
-            <div className="w-12 h-12 rounded-2xl bg-indigo-500 flex items-center justify-center shadow-neumo-sm">
+            <div className="w-12 h-12 rounded-2xl bg-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-600/20">
               <TrendingUp className="text-white w-7 h-7" />
             </div>
             <div>
-              <h2 className="text-2xl font-black text-slate-800 dark:text-white leading-tight">Manager</h2>
-              <p className="text-[10px] font-semibold text-indigo-500 uppercase tracking-widest opacity-80">Business Insight</p>
+              <h2 className="text-2xl font-black text-slate-800 dark:text-white leading-tight">Quản Lý</h2>
+              <p className="text-[10px] font-bold text-indigo-600 uppercase tracking-widest opacity-80">Góc Nhìn Kinh Doanh</p>
             </div>
           </div>
         </div>
@@ -59,16 +62,17 @@ export default function ManagerSidebar() {
               key={item.path}
               to={item.path}
               end={item.path === '/manager'}
+              onClick={() => setIsOpen && setIsOpen(false)}
               className={({ isActive }) => cn(
                 "flex items-center justify-between px-6 py-4 rounded-2xl transition-all duration-300 group",
                 isActive 
-                  ? "bg-indigo-500 text-white shadow-neumo-sm scale-[1.02]" 
-                  : "text-slate-500 hover:bg-white/50 dark:hover:bg-white/5 hover:text-slate-800 dark:hover:text-white"
+                  ? "bg-slate-700 text-white shadow-lg shadow-slate-700/20 scale-[1.02]" 
+                  : "text-slate-600 hover:bg-white/80 dark:hover:bg-white/10 hover:text-slate-900 dark:hover:text-white"
               )}
             >
               <div className="flex items-center gap-4">
                 <item.icon className={cn("w-5 h-5", "group-hover:scale-110 transition-transform")} />
-                <span className="font-bold tracking-wide">{item.label}</span>
+                <span className="font-bold tracking-wide text-sm">{item.label}</span>
               </div>
               <ChevronRight className={cn("w-4 h-4 opacity-0 group-hover:opacity-100 transition-all")} />
             </NavLink>
@@ -76,21 +80,21 @@ export default function ManagerSidebar() {
         </nav>
 
         {/* Profile/Footer */}
-        <div className="p-6 mt-auto border-t border-white/10">
-          <div className="bg-white/30 dark:bg-black/20 p-4 rounded-3xl flex items-center gap-4 shadow-neumo-inner border border-white/10">
+        <div className="p-6 mt-auto border-t border-white/40 dark:border-white/10">
+          <div className="bg-white/50 dark:bg-black/20 p-4 rounded-3xl flex items-center gap-4 shadow-sm border border-white/60 dark:border-white/5">
             <img 
               src="https://api.dicebear.com/7.x/avataaars/svg?seed=Manager" 
               alt="Manager Avatar" 
-              className="w-11 h-11 rounded-2xl shadow-sm border-2 border-indigo-500/30"
+              className="w-11 h-11 rounded-2xl shadow-sm border-2 border-indigo-100 dark:border-indigo-500/30 bg-white"
             />
             <div className="flex-1 min-w-0">
-              <p className="font-bold text-sm text-slate-800 dark:text-white truncate">Sarah Connor</p>
-              <p className="text-[10px] font-black uppercase text-indigo-500 tracking-tighter">Sales Director</p>
+              <p className="font-bold text-sm text-slate-800 dark:text-white truncate">Nguyễn Văn A</p>
+              <p className="text-[10px] font-black uppercase text-indigo-600 tracking-tighter">Giám Đốc Kinh Doanh</p>
             </div>
             <button 
               onClick={handleLogout}
-              className="p-2 hover:bg-red-500/10 rounded-xl transition-colors group"
-              title="Logout"
+              className="p-2 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-xl transition-colors group"
+              title="Đăng Xuất"
             >
               <LogOut className="w-5 h-5 text-red-500 group-hover:scale-110 transition-transform" />
             </button>

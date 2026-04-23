@@ -20,10 +20,15 @@ import StaffOrdersPage from './pages/StaffOrdersPage';
 import StaffOrderDetailPage from './pages/StaffOrderDetailPage';
 import ManagerDashboardPage from './pages/ManagerDashboardPage';
 import AdminDashboardPage from './pages/AdminDashboardPage';
-import AdminUsersPage from './pages/AdminUsersPage';
+import AdminCustomersPage from './pages/admin/AdminCustomersPage';
+import AdminManagersPage from './pages/admin/AdminManagersPage';
+import AdminStaffPage from './pages/admin/AdminStaffPage';
 import ManagerPromotionsPage from './pages/ManagerPromotionsPage';
 import ManagerCategoriesPage from './pages/ManagerCategoriesPage';
 import ManagerLogsPage from './pages/ManagerLogsPage';
+import StaffOrdersListPage from './pages/StaffOrdersListPage';
+import StaffAnalyticsPage from './pages/StaffAnalyticsPage';
+import StaffReportsPage from './pages/StaffReportsPage';
 import ManagerProductsPage from './pages/ManagerProductsPage';
 import ShopperHubPage from './pages/customer/ShopperHubPage';
 import ShopperProfilePage from './pages/customer/ShopperProfilePage';
@@ -44,10 +49,15 @@ function App() {
         {/* Admin Section */}
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<AdminDashboardPage />} />
-          <Route path="analytics" element={<div className="p-10 text-center font-black uppercase tracking-widest text-slate-400 border-2 border-dashed border-white/10 rounded-[3rem]">Analytics Module Soon</div>} />
-          <Route path="customers" element={<AdminUsersPage />} />
+          <Route path="users" element={<AdminCustomersPage />} />
+          <Route path="staff" element={<AdminStaffPage />} />
+          <Route path="managers" element={<AdminManagersPage />} />
           <Route path="products" element={<ManagerProductsPage />} />
-          <Route path="settings" element={<div className="p-10 text-center font-black uppercase tracking-widest text-slate-400 border-2 border-dashed border-white/10 rounded-[3rem]">Settings Module Soon</div>} />
+          <Route path="categories" element={<div className="p-10 text-center font-black uppercase tracking-widest text-slate-400 border-2 border-dashed border-slate-200 rounded-[3rem]">Quản Lý Danh Mục (Đang Phát Triển)</div>} />
+          <Route path="orders" element={<div className="p-10 text-center font-black uppercase tracking-widest text-slate-400 border-2 border-dashed border-slate-200 rounded-[3rem]">Quản Lý Đơn Hàng (Đang Phát Triển)</div>} />
+          <Route path="warranties" element={<div className="p-10 text-center font-black uppercase tracking-widest text-slate-400 border-2 border-dashed border-slate-200 rounded-[3rem]">Quản Lý Bảo Hành (Đang Phát Triển)</div>} />
+          <Route path="logs" element={<div className="p-10 text-center font-black uppercase tracking-widest text-slate-400 border-2 border-dashed border-slate-200 rounded-[3rem]">Nhật Ký Hệ Thống (Đang Phát Triển)</div>} />
+          <Route path="settings" element={<div className="p-10 text-center font-black uppercase tracking-widest text-slate-400 border-2 border-dashed border-slate-200 rounded-[3rem]">Cài Đặt Hệ Thống (Đang Phát Triển)</div>} />
           <Route path="*" element={<Navigate to="/admin" replace />} />
         </Route>
 
@@ -64,6 +74,9 @@ function App() {
         {/* Staff Section */}
         <Route path="/staff" element={<StaffLayout />}>
           <Route index element={<StaffOrdersPage />} />
+          <Route path="analytics" element={<StaffAnalyticsPage />} />
+          <Route path="reports" element={<StaffReportsPage />} />
+          <Route path="orders" element={<StaffOrdersListPage />} />
           <Route path="order/:id" element={<StaffOrderDetailPage />} />
           <Route path="inventory" element={<ManagerProductsPage />} />
           <Route path="deliveries" element={<div className="p-10 text-center font-black uppercase tracking-widest text-slate-400 border-2 border-dashed border-white/10 rounded-[3rem]">Deliveries Module Soon</div>} />
