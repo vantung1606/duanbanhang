@@ -25,6 +25,9 @@ public class Product extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    @Column(columnDefinition = "LONGTEXT")
+    private String imageUrl;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
@@ -33,11 +36,37 @@ public class Product extends BaseEntity {
     @JoinColumn(name = "brand_id", nullable = false)
     private Brand brand;
 
+    @Builder.Default
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductVariant> variants = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductImage> images = new ArrayList<>();
     
+    @Builder.Default
     private boolean active = true;
+    private String ribbon; 
+
+    // Odoo-style ERP fields
+    @Builder.Default
+    private String productType = "GOODS"; // GOODS, SERVICE, COMBO
+    private String internalReference;
+    private String barcode;
+    
+    @Column(columnDefinition = "TEXT")
+    private String internalNote;
+    
+    @Column(columnDefinition = "TEXT")
+    private String shortDescription;
+    
+    @Builder.Default
+    private boolean canBeSold = true;
+    @Builder.Default
+    private boolean canBePurchased = true;
+    
+    @Builder.Default
+    private Double salesTax = 10.0;
+    @Builder.Default
+    private Double purchaseTax = 10.0;
 }

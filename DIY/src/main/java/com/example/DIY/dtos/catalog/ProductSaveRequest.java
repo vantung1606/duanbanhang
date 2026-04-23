@@ -6,27 +6,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductResponse {
-    private Long id;
+public class ProductSaveRequest {
     private String name;
     private String slug;
-    private String brandName;
-    private String categoryName;
-    private String thumbnailUrl;
-    private BigDecimal minPrice;
-    private BigDecimal maxPrice;
-    private BigDecimal minOriginalPrice;
-    private boolean hasDiscount;
-    private Double rating;
-    private String ribbon;
-    private boolean active;
     private String description;
-
+    private Long categoryId;
+    private Long brandId;
+    private String imageUrl;
+    private String ribbon;
+    private boolean active = true;
+    
     // Odoo fields
     private String productType;
     private String internalReference;
@@ -37,4 +32,19 @@ public class ProductResponse {
     private boolean canBePurchased;
     private Double salesTax;
     private Double purchaseTax;
+
+    private List<VariantRequest> variants;
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class VariantRequest {
+        private String sku;
+        private BigDecimal price;
+        private BigDecimal originalPrice;
+        private Integer stock;
+        private boolean isStockUnlimited;
+        private List<Long> attributeValueIds;
+    }
 }

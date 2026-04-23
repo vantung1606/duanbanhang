@@ -8,6 +8,7 @@ import com.example.DIY.entities.iam.User;
 import com.example.DIY.repositories.iam.RoleRepository;
 import com.example.DIY.repositories.iam.UserRepository;
 import com.example.DIY.security.JwtService;
+import com.example.DIY.services.system.AuditLogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,6 +27,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final AuditLogService auditLogService;
 
     @Transactional
     public AuthResponse register(RegisterRequest request) {
@@ -52,6 +54,8 @@ public class AuthService {
         user.setProfile(profile);
 
         userRepository.save(user);
+        auditLogService.log("USER_REGISTER", "User", user.getId(), "New user registered: " + user.getUsername());
+        
         var jwtToken = jwtService.generateToken(user);
         
         return AuthResponse.builder()
@@ -71,6 +75,7 @@ public class AuthService {
         var user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow();
         var jwtToken = jwtService.generateToken(user);
+        auditLogService.log("USER_LOGIN", "User", user.getId(), "User logged in: " + user.getUsername());
         
         return AuthResponse.builder()
                 .token(jwtToken)

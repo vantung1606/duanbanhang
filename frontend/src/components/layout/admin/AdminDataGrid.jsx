@@ -25,6 +25,12 @@ export default function AdminDataGrid({
   const [searchTerm, setSearchTerm] = useState('');
   const [activeMenu, setActiveMenu] = useState(null);
 
+  const filteredData = data.filter(row => {
+    return Object.values(row).some(val => 
+      String(val).toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  });
+
   return (
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
@@ -79,7 +85,7 @@ export default function AdminDataGrid({
             </tr>
           </thead>
           <tbody>
-            {data.map((row, rowIndex) => (
+            {filteredData.map((row, rowIndex) => (
               <tr key={rowIndex} className="group hover:bg-slate-50/50 transition-colors">
                 {columns.map((col, colIndex) => (
                   <td key={colIndex} className="py-4 px-4 border-b border-slate-50 text-sm font-semibold text-slate-700">
@@ -129,7 +135,7 @@ export default function AdminDataGrid({
           </tbody>
         </table>
 
-        {data.length === 0 && (
+        {filteredData.length === 0 && (
           <div className="py-12 text-center text-slate-400 font-medium text-sm">
             Không tìm thấy dữ liệu nào.
           </div>
@@ -138,7 +144,7 @@ export default function AdminDataGrid({
       
       {/* Pagination Placeholder */}
       <div className="mt-6 flex items-center justify-between border-t border-slate-100 pt-6">
-        <span className="text-xs font-bold text-slate-400">Đang hiển thị {data.length} trên {data.length} kết quả</span>
+        <span className="text-xs font-bold text-slate-400">Đang hiển thị {filteredData.length} trên {data.length} kết quả</span>
         <div className="flex gap-2">
           <button className="px-4 py-2 rounded-xl text-xs font-bold bg-slate-50 text-slate-400 hover:bg-slate-100 hover:text-slate-800 transition-colors">Trước</button>
           <button className="px-4 py-2 rounded-xl text-xs font-bold bg-slate-800 text-white shadow-md shadow-slate-800/20">1</button>

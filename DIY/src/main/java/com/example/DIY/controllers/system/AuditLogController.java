@@ -1,7 +1,7 @@
 package com.example.DIY.controllers.system;
 
-import com.example.DIY.entities.system.AuditLog;
-import com.example.DIY.repositories.system.AuditLogRepository;
+import com.example.DIY.dtos.system.AuditLogResponse;
+import com.example.DIY.services.system.AuditLogQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,10 +15,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AuditLogController {
 
-    private final AuditLogRepository auditLogRepository;
+    private final AuditLogQueryService auditLogQueryService;
 
     @GetMapping
-    public ResponseEntity<List<AuditLog>> getAllLogs() {
-        return ResponseEntity.ok(auditLogRepository.findAll());
+    public ResponseEntity<List<AuditLogResponse>> getAllLogs() {
+        return ResponseEntity.ok(auditLogQueryService.getAllLogs());
     }
 }

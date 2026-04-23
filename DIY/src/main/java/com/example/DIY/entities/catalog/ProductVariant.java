@@ -23,8 +23,13 @@ public class ProductVariant extends BaseEntity {
     @Column(nullable = false, precision = 12, scale = 2)
     private BigDecimal price;
 
+    @Column(precision = 12, scale = 2)
+    private BigDecimal originalPrice; // Compare at price
+
     @Column(nullable = false)
     private Integer stockQuantity;
+
+    private boolean isStockUnlimited = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
