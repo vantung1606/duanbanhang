@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { 
   LayoutDashboard, 
@@ -11,9 +12,13 @@ import {
   ActivitySquare,
   Settings, 
   LogOut,
-  Grid
+  Grid,
+  ChevronDown,
+  Palette,
+  Box,
+  Star
 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../../../lib/utils';
 import { useAuthStore } from '../../../store/authStore';
 import { useNavigate } from 'react-router-dom';
@@ -21,11 +26,21 @@ import { useNavigate } from 'react-router-dom';
 const menuItems = [
   { icon: LayoutDashboard, label: 'TRANG CHỦ', path: '/admin' },
   { icon: Users, label: 'NGƯỜI DÙNG', path: '/admin/users' },
+  { 
+    icon: Package, 
+    label: 'SẢN PHẨM', 
+    path: '/admin/products',
+    children: [
+      { label: 'DANH SÁCH', path: '/admin/products', icon: Grid },
+      { label: 'DANH MỤC', path: '/admin/categories', icon: Tags },
+      { label: 'THUỘC TÍNH', path: '/admin/attributes', icon: Palette },
+      { label: 'THƯƠNG HIỆU', path: '/admin/brands', icon: Star },
+    ]
+  },
+  { icon: Box, label: 'KHO HÀNG', path: '/admin/inventory' },
+  { icon: ShoppingCart, label: 'ĐƠN HÀNG', path: '/admin/orders' },
   { icon: Briefcase, label: 'NHÂN VIÊN (STAFF)', path: '/admin/staff' },
   { icon: UserCircle, label: 'QUẢN LÝ (MANAGER)', path: '/admin/managers' },
-  { icon: Package, label: 'SẢN PHẨM', path: '/admin/products' },
-  { icon: Tags, label: 'DANH MỤC', path: '/admin/categories' },
-  { icon: ShoppingCart, label: 'ĐƠN HÀNG', path: '/admin/orders' },
   { icon: Wrench, label: 'BẢO HÀNH', path: '/admin/warranties' },
   { icon: ActivitySquare, label: 'NHẬT KÝ (LOGS)', path: '/admin/logs' },
   { icon: Settings, label: 'CÀI ĐẶT', path: '/admin/settings' },
@@ -34,15 +49,20 @@ const menuItems = [
 export default function AdminSidebar({ isOpen, setIsOpen }) {
   const { logout } = useAuthStore();
   const navigate = useNavigate();
+  const [openDropdown, setOpenDropdown] = useState('SẢN PHẨM'); // Default open for demonstration
 
   const handleLogout = () => {
     logout();
     navigate('/shop');
   };
 
+  const toggleDropdown = (label) => {
+    setOpenDropdown(openDropdown === label ? null : label);
+  };
+
   return (
     <aside className={cn(
-      "w-64 h-[calc(100vh-3rem)] sticky top-6 z-50 flex flex-col transition-all duration-300",
+      "w-72 h-[calc(100vh-3rem)] sticky top-6 z-50 flex flex-col transition-all duration-300",
       "fixed lg:relative lg:translate-x-0",
       isOpen ? "translate-x-0" : "-translate-x-[150%] lg:-translate-x-0"
     )}>
@@ -64,27 +84,73 @@ export default function AdminSidebar({ isOpen, setIsOpen }) {
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 space-y-2">
+        <nav className="flex-1 space-y-1 overflow-y-auto custom-scrollbar pr-2">
           {menuItems.map((item) => (
-            <NavLink
-              key={item.path}
-              to={item.path}
-              end={item.path === '/admin'}
-              className={({ isActive }) => cn(
-                "flex items-center gap-4 px-4 py-4 rounded-2xl transition-all font-bold text-xs tracking-widest uppercase",
-                isActive 
-                  ? "text-slate-800 bg-slate-50 shadow-sm" 
-                  : "text-slate-500 hover:text-slate-800 hover:bg-slate-50/50"
+            <div key={item.label} className="space-y-1">
+              {item.children ? (
+                <>
+                  <button
+                    onClick={() => toggleDropdown(item.label)}
+                    className={cn(
+                      "w-full flex items-center justify-between px-4 py-4 rounded-2xl transition-all font-bold text-xs tracking-widest uppercase",
+                      openDropdown === item.label ? "text-indigo-600 bg-indigo-50/50" : "text-slate-500 hover:text-slate-800 hover:bg-slate-50/50"
+                    )}
+                  >
+                    <div className="flex items-center gap-4">
+                      <item.icon className="w-5 h-5" strokeWidth={2.5} />
+                      <span>{item.label}</span>
+                    </div>
+                    <ChevronDown className={cn("w-4 h-4 transition-transform duration-300", openDropdown === item.label && "rotate-180")} />
+                  </button>
+                  
+                  <AnimatePresence>
+                    {openDropdown === item.label && (
+                      <motion.div 
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        className="overflow-hidden pl-4 space-y-1"
+                      >
+                        {item.children.map((child) => (
+                          <NavLink
+                            key={child.path}
+                            to={child.path}
+                            className={({ isActive }) => cn(
+                              "flex items-center gap-4 px-4 py-3 rounded-xl transition-all font-bold text-[10px] tracking-widest uppercase",
+                              isActive 
+                                ? "text-indigo-600 bg-white shadow-sm border border-indigo-100" 
+                                : "text-slate-400 hover:text-slate-700"
+                            )}
+                          >
+                            <child.icon className="w-4 h-4" />
+                            <span>{child.label}</span>
+                          </NavLink>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </>
+              ) : (
+                <NavLink
+                  to={item.path}
+                  end={item.path === '/admin'}
+                  className={({ isActive }) => cn(
+                    "flex items-center gap-4 px-4 py-4 rounded-2xl transition-all font-bold text-xs tracking-widest uppercase",
+                    isActive 
+                      ? "text-slate-800 bg-slate-50 shadow-sm" 
+                      : "text-slate-500 hover:text-slate-800 hover:bg-slate-50/50"
+                  )}
+                >
+                  <item.icon className="w-5 h-5" strokeWidth={2.5} />
+                  <span>{item.label}</span>
+                </NavLink>
               )}
-            >
-              <item.icon className="w-5 h-5" strokeWidth={2.5} />
-              <span>{item.label}</span>
-            </NavLink>
+            </div>
           ))}
         </nav>
 
         {/* Logout */}
-        <div className="mt-auto pt-8">
+        <div className="mt-auto pt-8 border-t border-slate-50">
           <button 
             onClick={handleLogout}
             className="flex items-center gap-4 px-4 py-4 w-full rounded-2xl transition-all font-bold text-xs tracking-widest uppercase text-slate-500 hover:text-slate-800 hover:bg-slate-50/50"
@@ -97,4 +163,3 @@ export default function AdminSidebar({ isOpen, setIsOpen }) {
     </aside>
   );
 }
-

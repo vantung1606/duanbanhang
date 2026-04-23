@@ -30,6 +30,9 @@ import StaffOrdersListPage from './pages/StaffOrdersListPage';
 import StaffAnalyticsPage from './pages/StaffAnalyticsPage';
 import StaffReportsPage from './pages/StaffReportsPage';
 import ManagerProductsPage from './pages/ManagerProductsPage';
+import AdminAttributesPage from './pages/AdminAttributesPage';
+import AdminBrandsPage from './pages/AdminBrandsPage';
+import AdminInventoryPage from './pages/AdminInventoryPage';
 import ShopperHubPage from './pages/customer/ShopperHubPage';
 import ShopperProfilePage from './pages/customer/ShopperProfilePage';
 
@@ -37,6 +40,7 @@ import ShopperProfilePage from './pages/customer/ShopperProfilePage';
 import AuthPage from './pages/auth/AuthPage';
 import ForgotPasswordPage from './pages/auth/ForgotPasswordPage';
 import ProtectedRoute from './components/common/ProtectedRoute';
+import ToastContainer from './components/common/Toast';
 
 // Mock Pages for each role
 const AdminHome = () => <div className="space-y-4"><h1 className="text-4xl font-black text-slate-800 dark:text-white">Admin Hub</h1><div className="h-64 rounded-3xl bg-primary-light/10 border-2 border-dashed border-primary-light/30 flex items-center justify-center font-bold text-primary-light">System Control Room Mockup</div></div>;
@@ -46,6 +50,7 @@ const StaffHome = () => <div className="space-y-4"><h1 className="text-4xl font-
 function App() {
   return (
     <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+      <ToastContainer />
       <CartSidebar />
       <Routes>
         {/* Admin Section */}
@@ -55,10 +60,13 @@ function App() {
           <Route path="staff" element={<AdminStaffPage />} />
           <Route path="managers" element={<AdminManagersPage />} />
           <Route path="products" element={<ManagerProductsPage />} />
-          <Route path="categories" element={<div className="p-10 text-center font-black uppercase tracking-widest text-slate-400 border-2 border-dashed border-slate-200 rounded-[3rem]">Quản Lý Danh Mục (Đang Phát Triển)</div>} />
+          <Route path="categories" element={<ManagerCategoriesPage />} />
+          <Route path="attributes" element={<AdminAttributesPage />} />
+          <Route path="brands" element={<AdminBrandsPage />} />
+          <Route path="inventory" element={<AdminInventoryPage />} />
           <Route path="orders" element={<div className="p-10 text-center font-black uppercase tracking-widest text-slate-400 border-2 border-dashed border-slate-200 rounded-[3rem]">Quản Lý Đơn Hàng (Đang Phát Triển)</div>} />
           <Route path="warranties" element={<div className="p-10 text-center font-black uppercase tracking-widest text-slate-400 border-2 border-dashed border-slate-200 rounded-[3rem]">Quản Lý Bảo Hành (Đang Phát Triển)</div>} />
-          <Route path="logs" element={<div className="p-10 text-center font-black uppercase tracking-widest text-slate-400 border-2 border-dashed border-slate-200 rounded-[3rem]">Nhật Ký Hệ Thống (Đang Phát Triển)</div>} />
+          <Route path="logs" element={<ManagerLogsPage />} />
           <Route path="settings" element={<div className="p-10 text-center font-black uppercase tracking-widest text-slate-400 border-2 border-dashed border-slate-200 rounded-[3rem]">Cài Đặt Hệ Thống (Đang Phát Triển)</div>} />
           <Route path="*" element={<Navigate to="/admin" replace />} />
         </Route>
