@@ -9,6 +9,8 @@ import { cn } from '../../lib/utils';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
 import useCartStore from '../../store/cart-store';
+import NeuralynNavbar from '../../components/layout/customer/NeuralynNavbar';
+import NeuralynFooter from '../../components/layout/customer/NeuralynFooter';
 
 // --- Sub-Components ---
 
@@ -99,49 +101,7 @@ export default function NeuralynHome() {
       </div>
 
       {/* Top Navbar */}
-      <nav className="fixed top-0 left-0 right-0 z-50 px-6 md:px-12 py-6 flex items-center justify-between transition-all duration-500 backdrop-blur-2xl bg-white/40 border-b border-white/20">
-         <div className="flex items-center gap-3 cursor-pointer group" onClick={() => window.scrollTo({top:0, behavior:'smooth'})}>
-            <div className="w-12 h-12 rounded-2xl bg-slate-900 text-white flex items-center justify-center shadow-2xl group-hover:rotate-12 transition-transform duration-500">
-              <Zap className="w-6 h-6 fill-white" />
-            </div>
-            <span className="text-2xl font-black tracking-tighter text-slate-900">AETHER<span className="text-indigo-600">.</span></span>
-         </div>
-
-         <div className="hidden lg:flex items-center gap-10">
-            {['Sản phẩm', 'Công nghệ', 'Ưu đãi', 'Hỗ trợ'].map((item) => (
-              <a key={item} href="#" className="text-xs font-black uppercase tracking-[0.2em] text-slate-400 hover:text-indigo-600 transition-colors">{item}</a>
-            ))}
-         </div>
-
-         <div className="flex items-center gap-4">
-            <button 
-              onClick={toggleCart} 
-              className="w-12 h-12 rounded-full bg-white border border-slate-100 flex items-center justify-center relative hover:shadow-xl transition-all text-slate-700"
-            >
-              <ShoppingBag className="w-5 h-5" />
-              {getTotalItems() > 0 && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-indigo-600 text-white text-[10px] font-black flex items-center justify-center border-2 border-white">
-                  {getTotalItems()}
-                </span>
-              )}
-            </button>
-            {isAuthenticated ? (
-              <button 
-                onClick={() => { logout(); navigate('/login'); }} 
-                className="px-8 py-3.5 rounded-full bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest shadow-2xl hover:bg-indigo-600 transition-all"
-              >
-                Protocol Exit
-              </button>
-            ) : (
-              <Link 
-                to="/login" 
-                className="px-8 py-3.5 rounded-full bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest shadow-2xl hover:bg-indigo-600 transition-all"
-              >
-                Connect
-              </Link>
-            )}
-         </div>
-      </nav>
+      <NeuralynNavbar />
 
       {/* Progress Bar */}
       <motion.div 
@@ -372,52 +332,7 @@ export default function NeuralynHome() {
         </section>
 
         {/* EXTENDED FOOTER */}
-        <footer className="bg-white border-t border-slate-100 pt-32 pb-12 px-6 md:px-12 lg:px-24">
-           <div className="max-w-7xl mx-auto">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-16 mb-24">
-                 <div className="lg:col-span-2 space-y-8">
-                    <div className="flex items-center gap-3">
-                       <div className="w-12 h-12 rounded-2xl bg-slate-900 text-white flex items-center justify-center">
-                         <Zap className="w-6 h-6 fill-white" />
-                       </div>
-                       <span className="text-2xl font-black tracking-tighter text-slate-900">AETHER<span className="text-indigo-600">.</span></span>
-                    </div>
-                    <p className="text-slate-400 font-medium max-w-sm leading-relaxed">
-                      Tiên phong trong việc kết hợp nghệ thuật thiết kế và công nghệ tương lai để nâng tầm cuộc sống con người.
-                    </p>
-                    <div className="flex gap-4">
-                       {[...Array(4)].map((_, i) => (
-                         <div key={i} className="w-10 h-10 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center hover:bg-indigo-600 hover:text-white transition-all cursor-pointer" />
-                       ))}
-                    </div>
-                 </div>
-                 
-                 {[
-                   { title: "Sản phẩm", links: ["Workstations", "Mobile Gear", "Audio Elite", "Smart Wear", "Phụ kiện"] },
-                   { title: "Hệ sinh thái", links: ["Aether Cloud", "Bảo mật Quantum", "Phần mềm Uplink", "Cộng đồng", "Tài liệu"] },
-                   { title: "Công ty", links: ["Về chúng tôi", "Tuyển dụng", "Báo chí", "Liên hệ", "Chính sách"] }
-                 ].map((column) => (
-                   <div key={column.title} className="space-y-8">
-                      <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">{column.title}</h4>
-                      <ul className="space-y-4">
-                         {column.links.map(link => (
-                           <li key={link} className="text-sm font-bold text-slate-600 hover:text-indigo-600 cursor-pointer transition-colors">{link}</li>
-                         ))}
-                      </ul>
-                   </div>
-                 ))}
-              </div>
-              
-              <div className="pt-12 border-t border-slate-100 flex flex-col md:flex-row items-center justify-between gap-8">
-                 <div className="flex gap-8 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
-                    <span className="hover:text-slate-800 cursor-pointer">Bảo mật</span>
-                    <span className="hover:text-slate-800 cursor-pointer">Điều khoản</span>
-                    <span className="hover:text-slate-800 cursor-pointer">Cookie</span>
-                 </div>
-                 <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">© 2026 AETHER SYSTEM INC. ALL RIGHTS RESERVED.</span>
-              </div>
-           </div>
-        </footer>
+        <NeuralynFooter />
 
       </main>
 

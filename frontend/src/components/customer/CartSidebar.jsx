@@ -23,7 +23,7 @@ export default function CartSidebar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={toggleCart}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[200]"
+            className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[200]"
           />
 
           {/* Sidebar */}
@@ -32,17 +32,17 @@ export default function CartSidebar() {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed right-0 top-0 bottom-0 w-full max-w-md bg-zinc-950 border-l border-white/10 z-[201] flex flex-col"
+            className="fixed right-0 top-0 bottom-0 w-full max-w-md bg-[#f8fafc] border-l border-slate-200/50 shadow-2xl z-[201] flex flex-col"
           >
             {/* Header */}
-            <div className="p-6 border-b border-white/5 flex items-center justify-between">
+            <div className="p-6 border-b border-slate-200/50 flex items-center justify-between bg-white/40 backdrop-blur-xl">
               <div className="flex items-center gap-3">
-                <ShoppingBag className="w-5 h-5 text-accent" />
-                <h2 className="text-xl font-black uppercase tracking-widest text-white">Your Bag ({getTotalItems()})</h2>
+                <ShoppingBag className="w-5 h-5 text-indigo-600" />
+                <h2 className="text-xl font-black uppercase tracking-widest text-slate-900">Giỏ hàng ({getTotalItems()})</h2>
               </div>
               <button 
                 onClick={toggleCart}
-                className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors"
+                className="w-10 h-10 rounded-full bg-white/60 border border-slate-200/50 shadow-sm text-slate-500 flex items-center justify-center hover:bg-white hover:text-slate-900 transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -51,54 +51,54 @@ export default function CartSidebar() {
             {/* Content */}
             <div className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar">
               {items.length === 0 ? (
-                <div className="h-full flex flex-col items-center justify-center text-center space-y-6 opacity-40">
-                  <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center">
+                <div className="h-full flex flex-col items-center justify-center text-center space-y-6 opacity-60 text-slate-500">
+                  <div className="w-20 h-20 rounded-full bg-white border border-slate-200 shadow-sm text-indigo-600 flex items-center justify-center">
                     <ShoppingBag className="w-10 h-10" />
                   </div>
-                  <p className="font-bold text-sm tracking-widest uppercase">Your cart is empty</p>
+                  <p className="font-bold text-sm tracking-widest uppercase">Giỏ hàng của bạn đang trống</p>
                   <button 
                     onClick={toggleCart}
-                    className="px-8 py-3 rounded-full border border-white/20 text-[10px] font-black uppercase hover:bg-white hover:text-black transition-all"
+                    className="px-8 py-3 rounded-full border border-slate-200 shadow-sm bg-white text-[10px] font-black uppercase hover:bg-slate-900 hover:text-white hover:border-slate-900 transition-all text-slate-800"
                   >
-                    Start Shopping
+                    Tiếp tục mua sắm
                   </button>
                 </div>
               ) : (
                 items.map((item) => (
-                  <div key={item.variantId} className="group relative flex gap-4 p-4 rounded-3xl bg-white/5 border border-white/10 hover:border-white/20 transition-all">
+                  <div key={item.variantId} className="group relative flex gap-4 p-4 rounded-3xl bg-white/60 border border-slate-200/50 shadow-sm backdrop-blur-xl hover:border-slate-300 transition-all">
                     {/* Image */}
-                    <div className="w-24 h-24 rounded-2xl bg-black/40 p-2 flex-shrink-0">
-                      <img src={item.imageUrl} alt={item.productName} className="w-full h-full object-contain mix-blend-screen" />
+                    <div className="w-24 h-24 rounded-2xl bg-white border border-slate-100 p-2 flex-shrink-0">
+                      <img src={item.imageUrl} alt={item.productName} className="w-full h-full object-contain mix-blend-multiply" />
                     </div>
 
                     {/* Info */}
                     <div className="flex-1 flex flex-col justify-between">
                       <div>
-                        <h3 className="text-sm font-bold text-white line-clamp-1">{item.productName}</h3>
+                        <h3 className="text-sm font-bold text-slate-900 line-clamp-1">{item.productName}</h3>
                         <div className="flex flex-wrap gap-x-3 gap-y-1 mt-1">
                           {item.attributes && item.attributes.map((av, idx) => (
-                            <span key={idx} className="text-[10px] font-black uppercase text-accent tracking-tighter">
-                              {av.attributeName}: <span className="text-white">{av.value}</span>
+                            <span key={idx} className="text-[10px] font-black uppercase text-slate-500 tracking-tighter">
+                              {av.attributeName}: <span className="text-slate-900">{av.value}</span>
                             </span>
                           ))}
                         </div>
                       </div>
                       
                       <div className="flex items-center justify-between">
-                        <span className="text-sm font-black text-white">{formatCurrency(item.price)}</span>
+                        <span className="text-sm font-black text-slate-900">{formatCurrency(item.price)}</span>
                         
                         {/* Quantity Controls */}
-                        <div className="flex items-center gap-3 p-1 bg-white/5 rounded-xl border border-white/10">
+                        <div className="flex items-center gap-3 p-1 bg-white rounded-xl border border-slate-200 shadow-sm">
                           <button 
                             onClick={() => updateQuantity(item.variantId, item.quantity - 1)}
-                            className="w-6 h-6 flex items-center justify-center text-white hover:text-accent transition-colors"
+                            className="w-6 h-6 flex items-center justify-center text-slate-500 hover:text-indigo-600 transition-colors"
                           >
                             <Minus className="w-3 h-3" />
                           </button>
-                          <span className="text-xs font-black w-4 text-center text-accent">{item.quantity}</span>
+                          <span className="text-xs font-black w-4 text-center text-slate-900">{item.quantity}</span>
                           <button 
                             onClick={() => updateQuantity(item.variantId, item.quantity + 1)}
-                            className="w-6 h-6 flex items-center justify-center text-white hover:text-accent transition-colors"
+                            className="w-6 h-6 flex items-center justify-center text-slate-500 hover:text-indigo-600 transition-colors"
                           >
                             <Plus className="w-3 h-3" />
                           </button>
@@ -109,7 +109,7 @@ export default function CartSidebar() {
                     {/* Remove button */}
                     <button 
                       onClick={() => removeItem(item.variantId)}
-                      className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-red-500/10 border border-red-500/20 text-red-500 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-500 hover:text-white"
+                      className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-white border border-red-200 text-red-500 shadow-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-500 hover:text-white"
                     >
                       <Trash2 className="w-3 h-3" />
                     </button>
@@ -120,19 +120,19 @@ export default function CartSidebar() {
 
             {/* Footer */}
             {items.length > 0 && (
-              <div className="p-6 border-t border-white/5 bg-zinc-900/50 backdrop-blur-xl space-y-6">
+              <div className="p-6 border-t border-slate-200/50 bg-white/80 backdrop-blur-xl shadow-[0_-10px_40px_rgba(0,0,0,0.05)] space-y-6">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-black uppercase tracking-[0.2em] text-white/30">Subtotal</span>
-                  <span className="text-2xl font-black text-accent">{formatCurrency(getTotalPrice())}</span>
+                  <span className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">Tạm tính</span>
+                  <span className="text-2xl font-black text-indigo-600">{formatCurrency(getTotalPrice())}</span>
                 </div>
                 <button 
                   onClick={handleCheckout}
-                  className="w-full bg-accent text-black py-5 rounded-2xl font-black flex items-center justify-center gap-3 hover:scale-[1.02] active:scale-95 transition-all shadow-2xl"
+                  className="w-full bg-slate-900 text-white hover:bg-indigo-600 py-5 rounded-2xl font-black flex items-center justify-center gap-3 hover:scale-[1.02] active:scale-95 transition-all shadow-xl"
                 >
-                  Checkout Now <ArrowRight className="w-4 h-4" />
+                  Thanh toán ngay <ArrowRight className="w-4 h-4" />
                 </button>
-                <p className="text-[10px] text-center text-white/20 font-bold uppercase tracking-widest">
-                  Shipping and taxes calculated at checkout
+                <p className="text-[10px] text-center text-slate-400 font-bold uppercase tracking-widest">
+                  Phí giao hàng và thuế sẽ được tính ở bước thanh toán
                 </p>
               </div>
             )}
