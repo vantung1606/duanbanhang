@@ -35,6 +35,7 @@ import ShopperProfilePage from './pages/customer/ShopperProfilePage';
 
 // Auth Pages
 import AuthPage from './pages/auth/AuthPage';
+import ForgotPasswordPage from './pages/auth/ForgotPasswordPage';
 
 // Mock Pages for each role
 const AdminHome = () => <div className="space-y-4"><h1 className="text-4xl font-black text-slate-800 dark:text-white">Admin Hub</h1><div className="h-64 rounded-3xl bg-primary-light/10 border-2 border-dashed border-primary-light/30 flex items-center justify-center font-bold text-primary-light">System Control Room Mockup</div></div>;
@@ -102,6 +103,7 @@ function App() {
         {/* Auth Routes */}
         <Route path="/login" element={<AuthPage />} />
         <Route path="/register" element={<AuthPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
         {/* Root Redirect */}
         <Route path="/" element={<Navigate to="/home" replace />} />
