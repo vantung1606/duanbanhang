@@ -92,14 +92,8 @@ function App() {
         <Route path="/product/:slug" element={<ProductDetail />} />
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/checkout/success" element={<OrderSuccessPage />} />
-        <Route path="/shop/app" element={<ProtectedRoute allowedRoles={['USER', 'ADMIN', 'MANAGER', 'STAFF']}><CustomerLayout /></ProtectedRoute>}>
-          <Route index element={<ShopperHubPage />} />
-          <Route path="me" element={<ShopperProfilePage />} />
-          <Route path="*" element={<Navigate to="/shop/app" replace />} />
-        </Route>
-
-        <Route path="/account" element={<Navigate to="/shop/app/me" replace />} />
-        <Route path="/profile" element={<Navigate to="/shop/app/me" replace />} />
+        <Route path="/account" element={<Navigate to="/home" replace />} />
+        <Route path="/profile" element={<Navigate to="/home" replace />} />
 
         {/* Auth Routes */}
         <Route path="/login" element={<AuthPage />} />

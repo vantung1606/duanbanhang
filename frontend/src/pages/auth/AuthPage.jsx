@@ -44,7 +44,7 @@ export default function AuthPage() {
       setAuth({ username: data.username, role: data.role }, data.token);
       if (data.role === 'ADMIN') navigate('/admin');
       else if (data.role === 'MANAGER') navigate('/manager');
-      else navigate('/shop/app');
+      else navigate('/home');
     } catch { setError('Tên đăng nhập hoặc mật khẩu không chính xác.'); }
     finally { setIsLoading(false); }
   };
@@ -56,7 +56,7 @@ export default function AuthPage() {
     try {
       const data = await registerApi({ username: formData.username, email: formData.email, password: formData.password });
       setAuth({ username: data.username, role: data.role }, data.token);
-      navigate('/shop/app');
+      navigate('/home');
     } catch (err) { setError(err.response?.data?.message || 'Đăng ký thất bại. Vui lòng thử lại.'); }
     finally { setIsLoading(false); }
   };
