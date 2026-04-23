@@ -13,7 +13,7 @@ import lombok.*;
 @Builder
 public class ProductImage extends BaseEntity {
 
-    @Column(nullable = false)
+    @Column(columnDefinition = "LONGTEXT")
     private String imageUrl;
 
     private boolean isPrimary = false;
