@@ -182,6 +182,22 @@ export default function ManagerProductsPage() {
   const handleSave = async (e) => {
     e.preventDefault();
     setFormLoading(true);
+    if (!formData.name || formData.name.trim() === '') {
+      addToast('Vui lòng nhập tên sản phẩm', 'error');
+      setFormLoading(false);
+      return;
+    }
+    if (!formData.categoryId || formData.categoryId === '') {
+      addToast('Vui lòng chọn danh mục sản phẩm', 'error');
+      setFormLoading(false);
+      return;
+    }
+    if (!formData.brandId || formData.brandId === '') {
+      addToast('Vui lòng chọn thương hiệu sản phẩm', 'error');
+      setFormLoading(false);
+      return;
+    }
+
     try {
       const cleanData = {
         name: formData.name,
@@ -189,8 +205,8 @@ export default function ManagerProductsPage() {
         description: formData.description,
         shortDescription: formData.shortDescription,
         internalNote: formData.internalNote,
-        categoryId: formData.categoryId === '' ? null : Number(formData.categoryId),
-        brandId: formData.brandId === '' ? null : Number(formData.brandId),
+        categoryId: Number(formData.categoryId),
+        brandId: Number(formData.brandId),
         imageUrl: formData.imageUrl,
         ribbon: formData.ribbon,
         active: !!formData.active,
