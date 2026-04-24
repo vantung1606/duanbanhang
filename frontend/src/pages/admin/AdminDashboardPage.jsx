@@ -17,7 +17,7 @@ import {
   Tooltip, 
   ResponsiveContainer
 } from 'recharts';
-import { cn } from '../lib/utils';
+import { cn } from '../../lib/utils';
 
 const chartData = [
   { name: 'T2', projection: 4000, actual: 2400 },

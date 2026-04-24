@@ -15,7 +15,7 @@ import {
   FileText,
   Zap
 } from 'lucide-react';
-import { cn } from '../lib/utils';
+import { cn } from '../../lib/utils';
 
 const STATUS_STEPS = [
   { id: 'PENDING', label: 'Processing', icon: Clock },

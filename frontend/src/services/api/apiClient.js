@@ -44,8 +44,10 @@ apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && (error.response.status === 401 || error.response.status === 403)) {
-      // Optional: Redirect to login or handle unauthorized access
       console.error('Unauthorized access - please login again');
+    }
+    if (error.response && error.response.data) {
+      console.error('API Error Response:', error.response.data);
     }
     return Promise.reject(error);
   }

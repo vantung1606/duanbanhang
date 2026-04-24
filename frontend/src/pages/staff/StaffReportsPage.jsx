@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Download, FileText, Calendar, Filter } from 'lucide-react';
-import { cn } from '../lib/utils';
+import { cn } from '../../lib/utils';
 
 const reports = [
   { id: 'REP-001', name: 'Báo Cáo Doanh Thu Tuần 2', date: '16/04/2025', size: '2.4 MB', type: 'PDF' },

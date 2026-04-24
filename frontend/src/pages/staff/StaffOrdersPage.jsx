@@ -12,7 +12,7 @@ import {
   ArrowRight,
   MoreHorizontal
 } from 'lucide-react';
-import { cn } from '../lib/utils';
+import { cn } from '../../lib/utils';
 
 // --- Ethereal Glassmorphism Components ---
 const GlassCard = ({ className, children, delay = 0 }) => (

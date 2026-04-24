@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from 'react';
 import { motion, AnimatePresence, useScroll, useSpring, useTransform } from 'framer-motion';
-import { Search, SlidersHorizontal, LayoutGrid, List, ArrowUpDown, ChevronDown, ShoppingBag, ShoppingCart, ArrowRight, Star } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
+import { Search, SlidersHorizontal, LayoutGrid, List, ArrowUpDown, ChevronDown, ShoppingBag, ShoppingCart, ArrowRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next'; // UI Translation
 import FilterSidebar from '../../components/customer/FilterSidebar';
 import QuickViewModal from '../../components/customer/QuickViewModal';
 import { catalogService } from '../../services/catalog-service';
@@ -154,7 +154,7 @@ export default function Catalog() {
                       <span className="px-3 py-1 rounded-full bg-indigo-50 text-[9px] font-black uppercase tracking-[0.1em] text-indigo-600 border border-indigo-100/50">{product.categoryName}</span>
                       <div className="w-1 h-1 rounded-full bg-slate-300" />
                       <div className="flex items-center gap-1">
-                        <Star className="w-3 h-3 fill-indigo-600 text-indigo-600" />
+                        <div className="w-3 h-3 bg-indigo-600 rounded-full" />
                         <span className="text-[10px] text-slate-500 font-bold">{product.rating}</span>
                       </div>
                     </div>

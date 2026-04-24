@@ -1,42 +1,41 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react'; // Product Management Page
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Package, 
-  Plus, 
-  Search, 
-  Filter, 
-  Edit3, 
-  Trash2, 
-  Grid, 
-  List as ListIcon, 
-  X,
-  FileText,
-  Tag,
-  Shield,
-  DollarSign,
-  Layers,
-  ChevronDown,
-  Image as ImageIcon,
-  Zap,
-  Eye,
-  EyeOff,
-  Infinity,
-  PlusCircle,
-  Percent,
-  Star,
-  CheckCircle2,
-  Settings2,
-  Box,
-  Truck,
-  Globe,
-  Camera,
-  Info,
-  ListFilter,
-  ShoppingCart
-} from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { adminService } from '../../services/api/adminService';
 import { useToast } from '../../components/common/Toast';
+
+// Icon Placeholders
+const Package = () => <span>[PKG]</span>;
+const Plus = () => <span>[+]</span>;
+const Search = () => <span>[S]</span>;
+const Filter = () => <span>[F]</span>;
+const Edit3 = () => <span>[E]</span>;
+const Trash2 = () => <span>[T]</span>;
+const Grid = () => <span>[G]</span>;
+const ListIcon = () => <span>[L]</span>;
+const X = () => <span>[X]</span>;
+const FileText = () => <span>[DOC]</span>;
+const Tag = () => <span>[TAG]</span>;
+const Shield = () => <span>[SH]</span>;
+const DollarSign = () => <span>[$]</span>;
+const Layers = () => <span>[LY]</span>;
+const ChevronDown = () => <span>[v]</span>;
+const ImageIcon = () => <span>[IMG]</span>;
+const Zap = () => <span>[Z]</span>;
+const Eye = () => <span>[EYE]</span>;
+const EyeOff = () => <span>[HID]</span>;
+const Infinity = () => <span>[INF]</span>;
+const PlusCircle = () => <span>[+O]</span>;
+const Percent = () => <span>[%]</span>;
+const CheckCircle2 = () => <span>[OK]</span>;
+const Settings2 = () => <span>[SET]</span>;
+const Box = () => <span>[BOX]</span>;
+const Truck = () => <span>[TR]</span>;
+const Globe = () => <span>[GL]</span>;
+const Camera = () => <span>[CAM]</span>;
+const Info = () => <span>[I]</span>;
+const ListFilter = () => <span>[LF]</span>;
+const ShoppingCart = () => <span>[CART]</span>;
 
 // Reusable Modal Layout
 const ModalLayout = ({ isOpen, onClose, title, children }) => (
@@ -141,7 +140,14 @@ export default function ManagerProductsPage() {
     setFormData(prev => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : value,
-      ...(name === 'name' && !selectedProduct ? { slug: value.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '') } : {})
+      ...(name === 'name' && !selectedProduct ? { 
+        slug: value.toLowerCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/đ/g, 'd')
+          .replace(/ /g, '-')
+          .replace(/[^\w-]+/g, '') 
+      } : {})
     }));
   };
 
@@ -182,32 +188,35 @@ export default function ManagerProductsPage() {
   const handleSave = async (e) => {
     e.preventDefault();
     setFormLoading(true);
+    const catId = Number(formData.categoryId);
+    const brId = Number(formData.brandId);
+
     if (!formData.name || formData.name.trim() === '') {
       addToast('Vui lòng nhập tên sản phẩm', 'error');
       setFormLoading(false);
       return;
     }
-    if (!formData.categoryId || formData.categoryId === '') {
-      addToast('Vui lòng chọn danh mục sản phẩm', 'error');
+    if (!formData.categoryId || isNaN(catId) || catId <= 0) {
+      addToast('Vui lòng chọn danh mục sản phẩm hợp lệ', 'error');
       setFormLoading(false);
       return;
     }
-    if (!formData.brandId || formData.brandId === '') {
-      addToast('Vui lòng chọn thương hiệu sản phẩm', 'error');
+    if (!formData.brandId || isNaN(brId) || brId <= 0) {
+      addToast('Vui lòng chọn thương hiệu sản phẩm hợp lệ', 'error');
       setFormLoading(false);
       return;
     }
 
     try {
       const cleanData = {
-        name: formData.name,
-        slug: formData.slug,
+        name: formData.name.trim(),
+        slug: formData.slug || formData.name.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, ''),
         description: formData.description,
         shortDescription: formData.shortDescription,
         internalNote: formData.internalNote,
-        categoryId: Number(formData.categoryId),
-        brandId: Number(formData.brandId),
-        imageUrl: formData.imageUrl,
+        categoryId: catId,
+        brandId: brId,
+        imageUrl: (formData.imageUrl && formData.imageUrl.trim() !== '') ? formData.imageUrl : null,
         ribbon: formData.ribbon,
         active: !!formData.active,
         // ERP Defaults
@@ -217,18 +226,20 @@ export default function ManagerProductsPage() {
         salesTax: 10,
         purchaseTax: 10,
         internalReference: formData.name.substring(0, 3).toUpperCase() + Date.now().toString().slice(-4),
-        variants: formData.variants.map(v => ({
-          sku: v.sku,
-          price: v.price === '' ? 0 : Number(v.price),
+        variants: formData.variants.length > 0 ? formData.variants.map(v => ({
+          sku: v.sku || '',
+          price: (v.price === '' || v.price === null) ? 0 : Number(v.price),
           originalPrice: (v.originalPrice === '' || v.originalPrice === null) ? null : Number(v.originalPrice),
-          stock: v.stock === '' ? 0 : Number(v.stock),
+          stock: (v.stock === '' || v.stock === null) ? 0 : Number(v.stock),
           isStockUnlimited: !!v.isStockUnlimited,
-          attributeValueIds: v.attributeValueIds || []
-        })),
-        specifications: JSON.stringify(formData.specifications)
+          attributeValueIds: (v.attributeValueIds || []).filter(id => id != null)
+        })) : [{ sku: '', price: 0, stock: 0, isStockUnlimited: false, attributeValueIds: [] }],
+        specifications: JSON.stringify(formData.specifications || [])
       };
 
+      console.log('Final data to send:', cleanData);
       if (selectedProduct) {
+        console.log('Updating product with ID:', selectedProduct.id);
         await adminService.updateProduct(selectedProduct.id, cleanData);
         addToast('Cập nhật sản phẩm thành công', 'success');
       } else {
@@ -238,7 +249,7 @@ export default function ManagerProductsPage() {
       setIsModalOpen(false);
       fetchInitialData();
     } catch (error) {
-      addToast('Lỗi: ' + (error.response?.data?.message || 'Không thể lưu'), 'error');
+      addToast('DEBUG-NEW: Lỗi: ' + (error.response?.data?.message || 'Không thể lưu'), 'error');
     } finally {
       setFormLoading(false);
     }
@@ -564,7 +575,7 @@ export default function ManagerProductsPage() {
               </div>
               <div className="p-10">
                 <div className="flex items-center gap-2 mb-2">
-                   <Star className="w-4 h-4 text-slate-300" />
+                   <div className="w-4 h-4 bg-slate-100 rounded-full" />
                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{p.brandName}</span>
                 </div>
                 <h3 className="text-xl font-black text-slate-800 mb-6">{p.name}</h3>

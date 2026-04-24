@@ -3,7 +3,7 @@ import {
   LineChart, Line, PieChart, Pie, Cell, XAxis, Tooltip, ResponsiveContainer 
 } from 'recharts';
 import { Activity, Clock, TrendingUp } from 'lucide-react';
-import { cn } from '../lib/utils';
+import { cn } from '../../lib/utils';
 
 const timeData = [
   { time: '08:00', orders: 12 },
