@@ -93,6 +93,7 @@ public class ProductAdminService {
                 .canBePurchased(product.isCanBePurchased())
                 .salesTax(product.getSalesTax())
                 .purchaseTax(product.getPurchaseTax())
+                .specifications(product.getSpecifications())
                 .build();
     }
 
@@ -128,6 +129,7 @@ public class ProductAdminService {
                 .canBePurchased(request.isCanBePurchased())
                 .salesTax(request.getSalesTax())
                 .purchaseTax(request.getPurchaseTax())
+                .specifications(request.getSpecifications())
                 .variants(new ArrayList<>())
                 .images(new ArrayList<>())
                 .build();
@@ -219,6 +221,7 @@ public class ProductAdminService {
         product.setCanBePurchased(request.isCanBePurchased());
         product.setSalesTax(request.getSalesTax());
         product.setPurchaseTax(request.getPurchaseTax());
+        product.setSpecifications(request.getSpecifications());
         
         // Complex update: Update variants
         if (request.getVariants() != null) {

@@ -98,6 +98,7 @@ public class CatalogService {
                 .categoryName(product.getCategory().getName())
                 .imageUrls(product.getImages().stream().map(ProductImage::getImageUrl).collect(Collectors.toList()))
                 .variants(product.getVariants().stream().map(this::mapToVariantDTO).collect(Collectors.toList()))
+                .specifications(product.getSpecifications())
                 .rating(4.8) // Mock
                 .reviewCount(124) // Mock
                 .build();
@@ -141,6 +142,7 @@ public class CatalogService {
                 .thumbnailUrl(thumbnailUrl)
                 .minPrice(minPrice)
                 .maxPrice(maxPrice)
+                .specifications(product.getSpecifications())
                 .rating(4.5) // Mocked for now
                 .build();
     }

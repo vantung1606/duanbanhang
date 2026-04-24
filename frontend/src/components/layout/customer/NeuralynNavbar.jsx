@@ -28,25 +28,25 @@ export default function NeuralynNavbar() {
   return (
     <>
       <nav className="fixed top-0 left-0 right-0 z-50 px-6 md:px-12 py-6 flex items-center justify-between transition-all duration-500 backdrop-blur-2xl bg-white/40 border-b border-white/20">
-      <div className="flex items-center gap-3 cursor-pointer group" onClick={() => { navigate('/home'); window.scrollTo({top:0, behavior:'smooth'}); }}>
-        <div className="w-12 h-12 rounded-2xl bg-slate-900 text-white flex items-center justify-center shadow-2xl group-hover:rotate-12 transition-transform duration-500">
+      <div className="flex items-center gap-3 cursor-pointer group" onClick={() => { navigate('/'); window.scrollTo({top:0, behavior:'smooth'}); }}>
+        <div className="w-12 h-12 rounded-2xl bg-indigo-600 text-white flex items-center justify-center shadow-2xl group-hover:rotate-12 transition-transform duration-500">
           <Zap className="w-6 h-6 fill-white" />
         </div>
-        <span className="text-2xl font-black tracking-tighter text-slate-900">AETHER<span className="text-indigo-600">.</span></span>
+        <span className="text-2xl font-black tracking-tighter text-slate-900 italic">DUONGDIY<span className="text-indigo-600">.</span></span>
       </div>
 
       <div className="hidden lg:flex items-center gap-10">
         <Link 
-          to="/home" 
-          className={`text-xs font-black uppercase tracking-[0.2em] transition-colors ${isActive('/home') ? 'text-indigo-600' : 'text-slate-400 hover:text-indigo-600'}`}
+          to="/" 
+          className={`text-xs font-black uppercase tracking-[0.2em] transition-colors ${location.pathname === '/' ? 'text-indigo-600' : 'text-slate-400 hover:text-indigo-600'}`}
         >
           Trang chủ
         </Link>
         {[
           { name: 'Sản phẩm', path: '/catalog' },
-          { name: 'Công nghệ', path: '/technology' },
-          { name: 'Sự kiện', path: '/offers' },
-          { name: 'Hỗ trợ', path: '/support' }
+          { name: 'Về chúng tôi', path: '/about' },
+          { name: 'Dịch vụ', path: '/support' },
+          { name: 'Tin tức', path: '/blog' }
         ].map((item) => (
           <Link 
             key={item.name} 

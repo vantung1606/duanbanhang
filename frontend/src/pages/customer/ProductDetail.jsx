@@ -21,16 +21,22 @@ import SEO from '../../components/common/SEO';
 import NeuralynNavbar from '../../components/layout/customer/NeuralynNavbar';
 import NeuralynFooter from '../../components/layout/customer/NeuralynFooter';
 
-const SpecsTable = ({ specs }) => (
-  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-    {specs.map((spec, idx) => (
-      <div key={idx} className="p-4 rounded-2xl bg-white/40 border border-slate-200/50 backdrop-blur-xl flex items-center justify-between">
-        <span className="text-xs font-black uppercase tracking-widest text-slate-400">{spec.label}</span>
-        <span className="text-sm font-bold text-slate-800">{spec.value}</span>
-      </div>
-    ))}
-  </div>
-);
+const SpecsTable = ({ specs }) => {
+  if (!specs) return <div className="col-span-2 text-slate-400 text-xs italic">Không có thông số kỹ thuật.</div>;
+  
+  const specsList = typeof specs === 'string' ? JSON.parse(specs) : specs;
+  
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {specsList.map((spec, idx) => (
+        <div key={idx} className="p-4 rounded-2xl bg-white/40 border border-slate-200/50 backdrop-blur-xl flex items-center justify-between">
+          <span className="text-xs font-black uppercase tracking-widest text-slate-400">{spec.label}</span>
+          <span className="text-sm font-bold text-slate-800">{spec.value}</span>
+        </div>
+      ))}
+    </div>
+  );
+};
 
 export default function ProductDetail() {
   const { slug } = useParams();
@@ -45,40 +51,54 @@ export default function ProductDetail() {
   useEffect(() => {
     // Simulated fetching for now, can be connected to real API
     const loadProduct = async () => {
-      // For demo, we use a mock product if API not ready
-      const mock = catalogService.getMockProducts().find(p => p.slug === slug) || catalogService.getMockProducts()[0];
-      
-      // Detailed mock structure
-      const detailedProduct = {
-        ...mock,
-        description: "Experience the next generation of performance and efficiency. Designed for professionals and enthusiasts alike.",
-        imageUrls: [
-          mock.thumbnailUrl,
-          "https://images.unsplash.com/photo-1510511459019-5dee997dd0df?auto=format&fit=crop&q=80&w=800",
-          "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&q=80&w=800"
-        ],
-        variants: [
-          { id: 101, sku: `${mock.slug}-base`, price: mock.minPrice, stockQuantity: 10, attributeValues: [{attributeName: "Color", value: "Black"}, {attributeName: "Storage", value: "128GB"}] },
-          { id: 102, sku: `${mock.slug}-pro`, price: mock.minPrice + 200, stockQuantity: 5, attributeValues: [{attributeName: "Color", value: "Silver"}, {attributeName: "Storage", value: "256GB"}] },
-        ],
-        specs: [
-          { label: "Display", value: '6.7" OLED' },
-          { label: "Chip", value: "A17 Pro / M3" },
-          { label: "Battery", value: "48 Hours" },
-          { label: "Weight", value: "187g" }
-        ]
-      };
-      
-      setProduct(detailedProduct);
-      setSelectedVariant(detailedProduct.variants[0]);
-      
-      // Initialize selected options
-      const initialOptions = {};
-      detailedProduct.variants[0].attributeValues.forEach(av => {
-        initialOptions[av.attributeName] = av.value;
-      });
-      setSelectedOptions(initialOptions);
-      setLoading(false);
+      setLoading(true);
+      try {
+        const data = await catalogService.getProductBySlug(slug);
+        
+        // Ensure imageUrls is an array
+        if (!data.imageUrls || data.imageUrls.length === 0) {
+          data.imageUrls = [data.thumbnailUrl || "https://images.unsplash.com/photo-1516211697149-d8573292051d?q=80&w=800"];
+        }
+
+        // Handle specifications parsing
+        let parsedSpecs = [];
+        if (data.specifications) {
+          try {
+            parsedSpecs = JSON.parse(data.specifications);
+          } catch (e) {
+            console.error("Error parsing specifications:", e);
+          }
+        }
+
+        const enrichedProduct = {
+          ...data,
+          specs: parsedSpecs.length > 0 ? parsedSpecs : [
+            { label: "Công Suất", value: data.name.includes('400W') ? '400W' : (data.name.includes('900W') ? '900W' : '1500W') },
+            { label: "Khởi Động", value: "3-5 Phút" },
+            { label: "Bình Chứa", value: "1.5 - 2.5 Lít" },
+            { label: "Điều Khiển", value: "Remote / DMX 512" }
+          ]
+        };
+        
+        setProduct(enrichedProduct);
+        if (enrichedProduct.variants && enrichedProduct.variants.length > 0) {
+          setSelectedVariant(enrichedProduct.variants[0]);
+          const initialOptions = {};
+          enrichedProduct.variants[0].attributeValues.forEach(av => {
+            initialOptions[av.attributeName] = av.value;
+          });
+          setSelectedOptions(initialOptions);
+        }
+      } catch (error) {
+        console.error("Error loading product:", error);
+        // Fallback to mock for development if needed, but in production this should show an error
+        const mock = catalogService.getMockProducts().find(p => p.slug === slug);
+        if (mock) {
+            setProduct({...mock, specs: [], imageUrls: [mock.thumbnailUrl], variants: []});
+        }
+      } finally {
+        setLoading(false);
+      }
     };
 
     loadProduct();

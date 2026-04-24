@@ -20,6 +20,7 @@ public class ProductDetailResponse {
     private String categoryName;
     private List<String> imageUrls;
     private List<VariantDTO> variants;
+    private String specifications;
     
     // Summary
     private Double rating;

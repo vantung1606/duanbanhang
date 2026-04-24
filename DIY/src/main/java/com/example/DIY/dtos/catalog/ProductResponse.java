@@ -26,6 +26,7 @@ public class ProductResponse {
     private String ribbon;
     private boolean active;
     private String description;
+    private String specifications;
 
     // Odoo fields
     private String productType;
