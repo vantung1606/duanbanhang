@@ -1,5 +1,11 @@
 import { Search, Bell, Sun, Moon, Info, Menu } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
+function cn(...inputs) {
+  return twMerge(clsx(inputs));
+}
 
 export default function ManagerTopBar({ onMenuClick }) {
   const [isDark, setIsDark] = useState(false);
@@ -16,56 +22,60 @@ export default function ManagerTopBar({ onMenuClick }) {
   };
 
   return (
-    <header className="h-24 lg:h-28 flex items-center justify-between px-4 lg:px-10 relative z-30 pointer-events-none">
-      <div className="flex items-center gap-4 pointer-events-auto">
+    <header className="h-[4.5rem] bg-white/40 backdrop-blur-2xl rounded-3xl border border-white/40 flex items-center justify-between px-8 relative z-30 sticky top-0 shadow-[0_10px_30px_rgba(0,0,0,0.03)]">
+      
+      {/* Left: Hamburger & Tabs */}
+      <div className="flex items-center gap-8">
         <button 
           onClick={onMenuClick}
-          className="lg:hidden w-12 h-12 rounded-2xl bg-white/40 dark:bg-black/40 backdrop-blur-md flex items-center justify-center border border-white/60 dark:border-white/5 shadow-sm active:scale-95 transition-all"
+          className="lg:hidden p-2 text-slate-500 hover:text-slate-800 transition-colors"
         >
-          <Menu className="w-5 h-5 text-slate-700 dark:text-gray-200" />
+          <Menu className="w-6 h-6" />
         </button>
         
-        <div className="hidden md:block relative group w-64 lg:w-96">
+        <nav className="hidden lg:flex items-center gap-8">
+          {['Executive Overview', 'Reports', 'History', 'Activity'].map((item) => (
+            <button
+              key={item}
+              className={cn(
+                "text-xs font-bold transition-all relative py-2",
+                item === 'Reports' ? "text-slate-900 border-b-2 border-slate-900" : "text-slate-400 hover:text-slate-600"
+              )}
+            >
+              {item}
+            </button>
+          ))}
+        </nav>
+      </div>
+
+      {/* Right: Search & Icons */}
+      <div className="flex items-center gap-6">
+        <div className="relative group w-48 lg:w-64">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
           <input 
             type="text" 
-            placeholder="Tìm kiếm dữ liệu hiệu suất..." 
-            className="w-full bg-white/40 dark:bg-black/20 backdrop-blur-md px-12 py-3 lg:py-4 rounded-[2rem] border border-white/60 dark:border-white/5 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30 transition-all font-medium text-slate-700 dark:text-gray-200 text-sm"
+            placeholder="Search..."
+            className="w-full bg-white/60 hover:bg-white focus:bg-white border-none px-10 py-2.5 rounded-full text-xs font-bold text-slate-700 placeholder:text-slate-400 transition-all outline-none shadow-sm"
           />
-          <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-hover:text-indigo-500 transition-colors w-4 h-4 lg:w-5 lg:h-5" />
+        </div>
+
+        <button className="text-slate-400 hover:text-slate-900 transition-colors relative">
+          <Bell className="w-5 h-5" />
+          <span className="absolute -top-1 -right-1 w-2 h-2 bg-slate-900 rounded-full border-2 border-white" />
+        </button>
+        
+        <button 
+          onClick={toggleTheme}
+          className="text-slate-400 hover:text-slate-900 transition-colors"
+        >
+          {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+        </button>
+
+        <div className="w-10 h-10 rounded-2xl bg-white shadow-sm overflow-hidden cursor-pointer border border-white hover:scale-105 transition-transform">
+          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Manager" alt="Manager" className="w-full h-full object-cover" />
         </div>
       </div>
 
-      <div className="flex items-center gap-2 lg:gap-4 pointer-events-auto">
-        <button className="hidden sm:flex w-10 h-10 lg:w-12 lg:h-12 rounded-2xl bg-white/40 dark:bg-black/40 backdrop-blur-md items-center justify-center border border-white/60 dark:border-white/5 shadow-sm hover:scale-105 active:scale-95 transition-all group">
-          <Info className="w-5 h-5 text-slate-500 group-hover:text-indigo-500 transition-colors" />
-        </button>
-        <button 
-          onClick={toggleTheme}
-          className="w-10 h-10 lg:w-12 lg:h-12 rounded-2xl bg-white/40 dark:bg-black/40 backdrop-blur-md flex items-center justify-center border border-white/60 dark:border-white/5 shadow-sm hover:scale-105 active:scale-95 transition-all group"
-        >
-          {isDark ? (
-            <Sun className="w-4 h-4 lg:w-5 lg:h-5 text-amber-400 group-hover:scale-110 transition-transform" />
-          ) : (
-            <Moon className="w-4 h-4 lg:w-5 lg:h-5 text-indigo-500 group-hover:scale-110 transition-transform" />
-          )}
-        </button>
-        <div className="relative">
-          <button className="w-10 h-10 lg:w-12 lg:h-12 rounded-2xl bg-white/40 dark:bg-black/40 backdrop-blur-md flex items-center justify-center border border-white/60 dark:border-white/5 shadow-sm hover:scale-105 active:scale-95 transition-all group">
-            <Bell className="w-4 h-4 lg:w-5 lg:h-5 text-slate-500 group-hover:text-indigo-500 transition-colors" />
-            <span className="absolute -top-1 -right-1 w-4 h-4 lg:w-5 lg:h-5 bg-indigo-500 text-[9px] lg:text-[10px] font-black text-white rounded-full flex items-center justify-center border-2 border-background-light shadow-sm">
-              3
-            </span>
-          </button>
-        </div>
-        <div className="w-px h-8 bg-slate-300 dark:bg-slate-700 mx-2 shadow-sm" />
-        <div className="flex items-center gap-3 pl-2">
-          <div className="w-11 h-11 rounded-2xl bg-indigo-500 p-[2px] shadow-neumo-sm transform hover:-rotate-6 transition-transform cursor-pointer">
-            <div className="w-full h-full rounded-[0.9rem] bg-white overflow-hidden p-1">
-              <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Manager" alt="User" className="w-full h-full rounded-lg" />
-            </div>
-          </div>
-        </div>
-      </div>
     </header>
   );
 }

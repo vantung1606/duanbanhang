@@ -44,6 +44,7 @@ export default function AuthPage() {
       setAuth({ username: data.username, role: data.role }, data.token);
       if (data.role === 'ADMIN') navigate('/admin');
       else if (data.role === 'MANAGER') navigate('/manager');
+      else if (data.role === 'STAFF') navigate('/staff');
       else navigate('/home');
     } catch { setError('Tên đăng nhập hoặc mật khẩu không chính xác.'); }
     finally { setIsLoading(false); }

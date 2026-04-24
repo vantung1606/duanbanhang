@@ -32,68 +32,65 @@ export default function StaffSidebar({ isOpen, setIsOpen }) {
 
   return (
     <aside className={cn(
-      "w-72 h-screen fixed left-0 top-0 z-40 p-4 lg:p-6 flex flex-col transition-transform duration-300",
-      isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+      "w-80 h-[calc(100vh-2rem)] sticky top-4 z-40 flex flex-col transition-all duration-300",
+      "fixed lg:relative lg:translate-x-0",
+      isOpen ? "translate-x-0" : "-translate-x-[150%] lg:-translate-x-0"
     )}>
-      {/* Soft Frosted Glass Container (Ethereal UI) */}
-      <div className="flex-1 bg-white/40 backdrop-blur-[40px] rounded-[2.5rem] border border-white/60 shadow-[0_8px_32px_rgba(0,0,0,0.04)] flex flex-col overflow-hidden relative">
+      {/* Staff Emerald Glass Container */}
+      <div className="flex-1 bg-white/40 backdrop-blur-3xl rounded-[3rem] border border-white/40 shadow-[0_20px_50px_rgba(0,0,0,0.05)] flex flex-col overflow-hidden py-10 px-8 relative">
         
-        {/* Subtle inner gradient to simulate volumetric light */}
-        <div className="absolute inset-0 bg-gradient-to-br from-white/40 to-transparent pointer-events-none" />
-        
-        <div className="relative z-10 flex flex-col h-full">
-          {/* Logo Section */}
-          <div className="p-8 pb-6">
-            <div className="flex items-center gap-4 mb-1">
-              <div className="w-10 h-10 rounded-2xl bg-white border border-white/80 shadow-sm flex items-center justify-center">
-                <div className="w-4 h-4 bg-slate-800 rounded-[4px]" />
-              </div>
-              <div>
-                <h2 className="text-xl font-bold text-slate-800 tracking-tight leading-tight">Hệ Thống</h2>
-                <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest">ĐIỀU HÀNH KHO BÃI</p>
-              </div>
-            </div>
+        {/* Logo Section */}
+        <div className="flex items-center gap-4 mb-14 px-2">
+          <div className="w-12 h-12 rounded-2xl bg-white shadow-sm flex items-center justify-center">
+            <PackageSearch className="text-emerald-600 w-6 h-6" />
           </div>
-
-          {/* Navigation */}
-          <nav className="px-4 py-2 space-y-2">
-            {menuItems.map((item) => (
-              <NavLink
-                key={item.path}
-                to={item.path}
-                end={item.path === '/staff'}
-                onClick={() => setIsOpen && setIsOpen(false)}
-                className={({ isActive }) => cn(
-                  "flex items-center gap-4 px-6 py-4 rounded-2xl transition-all duration-300 group font-bold text-sm",
-                  isActive 
-                    ? "bg-white/80 text-slate-800 shadow-sm border border-white/60" 
-                    : "text-slate-500 hover:bg-white/40 hover:text-slate-800"
-                )}
-              >
-                <item.icon className="w-5 h-5" />
-                <span>{item.label}</span>
-              </NavLink>
-            ))}
-          </nav>
-
-          {/* Bottom Actions */}
-          <div className="mt-auto p-6 space-y-6">
-            <button className="w-full py-4 bg-[#2b3a55] hover:bg-[#1e2a40] text-white rounded-2xl flex items-center justify-center gap-2 font-bold text-sm shadow-lg shadow-[#2b3a55]/20 transition-all hover:scale-[1.02]">
-              <Plus className="w-4 h-4" /> Tạo Đơn Mới
-            </button>
-            
-            <div className="space-y-4 pl-4 pb-2">
-              <button className="flex items-center gap-3 text-slate-500 hover:text-slate-800 transition-colors text-sm font-bold">
-                <HelpCircle className="w-5 h-5" /> Trợ Giúp
-              </button>
-              <button 
-                onClick={handleLogout}
-                className="flex items-center gap-3 text-slate-500 hover:text-red-500 transition-colors text-sm font-bold"
-              >
-                <LogOut className="w-5 h-5" /> Đăng Xuất
-              </button>
-            </div>
+          <div>
+            <h2 className="text-xl font-black text-slate-800 tracking-tight leading-tight">Staff UI</h2>
+            <p className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest leading-tight mt-0.5">OPERATIONAL HUB</p>
           </div>
+        </div>
+
+        {/* Navigation */}
+        <nav className="flex-1 space-y-2 overflow-y-auto custom-scrollbar pr-2">
+          {menuItems.map((item) => (
+            <NavLink
+              key={item.path}
+              to={item.path}
+              end={item.path === '/staff'}
+              onClick={() => setIsOpen && setIsOpen(false)}
+              className={({ isActive }) => cn(
+                "flex items-center gap-4 px-6 py-4 rounded-3xl transition-all duration-300 group font-bold text-xs tracking-wider",
+                isActive 
+                  ? "bg-white text-emerald-700 shadow-sm" 
+                  : "text-slate-500 hover:text-emerald-600 hover:bg-white/30"
+              )}
+            >
+              <item.icon className="w-5 h-5 transition-transform group-hover:scale-110" />
+              <span>{item.label}</span>
+            </NavLink>
+          ))}
+        </nav>
+
+        {/* Action Button - Emerald Pill */}
+        <div className="mt-8 mb-6">
+          <button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-5 rounded-[2rem] font-bold text-xs uppercase tracking-widest shadow-xl shadow-emerald-900/20 flex items-center justify-center gap-3 transition-all duration-300 hover:scale-[1.02]">
+            <Plus className="text-lg" /> Tạo Đơn Mới
+          </button>
+        </div>
+
+        {/* Footer */}
+        <div className="space-y-2">
+          <button className="flex items-center gap-4 px-6 py-3 w-full text-slate-500 hover:text-emerald-600 font-bold text-[10px] tracking-widest uppercase transition-colors">
+            <HelpCircle className="w-4 h-4" />
+            <span>Trợ Giúp</span>
+          </button>
+          <button 
+            onClick={handleLogout}
+            className="flex items-center gap-4 px-6 py-3 w-full text-slate-500 hover:text-red-600 font-bold text-[10px] tracking-widest uppercase transition-colors"
+          >
+            <LogOut className="w-4 h-4 rotate-180" />
+            <span>Đăng Xuất</span>
+          </button>
         </div>
       </div>
     </aside>

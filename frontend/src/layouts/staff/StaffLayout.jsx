@@ -7,34 +7,40 @@ export default function StaffLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
-    <div 
-      className="min-h-screen flex transition-colors duration-500 overflow-hidden font-sans text-[#2b3a55]"
-      style={{
-        backgroundImage: "url('/assets/images/ethereal_bg.png')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundAttachment: "fixed"
-      }}
-    >
-      <StaffSidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
-      
-      {/* Mobile Overlay */}
-      {isSidebarOpen && (
-        <div 
-          className="fixed inset-0 bg-slate-900/20 backdrop-blur-sm z-30 lg:hidden"
-          onClick={() => setIsSidebarOpen(false)}
-        />
-      )}
+    <>
+      <style dangerouslySetInnerHTML={{__html: `
+        body { 
+          background-image: url('/assets/images/staff_bg.png'); 
+          background-size: cover;
+          background-position: center;
+          background-attachment: fixed;
+        }
+      `}} />
+      <div className="min-h-screen text-slate-800 flex overflow-hidden font-sans p-4 md:p-6 gap-6 relative bg-transparent">
+        {/* Background Decorative Elements - Emerald Theme */}
+        <div className="fixed top-[-10%] left-[-5%] w-[40%] h-[50%] bg-emerald-500/10 blur-[120px] rounded-full z-0 pointer-events-none" />
+        <div className="fixed bottom-[-10%] right-[10%] w-[30%] h-[40%] bg-teal-500/10 blur-[100px] rounded-full z-0 pointer-events-none" />
 
-      <main className="flex-1 lg:ml-72 w-full relative z-10 flex flex-col h-screen overflow-hidden">
-        <StaffTopBar onMenuClick={() => setIsSidebarOpen(true)} />
+        <StaffSidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
         
-        <div className="flex-1 overflow-y-auto custom-scrollbar px-4 lg:px-10 pb-10">
-          <div className="w-full space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-            <Outlet />
+        {/* Mobile Overlay */}
+        {isSidebarOpen && (
+          <div 
+            className="fixed inset-0 bg-slate-900/20 backdrop-blur-sm z-30 lg:hidden"
+            onClick={() => setIsSidebarOpen(false)}
+          />
+        )}
+
+        <main className="flex-1 relative z-10 flex flex-col h-[calc(100vh-3rem)] overflow-hidden w-full max-w-full">
+          <StaffTopBar onMenuClick={() => setIsSidebarOpen(true)} />
+          
+          <div className="flex-1 overflow-y-auto custom-scrollbar pt-12 pb-10 pr-2">
+            <div className="w-full animate-in fade-in slide-in-from-bottom-4 duration-700">
+              <Outlet />
+            </div>
           </div>
-        </div>
-      </main>
-    </div>
+        </main>
+      </div>
+    </>
   );
 }
