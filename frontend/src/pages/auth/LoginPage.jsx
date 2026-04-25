@@ -41,7 +41,7 @@ const PerspectiveGrid = () => (
     <div 
       className="absolute inset-0"
       style={{
-        backgroundImage: `linear-gradient(var(--accent-lime) 1px, transparent 1px), linear-gradient(90deg, var(--accent-lime) 1px, transparent 1px)`,
+        backgroundImage: `linear-gradient(#22d3ee 1px, transparent 1px), linear-gradient(90deg, #22d3ee 1px, transparent 1px)`,
         backgroundSize: '80px 80px',
         perspective: '1000px',
         transform: 'rotateX(60deg) scale(2.5)',
@@ -112,7 +112,7 @@ export default function LoginPage() {
     >
       {/* 3D Background Elements */}
       <PerspectiveGrid />
-      <FloatingOrb color="var(--accent-lime)" size="500px" top="-10%" left="-10%" delay={0} />
+      <FloatingOrb color="#22d3ee" size="500px" top="-10%" left="-10%" delay={0} />
       <FloatingOrb color="#3b82f6" size="400px" top="60%" left="70%" delay={1} />
       <FloatingOrb color="#8b5cf6" size="350px" top="20%" left="40%" delay={2} />
 
@@ -140,7 +140,7 @@ export default function LoginPage() {
             <div className="w-12 h-12 rounded-2xl bg-white text-black flex items-center justify-center shadow-[0_0_30px_rgba(255,255,255,0.3)] group-hover:scale-110 transition-transform">
               <Zap className="w-6 h-6 fill-black" />
             </div>
-            <span className="text-2xl font-black uppercase tracking-tighter">Neuralyn</span>
+            <span className="text-2xl font-black uppercase tracking-tighter">DUONGDIY</span>
           </Link>
 
           <div className="space-y-8 relative z-10">
@@ -150,18 +150,18 @@ export default function LoginPage() {
               transition={{ delay: 0.5 }}
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10"
             >
-              <Sparkles className="w-3 h-3 text-accent" />
-              <span className="text-[10px] font-bold uppercase tracking-widest text-white/50">Hệ điều hành Neuralyn v3.0</span>
+              <Sparkles className="w-3 h-3 text-cyan-400" />
+              <span className="text-[10px] font-bold uppercase tracking-widest text-white/50">Hệ thống quản lý DuongDIY</span>
             </motion.div>
 
             <h1 className="text-6xl font-black leading-tight tracking-tighter uppercase">
               Kết nối vào <br /> 
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-white/40">Thế giới</span> <br />
-              <span className="text-accent underline decoration-4 decoration-accent/30 underline-offset-8 italic">Tương lai</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-white/40">Trung Tâm</span> <br />
+              <span className="text-cyan-400 underline decoration-4 decoration-cyan-400/30 underline-offset-8 italic">Điều Hành</span>
             </h1>
 
             <p className="text-lg text-white/60 font-medium max-w-sm leading-relaxed">
-              Trải nghiệm đỉnh cao của công nghệ phần cứng. Cánh cửa dẫn đến hiệu năng vượt trội bắt đầu từ đây.
+              Hệ thống quản trị và phân phối thiết bị sân khấu chuyên nghiệp. Tối ưu hóa chuỗi cung ứng của bạn ngay hôm nay.
             </p>
 
             <div className="flex gap-4 pt-4">
@@ -184,7 +184,7 @@ export default function LoginPage() {
             <div className="w-1 h-1 rounded-full bg-white/10" />
             <span>Định danh</span>
             <div className="w-1 h-1 rounded-full bg-white/10" />
-            <span>Neuralyn © 2026</span>
+            <span>DuongDIY © 2026</span>
           </div>
         </div>
 
@@ -210,33 +210,33 @@ export default function LoginPage() {
 
           <form onSubmit={handleSubmit} className="space-y-6 lg:space-y-8">
             <div className="space-y-3 group/field">
-              <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 group-focus-within/field:text-accent transition-colors">ID Tài khoản</label>
+              <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 group-focus-within/field:text-cyan-400 transition-colors">ID Tài khoản</label>
               <div className="relative group/input">
-                <div className="absolute inset-0 bg-accent/20 blur-xl opacity-0 group-focus-within/input:opacity-100 transition-opacity pointer-events-none" />
-                <Mail className="absolute left-6 top-1/2 -translate-y-1/2 text-white/20 w-5 h-5 group-focus-within/input:text-accent transition-colors" />
+                <div className="absolute inset-0 bg-cyan-500/20 blur-xl opacity-0 group-focus-within/input:opacity-100 transition-opacity pointer-events-none" />
+                <Mail className="absolute left-6 top-1/2 -translate-y-1/2 text-white/20 w-5 h-5 group-focus-within/input:text-cyan-400 transition-colors" />
                 <input 
                   type="text" 
                   required
                   value={formData.username}
                   onChange={(e) => setFormData({ ...formData, username: e.target.value })}
                   placeholder="USERNAME"
-                  className="w-full bg-white/[0.03] border border-white/10 focus:border-accent/40 pl-16 pr-6 py-5 lg:py-6 rounded-[1.2rem] lg:rounded-[1.5rem] text-white font-black transition-all outline-none placeholder:text-white/10 focus:bg-white/[0.06]"
+                  className="w-full bg-white/[0.03] border border-white/10 focus:border-cyan-500/40 pl-16 pr-6 py-5 lg:py-6 rounded-[1.2rem] lg:rounded-[1.5rem] text-white font-black transition-all outline-none placeholder:text-white/10 focus:bg-white/[0.06]"
                 />
               </div>
             </div>
 
             <div className="space-y-3 group/field">
-              <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 group-focus-within/field:text-accent transition-colors">Mật mã truy cập</label>
+              <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 group-focus-within/field:text-cyan-400 transition-colors">Mật mã truy cập</label>
               <div className="relative group/input">
-                <div className="absolute inset-0 bg-accent/20 blur-xl opacity-0 group-focus-within/input:opacity-100 transition-opacity pointer-events-none" />
-                <Lock className="absolute left-6 top-1/2 -translate-y-1/2 text-white/20 w-5 h-5 group-focus-within/input:text-accent transition-colors" />
+                <div className="absolute inset-0 bg-cyan-500/20 blur-xl opacity-0 group-focus-within/input:opacity-100 transition-opacity pointer-events-none" />
+                <Lock className="absolute left-6 top-1/2 -translate-y-1/2 text-white/20 w-5 h-5 group-focus-within/input:text-cyan-400 transition-colors" />
                 <input 
                   type={showPassword ? 'text' : 'password'}
                   required
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                   placeholder="••••••••"
-                  className="w-full bg-white/[0.03] border border-white/10 focus:border-accent/40 pl-16 pr-16 py-5 lg:py-6 rounded-[1.2rem] lg:rounded-[1.5rem] text-white font-black transition-all outline-none placeholder:text-white/10 focus:bg-white/[0.06]"
+                  className="w-full bg-white/[0.03] border border-white/10 focus:border-cyan-500/40 pl-16 pr-16 py-5 lg:py-6 rounded-[1.2rem] lg:rounded-[1.5rem] text-white font-black transition-all outline-none placeholder:text-white/10 focus:bg-white/[0.06]"
                 />
                 <button 
                   type="button"
@@ -252,11 +252,11 @@ export default function LoginPage() {
               <label className="flex items-center gap-2 cursor-pointer group shrink-0">
                 <input type="checkbox" className="hidden" />
                 <div className="w-5 h-5 border-2 border-white/10 rounded-lg flex items-center justify-center group-hover:border-white/30 transition-colors">
-                   <div className="w-2 h-2 rounded-sm bg-accent opacity-0 group-hover:opacity-40" />
+                   <div className="w-2 h-2 rounded-sm bg-cyan-400 opacity-0 group-hover:opacity-40" />
                 </div>
                 <span className="text-[10px] lg:text-xs font-bold text-white/40 group-hover:text-white/60 transition-colors">Ghi nhớ phiên</span>
               </label>
-              <button type="button" className="text-[10px] lg:text-xs font-black text-accent hover:text-accent/80 transition-colors whitespace-nowrap">
+              <button type="button" className="text-[10px] lg:text-xs font-black text-cyan-400 hover:text-cyan-300 transition-colors whitespace-nowrap">
                 Khôi phục mã?
               </button>
             </div>
@@ -266,7 +266,7 @@ export default function LoginPage() {
               disabled={isLoading}
               className="w-full relative group overflow-hidden"
             >
-              <div className="absolute inset-0 bg-accent blur-2xl opacity-20 group-hover:opacity-40 transition-opacity" />
+              <div className="absolute inset-0 bg-cyan-500 blur-2xl opacity-20 group-hover:opacity-40 transition-opacity" />
               <div className="relative bg-white text-black py-5 lg:py-6 rounded-[1.2rem] lg:rounded-[1.5rem] font-black text-xs lg:text-sm tracking-[0.2em] uppercase transition-transform active:scale-[0.98] flex items-center justify-center gap-3">
                 {isLoading ? (
                   <div className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin" />
@@ -279,7 +279,7 @@ export default function LoginPage() {
 
           <p className="mt-10 lg:mt-12 text-center text-xs lg:text-sm font-bold text-white/30">
             Chưa có danh tính?{' '}
-            <Link to="/register" className="text-accent hover:text-accent/80 transition-colors font-black uppercase tracking-widest ml-1">
+            <Link to="/register" className="text-cyan-400 hover:text-cyan-300 transition-colors font-black uppercase tracking-widest ml-1">
               Khởi tạo ngay
             </Link>
           </p>

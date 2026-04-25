@@ -46,41 +46,51 @@ export default function CustomerHome() {
   return (
     <div className="bg-white">
       {/* Hero Section */}
-      <section className="relative h-screen min-h-[700px] flex items-center overflow-hidden">
-        {/* Background Image with Overlay */}
-        <div className="absolute inset-0 z-0">
-          <img 
-            src="/assets/hero.png" 
-            alt="Coffee Background" 
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-black/50" />
-        </div>
-
-        {/* Content */}
-        <div className="container mx-auto px-6 relative z-10 pt-20">
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1 }}
-            className="max-w-2xl"
-          >
-            <span className="text-[#c49b63] font-bold tracking-[0.3em] uppercase text-sm mb-6 block">Now you can feel the energy</span>
-            <h1 className="text-5xl md:text-7xl font-black text-white leading-tight mb-8">
-              Start your day with <br/>a black Coffee
-            </h1>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-white text-black px-10 py-4 rounded-full font-black text-xs tracking-widest uppercase hover:bg-[#c49b63] hover:text-white transition-all shadow-xl"
+      <section className="relative min-h-[700px] flex items-center overflow-hidden bg-gradient-to-br from-amber-50 via-white to-orange-50">
+        <div className="container mx-auto px-6 relative z-10 pt-20 pb-20">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Content Left */}
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 1 }}
+              className="max-w-2xl"
             >
-              Buy Now
-            </motion.button>
-          </motion.div>
+              <span className="text-[#c49b63] font-bold tracking-[0.3em] uppercase text-sm mb-6 block">Now you can feel the energy</span>
+              <h1 className="text-5xl md:text-7xl font-black text-slate-900 leading-tight mb-8">
+                Start your day with <br/>a perfect coffee
+              </h1>
+              <p className="text-slate-600 text-lg mb-8 max-w-lg leading-relaxed">
+                Experience the finest blends and carefully roasted beans that awaken your senses and energize your entire day.
+              </p>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-[#c49b63] text-white px-10 py-4 rounded-full font-black text-xs tracking-widest uppercase hover:bg-slate-900 transition-all shadow-xl shadow-[#c49b63]/30"
+              >
+                Buy Now
+              </motion.button>
+            </motion.div>
+
+            {/* Image Right */}
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 1, delay: 0.2 }}
+              className="relative"
+            >
+              <div className="absolute inset-0 bg-[#c49b63]/20 blur-3xl rounded-full transform scale-90"></div>
+              <img 
+                src="/assets/images/homepage.png" 
+                alt="Coffee Display" 
+                className="relative z-10 w-full h-auto object-contain drop-shadow-2xl hover:-translate-y-4 transition-transform duration-700"
+              />
+            </motion.div>
+          </div>
         </div>
 
         {/* Torn Edge at Bottom */}
-        <TornEdge />
+        <TornEdge color="white" />
       </section>
 
       {/* Video/About Section */}

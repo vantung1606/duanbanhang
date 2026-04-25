@@ -13,26 +13,46 @@ import {
 import { Link } from 'react-router-dom';
 import NeuralynNavbar from '../../components/layout/customer/NeuralynNavbar';
 
-const TornEdge = ({ color = "white", flip = false }) => (
-  <div className={`absolute left-0 right-0 z-20 w-full overflow-hidden ${flip ? 'top-[-1px] rotate-180' : 'bottom-[-1px]'}`} style={{ height: '100px' }}>
-    <svg 
-      viewBox="0 0 1440 100" 
-      preserveAspectRatio="none" 
-      className="w-full h-full block"
-    >
-      <path 
-        d="M0,50 C100,20 200,80 300,50 C400,20 500,80 600,50 C700,20 800,80 900,50 C1000,20 1100,80 1200,50 C1300,20 1400,80 1440,50 L1440,100 L0,100 Z" 
-        fill={color} 
-      />
-      <path 
-        d="M0,60 C100,35 200,85 300,60 C400,35 500,85 600,60 C700,35 800,85 900,60 C1000,35 1100,85 1200,60 C1300,35 1400,85 1440,60 L1440,100 L0,100 Z" 
-        fill={color} 
-        opacity="0.3"
-      />
-    </svg>
-  </div>
+const FloatingOrb = ({ color, size, top, left, delay }) => (
+  <motion.div
+    animate={{
+      y: [0, -40, 0],
+      x: [0, 30, 0],
+      scale: [1, 1.1, 1],
+      opacity: [0.3, 0.6, 0.3],
+    }}
+    transition={{
+      duration: 8 + Math.random() * 4,
+      repeat: Infinity,
+      delay,
+      ease: "easeInOut"
+    }}
+    className="absolute pointer-events-none blur-[100px] rounded-full z-0"
+    style={{
+      backgroundColor: color,
+      width: size,
+      height: size,
+      top,
+      left,
+    }}
+  />
 );
 
+const PerspectiveGrid = () => (
+  <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-[0.15] bg-slate-900 rounded-[3.5rem]">
+    <div 
+      className="absolute inset-0"
+      style={{
+        backgroundImage: `linear-gradient(#22d3ee 1.5px, transparent 1.5px), linear-gradient(90deg, #22d3ee 1.5px, transparent 1.5px)`,
+        backgroundSize: '60px 60px',
+        perspective: '1000px',
+        transform: 'rotateX(60deg) scale(2.5) translateY(-50px)',
+        transformOrigin: '50% 100%',
+        maskImage: 'linear-gradient(to top, black 40%, transparent 100%)'
+      }}
+    />
+  </div>
+);
 
 const MenuItem = ({ name, price, description }) => (
   <motion.div 
@@ -51,20 +71,15 @@ const MenuItem = ({ name, price, description }) => (
 
 export default function NeuralynHome() {
   return (
-    <div className="bg-white font-sans selection:bg-indigo-600 selection:text-white overflow-x-hidden scroll-smooth custom-scrollbar">
+    <div className="bg-slate-900 font-sans selection:bg-indigo-600 selection:text-white overflow-x-hidden scroll-smooth custom-scrollbar relative">
       <NeuralynNavbar />
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center pt-20 overflow-hidden" id="home">
-        <div className="absolute inset-0 z-0 scale-105 animate-slow-zoom">
-          <img 
-            src="/assets/images/nexus_bg.png" 
-            alt="Hero Background" 
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-900/60 to-transparent" />
-        </div>
-
+      <section 
+        className="relative min-h-screen flex items-center pt-20 pb-[10vw] bg-gray-900 z-30" 
+        id="home"
+        style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 3vw), 0 100%)' }}
+      >
         <div className="container mx-auto px-12 relative z-10 grid lg:grid-cols-2 gap-12 items-center">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
@@ -72,16 +87,16 @@ export default function NeuralynHome() {
             transition={{ duration: 1.2 }}
             className="text-center lg:text-left"
           >
-            <span className="text-indigo-400 font-black tracking-[0.5em] uppercase text-[10px] mb-8 block">Thiết Bị Sân Khấu Chuyên Nghiệp</span>
-            <h1 className="text-6xl md:text-[5.5rem] font-black text-white leading-[0.9] tracking-tighter mb-10">
-              Chinh phục <br/>mọi <br/><span className="text-indigo-500">Ánh Nhìn</span>
+            <h2 className="text-gray-400 font-black tracking-[0.5em] uppercase text-[10px] mb-8 block">Thiết Bị Sân Khấu Chuyên Nghiệp DuongDIY</h2>
+            <h1 className="text-5xl md:text-[4.5rem] font-black text-white leading-[1.1] tracking-tighter mb-10">
+              Máy Tạo Khói <br/> <span className="text-cyan-400">Chinh Phục Mọi Ánh Nhìn</span>
             </h1>
-            <p className="text-slate-400 text-lg mb-12 max-w-lg leading-relaxed font-medium">
-              Chuyên cung cấp các dòng máy tạo khói, dung dịch khói cao cấp dành cho sân khấu, karaoke và sự kiện chuyên nghiệp.
+            <p className="text-gray-400 text-lg mb-12 max-w-lg leading-relaxed font-medium">
+              DuongDIY - Đơn vị hàng đầu chuyên cung cấp máy tạo khói, dung dịch khói và giải pháp hiệu ứng sân khấu cao cấp. Nâng tầm không gian sự kiện, quán bar và phòng karaoke VIP của bạn.
             </p>
             <motion.button
-              whileHover={{ scale: 1.05, backgroundColor: '#4f46e5' }}
-              className="bg-indigo-600 text-white px-14 py-5 rounded-full font-black text-[10px] tracking-[0.3em] uppercase transition-all shadow-2xl shadow-indigo-500/30"
+              whileHover={{ scale: 1.05, backgroundColor: '#ffffff', color: '#22d3ee' }}
+              className="bg-white/10 backdrop-blur-md border border-white/30 text-white px-14 py-5 rounded-full font-black text-[10px] tracking-[0.3em] uppercase transition-all shadow-xl shadow-cyan-900/20"
             >
               Khám Phá Ngay
             </motion.button>
@@ -93,54 +108,68 @@ export default function NeuralynHome() {
             transition={{ duration: 1.5, type: "spring" }}
             className="hidden lg:block relative"
           >
-            <div className="absolute -inset-20 bg-indigo-500/10 blur-[120px] rounded-full animate-pulse" />
+            <div className="absolute -inset-20 bg-indigo-500/20 blur-[100px] rounded-full animate-pulse" />
             <img 
-              src="/assets/images/hero_product.png" 
-              alt="Smoke Machine" 
-              className="relative z-10 w-[550px] h-auto drop-shadow-[0_50px_50px_rgba(0,0,0,0.5)]"
+              src="/assets/images/homepage.png" 
+              alt="Homepage Image" 
+              className="relative z-10 w-full max-w-[600px] h-auto drop-shadow-2xl hover:scale-105 transition-transform duration-700"
             />
           </motion.div>
         </div>
-        <TornEdge color="white" />
       </section>
 
       {/* Production Process */}
-      <section className="py-40 container mx-auto px-12 grid lg:grid-cols-2 gap-32 items-center" id="about">
-        <motion.div 
-          whileInView={{ opacity: 1, y: 0 }}
-          initial={{ opacity: 0, y: 40 }}
-          viewport={{ once: true }}
-          className="relative group rounded-[3.5rem] overflow-hidden shadow-2xl"
-        >
-          <img src="/assets/images/light_bg.png" className="w-full aspect-video object-cover transition-transform duration-1000 group-hover:scale-105" />
-          <div className="absolute inset-0 bg-slate-900/40 flex items-center justify-center">
-            <div className="w-24 h-24 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white cursor-pointer hover:scale-110 transition-transform">
-              <Play className="w-8 h-8 fill-current" />
-            </div>
-          </div>
-        </motion.div>
+      <section 
+        className="relative pt-[12vw] pb-[16vw] bg-white z-20" 
+        id="about"
+        style={{ marginTop: '-3vw', clipPath: 'polygon(0 3vw, 100% 0, 100% calc(100% - 3vw), 0 100%)' }}
+      >
+        <div className="container mx-auto px-12 grid lg:grid-cols-2 gap-32 items-center relative z-10">
+          <motion.div 
+            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: 40 }}
+            viewport={{ once: true }}
+            className="relative group rounded-[3.5rem] overflow-hidden shadow-2xl shadow-cyan-900/10 w-full aspect-video bg-slate-900 flex items-center justify-center border border-slate-800"
+          >
+            {/* 3D Visuals from Login */}
+            <PerspectiveGrid />
+            <FloatingOrb color="#22d3ee" size="300px" top="-10%" left="-10%" delay={0} />
+            <FloatingOrb color="#3b82f6" size="250px" top="50%" left="60%" delay={1} />
+            <FloatingOrb color="#8b5cf6" size="200px" top="20%" left="40%" delay={2} />
 
-        <div className="space-y-10">
-          <span className="text-indigo-600 font-black tracking-[0.3em] uppercase text-[10px]">Tận tâm trong từng linh kiện</span>
-          <h2 className="text-5xl md:text-6xl font-black text-slate-900 leading-[1.1] tracking-tighter">
-            Quy trình chế tạo <br/>máy khói DuongDIY
-          </h2>
-          <p className="text-slate-500 text-lg leading-relaxed font-medium">
-            Mỗi chiếc máy tạo khói rời xưởng đều trải qua quy trình kiểm tra nghiêm ngặt về độ bền nhiệt, lưu lượng khói và độ an toàn điện, đảm bảo trải nghiệm tốt nhất cho khách hàng.
-          </p>
-          <div className="pt-6 flex items-center gap-6">
-            <div className="w-px h-16 bg-slate-200" />
-            <p className="text-slate-400 text-sm italic font-medium">"Chất lượng tạo nên thương hiệu DuongDIY"</p>
+            <div className="absolute inset-0 bg-slate-900/20 flex items-center justify-center z-10">
+              <div className="w-24 h-24 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center text-cyan-400 cursor-pointer hover:scale-110 transition-transform shadow-xl border border-white/20 hover:bg-white/20">
+                <Play className="w-8 h-8 fill-current ml-1" />
+              </div>
+            </div>
+          </motion.div>
+
+          <div className="space-y-10">
+            <span className="text-indigo-600 font-black tracking-[0.3em] uppercase text-[10px]">Tận tâm trong từng linh kiện</span>
+            <h2 className="text-5xl md:text-6xl font-black text-slate-900 leading-[1.1] tracking-tighter">
+              Quy trình chế tạo <br/>máy khói DuongDIY
+            </h2>
+            <p className="text-slate-600 text-lg leading-relaxed font-medium">
+              Mỗi chiếc máy tạo khói rời xưởng đều trải qua quy trình kiểm tra nghiêm ngặt về độ bền nhiệt, lưu lượng khói và độ an toàn điện, đảm bảo trải nghiệm tốt nhất cho khách hàng.
+            </p>
+            <div className="pt-6 flex items-center gap-6">
+              <div className="w-px h-16 bg-slate-300" />
+              <p className="text-slate-500 text-sm italic font-medium">"Chất lượng tạo nên thương hiệu DuongDIY"</p>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Product List */}
-      <section className="py-40 bg-slate-50/50" id="products">
+      <section 
+        className="relative pt-[12vw] pb-[16vw] bg-gray-900 z-10" 
+        id="products"
+        style={{ marginTop: '-3vw', clipPath: 'polygon(0 3vw, 100% 0, 100% calc(100% - 3vw), 0 100%)' }}
+      >
         <div className="container mx-auto px-12">
           <div className="text-center max-w-3xl mx-auto mb-24">
-            <h2 className="text-5xl font-black text-slate-900 mb-6 tracking-tighter">Sản phẩm tiêu biểu</h2>
-            <p className="text-indigo-600 font-bold tracking-widest text-[10px] uppercase italic">Mang hiệu ứng sân khấu chuyên nghiệp đến không gian của bạn</p>
+            <h2 className="text-5xl font-black text-white mb-6 tracking-tighter">Sản phẩm tiêu biểu</h2>
+            <p className="text-cyan-400 font-bold tracking-widest text-[10px] uppercase italic">Mang hiệu ứng sân khấu chuyên nghiệp đến không gian của bạn</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-12">
@@ -155,14 +184,14 @@ export default function NeuralynHome() {
               <motion.div 
                 key={idx}
                 whileHover={{ y: -12 }}
-                className="bg-white p-12 rounded-[3rem] border border-slate-100 shadow-sm hover:shadow-2xl transition-all duration-500"
+                className="bg-gray-800 p-12 rounded-[3rem] border border-gray-700 shadow-xl hover:shadow-2xl hover:border-gray-600 transition-all duration-500"
               >
                 <div className="flex justify-between items-start mb-6">
-                  <h3 className="text-xl font-black text-slate-800 leading-tight pr-4">{item.name}</h3>
-                  <span className="text-indigo-600 font-black text-sm whitespace-nowrap">{item.price}</span>
+                  <h3 className="text-xl font-black text-white leading-tight pr-4">{item.name}</h3>
+                  <span className="text-cyan-400 font-black text-sm whitespace-nowrap">{item.price}</span>
                 </div>
-                <p className="text-slate-500 text-sm font-medium leading-relaxed mb-8">{item.desc}</p>
-                <button className="text-[10px] font-black uppercase tracking-widest text-slate-900 border-b-2 border-slate-900 pb-1 hover:text-indigo-600 hover:border-indigo-600 transition-colors">
+                <p className="text-gray-400 text-sm font-medium leading-relaxed mb-8">{item.desc}</p>
+                <button className="text-[10px] font-black uppercase tracking-widest text-white border-b-2 border-white pb-1 hover:text-cyan-400 hover:border-cyan-400 transition-colors">
                   Chi Tiết
                 </button>
               </motion.div>
@@ -171,9 +200,48 @@ export default function NeuralynHome() {
         </div>
       </section>
 
+      {/* Testimonials */}
+      <section 
+        className="relative pt-[10vw] pb-[14vw] bg-[#22D3EE]" 
+        id="testimonials"
+        style={{ marginTop: '-3vw', clipPath: 'polygon(0 3vw, 100% 0, 100% calc(100% - 3vw), 0 100%)', zIndex: 5 }}
+      >
+        <div className="container mx-auto px-12 relative z-10">
+          <div className="text-center max-w-3xl mx-auto mb-20">
+            <h2 className="text-5xl font-black text-slate-900 mb-6 tracking-tighter">Đánh Giá Khách Hàng</h2>
+            <p className="text-slate-800 font-bold tracking-widest text-[10px] uppercase italic">Sự hài lòng của bạn là thành công của chúng tôi</p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              { name: "Anh Tuấn (DJ)", role: "Quán Bar Quận 1", text: "Máy khói DuongDIY đánh rất bốc, lượng khói phủ kín sàn chỉ trong vài giây. Rất hài lòng về hiệu suất của máy 1500W!" },
+              { name: "Chị Lan Anh", role: "Quản lý sự kiện", text: "Mình mua 3 máy cho công ty tổ chức sự kiện. Máy chạy êm, ít bị nghẹt sưởi như mấy dòng giá rẻ trước đây. Sẽ tiếp tục ủng hộ." },
+              { name: "Minh Hoàng", role: "Karaoke VIP", text: "Dung dịch khói bạc hà mùi cực kỳ dễ chịu, khách khen rất nhiều. Máy khói mini 400W nhỏ mà có võ, rất phù hợp với phòng VIP." }
+            ].map((item, idx) => (
+              <motion.div 
+                key={idx}
+                whileHover={{ y: -10 }}
+                className="bg-white/30 backdrop-blur-md p-10 rounded-[2.5rem] border border-white/40 shadow-xl shadow-cyan-900/10"
+              >
+                <div className="flex text-amber-600 mb-6">
+                  {[...Array(5)].map((_, i) => <svg key={i} className="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>)}
+                </div>
+                <p className="text-slate-900 font-medium leading-relaxed mb-8 italic">"{item.text}"</p>
+                <div>
+                  <h4 className="text-lg font-black text-slate-900">{item.name}</h4>
+                  <p className="text-slate-800 text-xs font-bold uppercase tracking-wider mt-1">{item.role}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
-      <footer className="bg-slate-950 pt-40 pb-20 relative overflow-hidden">
-        <TornEdge color="#020617" flip={true} />
+      <footer 
+        className="bg-gradient-to-b from-slate-900 to-slate-950 pt-[16vw] pb-20 relative overflow-hidden z-0"
+        style={{ marginTop: '-3vw', clipPath: 'polygon(0 3vw, 100% 0, 100% 100%, 0 100%)' }}
+      >
         <div className="container mx-auto px-12 relative z-10 grid md:grid-cols-3 gap-24 text-white">
           <div className="space-y-8">
             <div className="flex items-center gap-3">
