@@ -7,6 +7,7 @@ import {
   Instagram, 
   Globe 
 } from 'lucide-react';
+import homepageImg from '../../assets/images/homepage.png';
 
 const TornEdge = ({ color = "white", flip = false }) => (
   <div className={`absolute left-0 right-0 z-20 w-full overflow-hidden ${flip ? 'top-[-1px] rotate-180' : 'bottom-[-1px]'}`} style={{ height: '80px' }}>
@@ -81,7 +82,7 @@ export default function CustomerHome() {
             >
               <div className="absolute inset-0 bg-[#c49b63]/20 blur-3xl rounded-full transform scale-90"></div>
               <img 
-                src="/assets/images/homepage.png" 
+                src={homepageImg} 
                 alt="Coffee Display" 
                 className="relative z-10 w-full h-auto object-contain drop-shadow-2xl hover:-translate-y-4 transition-transform duration-700"
               />

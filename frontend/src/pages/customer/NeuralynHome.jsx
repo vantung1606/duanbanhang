@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import NeuralynNavbar from '../../components/layout/customer/NeuralynNavbar';
+import homepageImg from '../../assets/images/homepage.png';
 
 const FloatingOrb = ({ color, size, top, left, delay }) => (
   <motion.div
@@ -110,7 +111,7 @@ export default function NeuralynHome() {
           >
             <div className="absolute -inset-20 bg-indigo-500/20 blur-[100px] rounded-full animate-pulse" />
             <img 
-              src="/assets/images/homepage.png" 
+              src={homepageImg} 
               alt="Homepage Image" 
               className="relative z-10 w-full max-w-[600px] h-auto drop-shadow-2xl hover:scale-105 transition-transform duration-700"
             />
