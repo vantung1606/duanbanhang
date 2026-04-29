@@ -71,21 +71,21 @@ export default function AuthPage() {
       {/* ── LEFT PANEL: Form ── */}
       <div className="relative z-10 w-full lg:w-1/2 flex items-center justify-center p-6 md:p-8">
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
-          className="w-full max-w-md"
+          className="w-full max-w-[400px]"
         >
           {/* Logo */}
-          <div className="flex items-center gap-3 md:gap-4 mb-8 md:mb-12 cursor-pointer group justify-center lg:justify-start" onClick={() => navigate('/home')}>
-            <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-[#4981cf] flex items-center justify-center shadow-2xl group-hover:rotate-12 transition-transform">
-              <Zap className="w-6 h-6 md:w-7 md:h-7 text-white fill-white" />
+          <div className="flex items-center gap-3 mb-8 cursor-pointer group justify-center lg:justify-start" onClick={() => navigate('/home')}>
+            <div className="w-11 h-11 rounded-xl bg-[#4981cf] flex items-center justify-center shadow-2xl group-hover:rotate-12 transition-transform">
+              <Zap className="w-5 h-5 text-white fill-white" />
             </div>
-            <span className="text-[#1a365d] text-2xl md:text-3xl font-heading font-black tracking-tighter italic">DUONGDIY</span>
+            <span className="text-[#1a365d] text-2xl font-heading font-black tracking-tighter italic">DUONGDIY</span>
           </div>
 
           {/* Solid White Card */}
-          <div className="bg-white border-[3px] md:border-4 border-white rounded-[2.5rem] md:rounded-[3rem] p-8 md:p-12 shadow-[0_50px_100px_rgba(73,129,207,0.15)]">
+          <div className="bg-white border-[3px] border-white rounded-[2rem] p-8 md:p-10 shadow-[0_40px_80px_rgba(73,129,207,0.12)]">
 
             {/* Tab switch */}
             <div className="flex bg-[#e8ebf2] rounded-xl md:rounded-2xl p-1.5 md:p-2 mb-8 md:mb-10 border-2 border-[#cadaee]/30">
@@ -102,15 +102,15 @@ export default function AuthPage() {
             {/* Heading */}
             <AnimatePresence mode="wait">
               <motion.div key={isRegister ? 'reg' : 'log'}
-                initial={{ opacity: 0, x: isRegister ? 20 : -20 }}
+                initial={{ opacity: 0, x: isRegister ? 15 : -15 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.25 }}
                 className="text-center lg:text-left">
-                <h1 className="text-3xl md:text-4xl font-heading font-black text-[#1a365d] mb-2 md:mb-3 tracking-tighter">
+                <h1 className="text-2xl md:text-3xl font-heading font-black text-[#1a365d] mb-1.5 tracking-tighter">
                   {isRegister ? 'Khởi tạo' : 'Chào mừng'}
                 </h1>
-                <p className="text-[10px] md:text-xs font-black text-[#4981cf] mb-8 md:mb-10 uppercase tracking-[0.2em] md:tracking-[0.3em]">
+                <p className="text-[9px] md:text-[10px] font-black text-[#4981cf] mb-8 uppercase tracking-[0.2em]">
                   {isRegister ? 'Tham gia hệ thống DuongDIY' : 'Tiếp tục hành trình của bạn'}
                 </p>
               </motion.div>
