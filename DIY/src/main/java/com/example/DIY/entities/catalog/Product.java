@@ -65,6 +65,9 @@ public class Product extends BaseEntity {
     @Builder.Default
     private boolean canBePurchased = true;
     
+    @Column(columnDefinition = "TEXT")
+    private String specifications; // Store JSON: [{"label": "Power", "value": "1500W"}, ...]
+
     @Builder.Default
     private Double salesTax = 10.0;
     @Builder.Default

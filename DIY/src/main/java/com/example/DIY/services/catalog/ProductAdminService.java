@@ -93,104 +93,115 @@ public class ProductAdminService {
                 .canBePurchased(product.isCanBePurchased())
                 .salesTax(product.getSalesTax())
                 .purchaseTax(product.getPurchaseTax())
+                .specifications(product.getSpecifications())
                 .build();
     }
 
     @Transactional
     public ProductResponse createProduct(ProductSaveRequest request) {
-        Category category = categoryRepository.findById(request.getCategoryId())
-                .orElseThrow(() -> new RuntimeException("Category not found"));
-        Brand brand = brandRepository.findById(request.getBrandId())
-                .orElseThrow(() -> new RuntimeException("Brand not found"));
+        try {
+            Category category = categoryRepository.findById(request.getCategoryId())
+                    .orElseThrow(() -> new RuntimeException("Category not found with ID: " + request.getCategoryId()));
+            Brand brand = brandRepository.findById(request.getBrandId())
+                    .orElseThrow(() -> new RuntimeException("Brand not found with ID: " + request.getBrandId()));
 
-        String slug = request.getSlug();
-        if (slug == null || slug.isBlank()) {
-            slug = request.getName().toLowerCase().replaceAll("[^a-z0-9]", "-");
-        }
-
-        String storedImageUrl = fileStorageService.saveBase64Image(request.getImageUrl());
-
-        Product product = Product.builder()
-                .name(request.getName())
-                .slug(slug)
-                .description(request.getDescription())
-                .category(category)
-                .brand(brand)
-                .active(request.isActive())
-                .ribbon(request.getRibbon())
-                .imageUrl(storedImageUrl)
-                .productType(request.getProductType())
-                .internalReference(request.getInternalReference())
-                .barcode(request.getBarcode())
-                .internalNote(request.getInternalNote())
-                .shortDescription(request.getShortDescription())
-                .canBeSold(request.isCanBeSold())
-                .canBePurchased(request.isCanBePurchased())
-                .salesTax(request.getSalesTax())
-                .purchaseTax(request.getPurchaseTax())
-                .variants(new ArrayList<>())
-                .images(new ArrayList<>())
-                .build();
-
-        Product savedProduct = productRepository.save(product);
-
-        // Handle Variants
-        if (request.getVariants() != null) {
-            for (int i = 0; i < request.getVariants().size(); i++) {
-                ProductSaveRequest.VariantRequest vReq = request.getVariants().get(i);
-                // Auto-generate SKU if missing
-                String sku = vReq.getSku();
-                if (sku == null || sku.trim().isEmpty()) {
-                    sku = product.getSlug().toUpperCase() + "-V" + (i + 1);
-                }
-                
-                // Final check for global uniqueness to avoid Duplicate Entry
-                String finalSku = sku;
-                int suffixNum = 1;
-                while (productVariantRepository.existsBySku(finalSku)) {
-                    finalSku = sku + "-" + (System.currentTimeMillis() % 1000) + suffixNum++;
-                }
-
-                ProductVariant variant = ProductVariant.builder()
-                        .sku(finalSku)
-                        .price(vReq.getPrice())
-                        .originalPrice(vReq.getOriginalPrice())
-                        .stockQuantity(vReq.getStock())
-                        .isStockUnlimited(vReq.isStockUnlimited())
-                        .product(product)
-                        .attributeValues(new HashSet<>())
-                        .build();
-                
-                if (vReq.getAttributeValueIds() != null) {
-                    vReq.getAttributeValueIds().forEach(valId -> {
-                        attributeValueRepository.findById(valId).ifPresent(variant.getAttributeValues()::add);
-                    });
-                }
-                savedProduct.getVariants().add(variant);
+            String slug = request.getSlug();
+            if (slug == null || slug.isBlank()) {
+                slug = request.getName().toLowerCase().replaceAll("[^a-z0-9]", "-");
             }
-        }
 
-        // Add image if provided
-        if (storedImageUrl != null && !storedImageUrl.isBlank()) {
-            ProductImage image = ProductImage.builder()
+            String storedImageUrl = fileStorageService.saveBase64Image(request.getImageUrl());
+
+            Product product = Product.builder()
+                    .name(request.getName())
+                    .slug(slug)
+                    .description(request.getDescription())
+                    .category(category)
+                    .brand(brand)
+                    .active(request.isActive())
+                    .ribbon(request.getRibbon())
                     .imageUrl(storedImageUrl)
-                    .isPrimary(true)
-                    .product(savedProduct)
+                    .productType(request.getProductType())
+                    .internalReference(request.getInternalReference())
+                    .barcode(request.getBarcode())
+                    .internalNote(request.getInternalNote())
+                    .shortDescription(request.getShortDescription())
+                    .canBeSold(request.isCanBeSold())
+                    .canBePurchased(request.isCanBePurchased())
+                    .salesTax(request.getSalesTax())
+                    .purchaseTax(request.getPurchaseTax())
+                    .specifications(request.getSpecifications())
+                    .variants(new ArrayList<>())
+                    .images(new ArrayList<>())
                     .build();
-            savedProduct.getImages().add(image);
-        }
 
-        return mapToAdminResponse(productRepository.save(savedProduct));
+            Product savedProduct = productRepository.save(product);
+
+            // Handle Variants
+            if (request.getVariants() != null) {
+                for (int i = 0; i < request.getVariants().size(); i++) {
+                    ProductSaveRequest.VariantRequest vReq = request.getVariants().get(i);
+                    String sku = vReq.getSku();
+                    if (sku == null || sku.trim().isEmpty()) {
+                        sku = product.getSlug().toUpperCase() + "-V" + (i + 1);
+                    }
+                    
+                    String finalSku = sku;
+                    int suffixNum = 1;
+                    while (productVariantRepository.existsBySku(finalSku)) {
+                        finalSku = sku + "-" + (System.currentTimeMillis() % 1000) + suffixNum++;
+                    }
+
+                    ProductVariant variant = ProductVariant.builder()
+                            .sku(finalSku)
+                            .price(vReq.getPrice())
+                            .originalPrice(vReq.getOriginalPrice())
+                            .stockQuantity(vReq.getStock())
+                            .isStockUnlimited(vReq.isStockUnlimited())
+                            .product(product)
+                            .attributeValues(new HashSet<>())
+                            .build();
+                    
+                    if (vReq.getAttributeValueIds() != null) {
+                        vReq.getAttributeValueIds().forEach(valId -> {
+                            attributeValueRepository.findById(valId).ifPresent(variant.getAttributeValues()::add);
+                        });
+                    }
+                    savedProduct.getVariants().add(variant);
+                }
+            }
+
+            if (storedImageUrl != null && !storedImageUrl.isBlank()) {
+                ProductImage image = ProductImage.builder()
+                        .imageUrl(storedImageUrl)
+                        .isPrimary(true)
+                        .product(savedProduct)
+                        .build();
+                savedProduct.getImages().add(image);
+            }
+
+            return mapToAdminResponse(productRepository.save(savedProduct));
+        } catch (Exception e) {
+            e.printStackTrace(); // This will show the error in the console
+            throw new RuntimeException("Error creating product: " + e.getMessage());
+        }
     }
 
     @Transactional
     public ProductResponse updateProduct(Long id, ProductSaveRequest request) {
-        Product product = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
-        Category category = categoryRepository.findById(request.getCategoryId())
-                .orElseThrow(() -> new RuntimeException("Category not found"));
-        Brand brand = brandRepository.findById(request.getBrandId())
-                .orElseThrow(() -> new RuntimeException("Brand not found"));
+        try {
+            System.out.println("Updating product with ID: " + id);
+            if (id == null) {
+                throw new RuntimeException("Product ID must not be null for update");
+            }
+            
+            Product product = productRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Product not found with ID: " + id));
+            
+            Category category = categoryRepository.findById(request.getCategoryId())
+                    .orElseThrow(() -> new RuntimeException("Category not found with ID: " + request.getCategoryId()));
+            Brand brand = brandRepository.findById(request.getBrandId())
+                    .orElseThrow(() -> new RuntimeException("Brand not found with ID: " + request.getBrandId()));
 
         product.setName(request.getName());
         product.setDescription(request.getDescription());
@@ -219,6 +230,7 @@ public class ProductAdminService {
         product.setCanBePurchased(request.isCanBePurchased());
         product.setSalesTax(request.getSalesTax());
         product.setPurchaseTax(request.getPurchaseTax());
+        product.setSpecifications(request.getSpecifications());
         
         // Complex update: Update variants
         if (request.getVariants() != null) {
@@ -257,7 +269,11 @@ public class ProductAdminService {
             }
         }
 
-        return mapToAdminResponse(productRepository.save(product));
+            return mapToAdminResponse(productRepository.save(product));
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error updating product: " + e.getMessage());
+        }
     }
 
     @Transactional

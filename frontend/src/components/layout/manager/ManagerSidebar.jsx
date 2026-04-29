@@ -36,27 +36,28 @@ export default function ManagerSidebar({ isOpen, setIsOpen }) {
 
   return (
     <aside className={cn(
-      "w-72 h-screen fixed left-0 top-0 z-40 p-4 lg:p-6 flex flex-col transition-transform duration-300",
-      isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+      "w-80 h-[calc(100vh-2rem)] sticky top-4 z-40 flex flex-col transition-all duration-300",
+      "fixed lg:relative lg:translate-x-0",
+      isOpen ? "translate-x-0" : "-translate-x-[150%] lg:-translate-x-0"
     )}>
-      {/* Light Glassmorphic Container */}
-      <div className="flex-1 bg-white/70 dark:bg-black/40 backdrop-blur-2xl rounded-[2.5rem] border border-white/60 dark:border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] flex flex-col overflow-hidden">
+      {/* Monolith Glass Container */}
+      <div className="flex-1 bg-white/40 dark:bg-black/40 backdrop-blur-3xl rounded-[3rem] border border-white/40 dark:border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.05)] flex flex-col overflow-hidden py-10 px-6">
         
         {/* Logo Section */}
-        <div className="p-8 pb-4">
-          <div className="flex items-center gap-4 mb-2">
-            <div className="w-12 h-12 rounded-2xl bg-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-600/20">
-              <TrendingUp className="text-white w-7 h-7" />
+        <div className="px-4 mb-14">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-slate-800 flex items-center justify-center shadow-lg shadow-slate-800/20">
+              <TrendingUp className="text-white w-6 h-6" />
             </div>
             <div>
-              <h2 className="text-2xl font-black text-slate-800 dark:text-white leading-tight">Quản Lý</h2>
-              <p className="text-[10px] font-bold text-indigo-600 uppercase tracking-widest opacity-80">Góc Nhìn Kinh Doanh</p>
+              <h2 className="text-xl font-black text-slate-800 dark:text-white tracking-tight">Monolith</h2>
+              <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">PREMIUM TIER</p>
             </div>
           </div>
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 px-4 py-6 space-y-3 overflow-y-auto custom-scrollbar">
+        <nav className="flex-1 px-2 space-y-2 overflow-y-auto custom-scrollbar">
           {menuItems.map((item) => (
             <NavLink
               key={item.path}
@@ -64,42 +65,48 @@ export default function ManagerSidebar({ isOpen, setIsOpen }) {
               end={item.path === '/manager'}
               onClick={() => setIsOpen && setIsOpen(false)}
               className={({ isActive }) => cn(
-                "flex items-center justify-between px-6 py-4 rounded-2xl transition-all duration-300 group",
+                "flex items-center gap-4 px-6 py-4 rounded-3xl transition-all duration-300 group font-bold text-xs tracking-wider",
                 isActive 
-                  ? "bg-slate-700 text-white shadow-lg shadow-slate-700/20 scale-[1.02]" 
-                  : "text-slate-600 hover:bg-white/80 dark:hover:bg-white/10 hover:text-slate-900 dark:hover:text-white"
+                  ? "bg-white text-slate-900 shadow-sm" 
+                  : "text-slate-500 hover:text-slate-900 hover:bg-white/30 dark:hover:bg-white/10"
               )}
             >
-              <div className="flex items-center gap-4">
-                <item.icon className={cn("w-5 h-5", "group-hover:scale-110 transition-transform")} />
-                <span className="font-bold tracking-wide text-sm">{item.label}</span>
-              </div>
-              <ChevronRight className={cn("w-4 h-4 opacity-0 group-hover:opacity-100 transition-all")} />
+              <item.icon className="w-5 h-5 transition-transform group-hover:scale-110" />
+              <span>{item.label}</span>
             </NavLink>
           ))}
         </nav>
 
-        {/* Profile/Footer */}
-        <div className="p-6 mt-auto border-t border-white/40 dark:border-white/10">
-          <div className="bg-white/50 dark:bg-black/20 p-4 rounded-3xl flex items-center gap-4 shadow-sm border border-white/60 dark:border-white/5">
-            <img 
-              src="https://api.dicebear.com/7.x/avataaars/svg?seed=Manager" 
-              alt="Manager Avatar" 
-              className="w-11 h-11 rounded-2xl shadow-sm border-2 border-indigo-100 dark:border-indigo-500/30 bg-white"
-            />
-            <div className="flex-1 min-w-0">
-              <p className="font-bold text-sm text-slate-800 dark:text-white truncate">Nguyễn Văn A</p>
-              <p className="text-[10px] font-black uppercase text-indigo-600 tracking-tighter">Giám Đốc Kinh Doanh</p>
-            </div>
-            <button 
-              onClick={handleLogout}
-              className="p-2 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-xl transition-colors group"
-              title="Đăng Xuất"
-            >
-              <LogOut className="w-5 h-5 text-red-500 group-hover:scale-110 transition-transform" />
-            </button>
-          </div>
+        {/* Storage Bar (Mockup Style) */}
+        <div className="mt-auto px-4 mb-8">
+           <div className="bg-white/50 dark:bg-black/20 rounded-3xl p-5 border border-white/40">
+              <div className="flex justify-between items-center mb-3">
+                <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Storage</span>
+                <span className="text-[10px] font-black text-slate-800 dark:text-white uppercase tracking-widest">75% of 100GB</span>
+              </div>
+              <div className="h-1.5 w-full bg-slate-200/50 dark:bg-slate-700/50 rounded-full overflow-hidden">
+                <div className="h-full bg-slate-800 dark:bg-white rounded-full" style={{ width: '75%' }} />
+              </div>
+           </div>
         </div>
+
+        {/* Upgrade Plan Button */}
+        <div className="px-4">
+          <button 
+            className="w-full bg-[#5a647e] hover:bg-[#4a546e] text-white py-5 rounded-[2rem] font-bold text-xs uppercase tracking-[0.15em] shadow-xl shadow-slate-900/10 transition-all duration-300 hover:scale-[1.02]"
+          >
+            Upgrade Plan
+          </button>
+        </div>
+
+        {/* Logout Link */}
+        <button 
+          onClick={handleLogout}
+          className="mt-6 px-8 flex items-center gap-3 text-slate-400 hover:text-red-500 transition-colors font-bold text-[10px] uppercase tracking-[0.2em]"
+        >
+           <LogOut className="w-4 h-4" />
+           <span>Sign Out</span>
+        </button>
       </div>
     </aside>
   );

@@ -13,7 +13,9 @@ import {
   Ticket,
   ChevronRight
 } from 'lucide-react';
-import { cn } from '../lib/utils';
+import { cn } from '../../lib/utils';
+import { adminService } from '../../services/api/adminService';
+import { useToast } from '../../components/common/Toast';
 
 export default function ManagerPromotionsPage() {
   const [vouchers, setVouchers] = useState([]);

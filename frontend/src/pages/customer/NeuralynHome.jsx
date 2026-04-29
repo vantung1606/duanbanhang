@@ -1,348 +1,290 @@
-import { useRef, useState, useEffect } from 'react';
-import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { 
-  ShoppingBag, ArrowRight, ShieldCheck, Zap, HeartHandshake, 
-  Truck, Star, ChevronRight, Globe, Award, Sparkles, 
-  Monitor, Smartphone, Watch, Headphones, Play, CheckCircle2
+  ArrowRight, 
+  Play, 
+  Facebook, 
+  Twitter, 
+  Instagram, 
+  Globe,
+  Search,
+  ShoppingCart,
+  Menu as MenuIcon
 } from 'lucide-react';
-import { cn } from '../../lib/utils';
-import { Link, useNavigate } from 'react-router-dom';
-import { useAuthStore } from '../../store/authStore';
-import useCartStore from '../../store/cart-store';
+import { Link } from 'react-router-dom';
 import NeuralynNavbar from '../../components/layout/customer/NeuralynNavbar';
-import NeuralynFooter from '../../components/layout/customer/NeuralynFooter';
 
-// --- Sub-Components ---
-
-const FadeInView = ({ children, delay = 0, direction = "up" }) => {
-  const directions = {
-    up: { y: 40 },
-    down: { y: -40 },
-    left: { x: 40 },
-    right: { x: -40 }
-  };
-  
-  return (
-    <motion.div
-      initial={{ opacity: 0, ...directions[direction] }}
-      whileInView={{ opacity: 1, x: 0, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 0.8, delay, ease: [0.21, 0.47, 0.32, 0.98] }}
-    >
-      {children}
-    </motion.div>
-  );
-};
-
-const FeatureBento = ({ icon: Icon, title, desc, className, delay }) => (
+const FloatingOrb = ({ color, size, top, left, delay }) => (
   <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    transition={{ duration: 0.6, delay }}
-    className={cn(
-      "group relative p-8 md:p-12 rounded-[3.5rem] bg-white/40 backdrop-blur-3xl border border-white/50 shadow-[0_8px_30px_rgb(0,0,0,0.02)] hover:shadow-[0_20px_50px_rgb(0,0,0,0.08)] transition-all duration-700 hover:-translate-y-2 overflow-hidden",
-      className
-    )}
+    animate={{
+      y: [0, -40, 0],
+      x: [0, 30, 0],
+      scale: [1, 1.1, 1],
+      opacity: [0.3, 0.6, 0.3],
+    }}
+    transition={{
+      duration: 8 + Math.random() * 4,
+      repeat: Infinity,
+      delay,
+      ease: "easeInOut"
+    }}
+    className="absolute pointer-events-none blur-[100px] rounded-full z-0"
+    style={{
+      backgroundColor: color,
+      width: size,
+      height: size,
+      top,
+      left,
+    }}
+  />
+);
+
+const PerspectiveGrid = () => (
+  <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-[0.15] bg-slate-900 rounded-[3.5rem]">
+    <div 
+      className="absolute inset-0"
+      style={{
+        backgroundImage: `linear-gradient(#22d3ee 1.5px, transparent 1.5px), linear-gradient(90deg, #22d3ee 1.5px, transparent 1.5px)`,
+        backgroundSize: '60px 60px',
+        perspective: '1000px',
+        transform: 'rotateX(60deg) scale(2.5) translateY(-50px)',
+        transformOrigin: '50% 100%',
+        maskImage: 'linear-gradient(to top, black 40%, transparent 100%)'
+      }}
+    />
+  </div>
+);
+
+const MenuItem = ({ name, price, description }) => (
+  <motion.div 
+    whileHover={{ y: -8, shadow: "0 25px 50px -12px rgba(0, 0, 0, 0.1)" }}
+    className="bg-white/80 backdrop-blur-xl p-10 rounded-[2.5rem] border border-white/50 flex flex-col justify-between group h-full shadow-sm"
   >
-    <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/[0.03] to-transparent pointer-events-none" />
-    <div className="relative z-10">
-      <div className="w-16 h-16 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-8 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-500">
-        <Icon className="w-8 h-8" />
-      </div>
-      <h4 className="text-2xl font-black tracking-tighter text-slate-800 mb-4">{title}</h4>
-      <p className="text-slate-500 font-medium leading-relaxed">{desc}</p>
+    <div className="flex justify-between items-start mb-4">
+      <h3 className="text-2xl font-black text-slate-800 tracking-tighter group-hover:text-[#c49b63] transition-colors">{name}</h3>
+      <span className="text-xl font-black text-[#c49b63]">${price}</span>
     </div>
+    <p className="text-slate-500 font-medium leading-relaxed text-sm">
+      {description}
+    </p>
   </motion.div>
 );
 
-const StatItem = ({ label, value }) => (
-  <div className="flex flex-col items-center md:items-start">
-    <span className="text-3xl md:text-5xl font-black text-slate-800 tracking-tighter mb-1">{value}</span>
-    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">{label}</span>
-  </div>
-);
-
-const CategoryCard = ({ icon: Icon, name, count, color }) => (
-  <div className="group cursor-pointer">
-    <div className={cn("w-full aspect-[4/5] rounded-[3rem] p-8 flex flex-col justify-between transition-all duration-500 group-hover:-translate-y-4 shadow-sm", color)}>
-      <div className="w-14 h-14 rounded-2xl bg-white/90 backdrop-blur-md flex items-center justify-center shadow-sm">
-        <Icon className="w-6 h-6 text-slate-800" />
-      </div>
-      <div>
-        <h4 className="text-2xl font-black text-white mb-1 tracking-tight">{name}</h4>
-        <p className="text-white/70 text-xs font-bold uppercase tracking-widest">{count} Sản phẩm</p>
-      </div>
-    </div>
-  </div>
-);
-
 export default function NeuralynHome() {
-  const containerRef = useRef(null);
-  const navigate = useNavigate();
-  const { toggleCart, getTotalItems } = useCartStore();
-  const { isAuthenticated, logout } = useAuthStore();
-  
-  const { scrollYProgress } = useScroll();
-  const smoothProgress = useSpring(scrollYProgress, { damping: 20, stiffness: 100 });
-  
-  const yHero = useTransform(scrollYProgress, [0, 0.2], [0, 200]);
-  const opacityHero = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
-  const scaleImage = useTransform(scrollYProgress, [0, 0.2], [1, 1.1]);
-
   return (
-    <div className="min-h-screen bg-[#f8fafc] text-slate-800 font-sans selection:bg-indigo-500 selection:text-white relative overflow-x-hidden">
-      
-      {/* Background Layer */}
-      <div className="fixed inset-0 z-0">
-        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_0%,rgba(99,102,241,0.08),transparent_50%)]" />
-        <div className="absolute top-[20%] right-[-10%] w-[60%] h-[60%] bg-blue-400/5 blur-[120px] rounded-full" />
-        <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-indigo-500/5 blur-[120px] rounded-full" />
-      </div>
-
-      {/* Top Navbar */}
+    <div className="bg-slate-900 font-sans selection:bg-indigo-600 selection:text-white overflow-x-hidden scroll-smooth custom-scrollbar relative">
       <NeuralynNavbar />
 
-      {/* Progress Bar */}
-      <motion.div 
-        className="fixed top-0 left-0 right-0 h-1 bg-indigo-600 z-[60] origin-left"
-        style={{ scaleX: smoothProgress }}
-      />
-
-      <main className="relative z-10 pt-32">
-        
-        {/* SECTION 1: HERO (THE FUTURE) */}
-        <section className="min-h-screen w-full flex flex-col items-center justify-center px-6 text-center relative overflow-hidden">
-            <motion.div style={{ y: yHero, opacity: opacityHero }} className="max-w-6xl mx-auto z-10">
-               <FadeInView delay={0.2}>
-                 <div className="inline-flex items-center gap-3 px-6 py-2.5 rounded-full bg-white/80 backdrop-blur-md border border-white shadow-sm mb-12">
-                   <Sparkles className="w-4 h-4 text-amber-500" />
-                   <span className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em]">Hệ sinh thái công nghệ 2026</span>
-                 </div>
-               </FadeInView>
-
-               <FadeInView delay={0.3}>
-                 <h1 className="text-6xl md:text-8xl lg:text-[10rem] font-black tracking-tighter text-slate-900 leading-[0.85] mb-12">
-                    NÂNG TẦM <br />
-                    <span className="text-transparent bg-clip-text bg-gradient-to-b from-indigo-600 to-blue-400">TRẢI NGHIỆM.</span>
-                 </h1>
-               </FadeInView>
-
-               <FadeInView delay={0.4}>
-                 <p className="text-lg md:text-2xl font-medium text-slate-400 max-w-3xl mx-auto leading-relaxed mb-16 px-4">
-                    Sản phẩm của chúng tôi không chỉ là phần cứng. Đó là một tuyên ngôn về phong cách sống hiện đại, nơi công nghệ phục vụ con người một cách tinh tế nhất.
-                 </p>
-               </FadeInView>
-
-               <FadeInView delay={0.5}>
-                 <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-                    <button 
-                      onClick={() => navigate('/catalog')}
-                      className="group w-full sm:w-auto px-12 py-6 bg-slate-900 text-white rounded-full font-black text-xs uppercase tracking-[0.3em] hover:bg-indigo-600 hover:shadow-[0_20px_50px_rgba(79,70,229,0.3)] transition-all duration-500 flex items-center justify-center gap-4"
-                    >
-                       Bắt đầu mua sắm <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
-                    </button>
-                    <button className="w-full sm:w-auto px-12 py-6 bg-white border border-slate-100 text-slate-900 rounded-full font-black text-xs uppercase tracking-[0.3em] hover:bg-slate-50 transition-all flex items-center justify-center">
-                       Khám phá thêm
-                    </button>
-                 </div>
-               </FadeInView>
-            </motion.div>
-
-            {/* Floating Hero Image */}
-            <motion.div 
-              style={{ scale: scaleImage }}
-              className="mt-20 relative w-full max-w-5xl aspect-[16/9] mx-auto rounded-[4rem] overflow-hidden shadow-[0_50px_100px_rgba(0,0,0,0.1)] border-[12px] border-white/50"
+      {/* Hero Section */}
+      <section 
+        className="relative min-h-screen flex items-center pt-20 pb-[10vw] bg-gray-900 z-30" 
+        id="home"
+        style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 3vw), 0 100%)' }}
+      >
+        <div className="container mx-auto px-12 relative z-10 grid lg:grid-cols-2 gap-12 items-center">
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1.2 }}
+            className="text-center lg:text-left"
+          >
+            <h2 className="text-gray-400 font-black tracking-[0.5em] uppercase text-[10px] mb-8 block">Thiết Bị Sân Khấu Chuyên Nghiệp DuongDIY</h2>
+            <h1 className="text-5xl md:text-[4.5rem] font-black text-white leading-[1.1] tracking-tighter mb-10">
+              Máy Tạo Khói <br/> <span className="text-cyan-400">Chinh Phục Mọi Ánh Nhìn</span>
+            </h1>
+            <p className="text-gray-400 text-lg mb-12 max-w-lg leading-relaxed font-medium">
+              DuongDIY - Đơn vị hàng đầu chuyên cung cấp máy tạo khói, dung dịch khói và giải pháp hiệu ứng sân khấu cao cấp. Nâng tầm không gian sự kiện, quán bar và phòng karaoke VIP của bạn.
+            </p>
+            <motion.button
+              whileHover={{ scale: 1.05, backgroundColor: '#ffffff', color: '#22d3ee' }}
+              className="bg-white/10 backdrop-blur-md border border-white/30 text-white px-14 py-5 rounded-full font-black text-[10px] tracking-[0.3em] uppercase transition-all shadow-xl shadow-cyan-900/20"
             >
-              <img 
-                src="/assets/images/hero_product.png" 
-                alt="Premium Showcase" 
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent opacity-40" />
-            </motion.div>
-        </section>
+              Khám Phá Ngay
+            </motion.button>
+          </motion.div>
 
-        {/* SECTION 2: TRUST STATS */}
-        <section className="py-24 px-6 md:px-12 lg:px-24">
-          <div className="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-12 border-y border-slate-100 py-20">
-            <StatItem label="Khách hàng tin dùng" value="2.4M+" />
-            <StatItem label="Giải thưởng thiết kế" value="12" />
-            <StatItem label="Quốc gia hiện diện" value="48+" />
-            <StatItem label="Hỗ trợ kỹ thuật" value="24/7" />
-          </div>
-        </section>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.5, type: "spring" }}
+            className="hidden lg:block relative"
+          >
+            <div className="absolute -inset-20 bg-indigo-500/20 blur-[100px] rounded-full animate-pulse" />
+            <img 
+              src="/assets/images/homepage.png" 
+              alt="Homepage Image" 
+              className="relative z-10 w-full max-w-[600px] h-auto drop-shadow-2xl hover:scale-105 transition-transform duration-700"
+            />
+          </motion.div>
+        </div>
+      </section>
 
-        {/* SECTION 3: CATEGORY SHOWCASE */}
-        <section className="py-32 px-6 md:px-12 lg:px-24">
-          <div className="max-w-7xl mx-auto">
-            <div className="flex flex-col md:flex-row md:items-end justify-between mb-24 gap-8">
-              <FadeInView direction="left">
-                <h2 className="text-4xl md:text-7xl font-black tracking-tighter text-slate-900 leading-tight">
-                  PHÂN KHÚC <br /> <span className="text-indigo-600">ĐỘC QUYỀN.</span>
-                </h2>
-              </FadeInView>
-              <FadeInView direction="right">
-                <p className="text-slate-500 font-medium max-w-sm mb-4 leading-relaxed">
-                  Lựa chọn từ những danh mục sản phẩm được chế tác tỉ mỉ để phù hợp với mọi nhu cầu của bạn.
-                </p>
-              </FadeInView>
+      {/* Production Process */}
+      <section 
+        className="relative pt-[12vw] pb-[16vw] bg-white z-20" 
+        id="about"
+        style={{ marginTop: '-3vw', clipPath: 'polygon(0 3vw, 100% 0, 100% calc(100% - 3vw), 0 100%)' }}
+      >
+        <div className="container mx-auto px-12 grid lg:grid-cols-2 gap-32 items-center relative z-10">
+          <motion.div 
+            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: 40 }}
+            viewport={{ once: true }}
+            className="relative group rounded-[3.5rem] overflow-hidden shadow-2xl shadow-cyan-900/10 w-full aspect-video bg-slate-900 flex items-center justify-center border border-slate-800"
+          >
+            {/* 3D Visuals from Login */}
+            <PerspectiveGrid />
+            <FloatingOrb color="#22d3ee" size="300px" top="-10%" left="-10%" delay={0} />
+            <FloatingOrb color="#3b82f6" size="250px" top="50%" left="60%" delay={1} />
+            <FloatingOrb color="#8b5cf6" size="200px" top="20%" left="40%" delay={2} />
+
+            <div className="absolute inset-0 bg-slate-900/20 flex items-center justify-center z-10">
+              <div className="w-24 h-24 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center text-cyan-400 cursor-pointer hover:scale-110 transition-transform shadow-xl border border-white/20 hover:bg-white/20">
+                <Play className="w-8 h-8 fill-current ml-1" />
+              </div>
             </div>
+          </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              <CategoryCard icon={Monitor} name="Workstation" count={24} color="bg-indigo-600" />
-              <CategoryCard icon={Smartphone} name="Mobile Gear" count={18} color="bg-slate-900" />
-              <CategoryCard icon={Headphones} name="Audio Elite" count={32} color="bg-blue-500" />
-              <CategoryCard icon={Watch} name="Smart Wear" count={14} color="bg-emerald-500" />
-            </div>
-          </div>
-        </section>
-
-        {/* SECTION 4: DEEP FEATURES (BENTO 2.0) */}
-        <section className="py-40 px-6 md:px-12 lg:px-24 bg-white/30 backdrop-blur-sm">
-          <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 auto-rows-[300px] md:auto-rows-[400px]">
-              <FeatureBento 
-                className="lg:col-span-8"
-                icon={Globe}
-                title="Kết nối không biên giới"
-                desc="Toàn bộ hệ sinh thái Aether được đồng bộ hóa qua hạ tầng đám mây thế hệ mới, đảm bảo dữ liệu của bạn luôn sẵn sàng dù bạn ở bất cứ đâu."
-              />
-              <FeatureBento 
-                className="lg:col-span-4"
-                icon={Award}
-                title="Bảo hành Elite"
-                desc="Đặc quyền bảo hành 1 đổi 1 trong vòng 24 tháng đối với tất cả các dòng sản phẩm Signature."
-              />
-              <FeatureBento 
-                className="lg:col-span-5"
-                icon={Truck}
-                title="Giao vận thần tốc"
-                desc="Cam kết giao hàng trong 2h tại các thành phố lớn và miễn phí vận chuyển toàn cầu cho đơn hàng trên 5 triệu."
-              />
-              <FeatureBento 
-                className="lg:col-span-7"
-                icon={ShieldCheck}
-                title="Bảo mật cấp độ quân sự"
-                desc="Dữ liệu cá nhân của bạn được bảo vệ bởi chip bảo mật Quantum-Guard tích hợp trực tiếp vào phần cứng."
-              />
+          <div className="space-y-10">
+            <span className="text-indigo-600 font-black tracking-[0.3em] uppercase text-[10px]">Tận tâm trong từng linh kiện</span>
+            <h2 className="text-5xl md:text-6xl font-black text-slate-900 leading-[1.1] tracking-tighter">
+              Quy trình chế tạo <br/>máy khói DuongDIY
+            </h2>
+            <p className="text-slate-600 text-lg leading-relaxed font-medium">
+              Mỗi chiếc máy tạo khói rời xưởng đều trải qua quy trình kiểm tra nghiêm ngặt về độ bền nhiệt, lưu lượng khói và độ an toàn điện, đảm bảo trải nghiệm tốt nhất cho khách hàng.
+            </p>
+            <div className="pt-6 flex items-center gap-6">
+              <div className="w-px h-16 bg-slate-300" />
+              <p className="text-slate-500 text-sm italic font-medium">"Chất lượng tạo nên thương hiệu DuongDIY"</p>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* SECTION 5: INTERACTIVE SHOWCASE */}
-        <section className="py-40 relative overflow-hidden bg-slate-900">
-           <div className="absolute inset-0 opacity-20">
-              <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_100%_100%,rgba(99,102,241,0.5),transparent_50%)]" />
-           </div>
-           
-           <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 items-center gap-20 relative z-10">
-              <FadeInView direction="right">
-                <div className="relative group">
-                  <div className="absolute -inset-4 bg-indigo-600/30 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
-                  <img src="/assets/images/product_headphones.png" alt="Featured Tech" className="w-full relative z-10" />
+      {/* Product List */}
+      <section 
+        className="relative pt-[12vw] pb-[16vw] bg-gray-900 z-10" 
+        id="products"
+        style={{ marginTop: '-3vw', clipPath: 'polygon(0 3vw, 100% 0, 100% calc(100% - 3vw), 0 100%)' }}
+      >
+        <div className="container mx-auto px-12">
+          <div className="text-center max-w-3xl mx-auto mb-24">
+            <h2 className="text-5xl font-black text-white mb-6 tracking-tighter">Sản phẩm tiêu biểu</h2>
+            <p className="text-cyan-400 font-bold tracking-widest text-[10px] uppercase italic">Mang hiệu ứng sân khấu chuyên nghiệp đến không gian của bạn</p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-12">
+            {[
+              { name: "Máy Khói 400W Mini", price: "850.000đ", desc: "Dành cho phòng karaoke gia đình, nhỏ gọn, lên khói nhanh." },
+              { name: "Máy Khói 900W Sân Khấu", price: "1.250.000đ", desc: "Hiệu suất mạnh mẽ, phù hợp quán bar, phòng bay." },
+              { name: "Máy Khói 1500W Pro", price: "2.450.000đ", desc: "Công suất cực đại, điều khiển DMX, dành cho sự kiện lớn." },
+              { name: "Dung Dịch Khói 5L", price: "250.000đ", desc: "Khói trắng, dày, lâu tan, không mùi, an toàn tuyệt đối." },
+              { name: "Tinh Dầu Khói Bạc Hà", price: "120.000đ", desc: "Tạo hương thơm mát lạnh sảng khoái cho không gian." },
+              { name: "Máy Tạo Khói Lạnh 3000W", price: "5.800.000đ", desc: "Hiệu ứng khói bay là là mặt đất cực kỳ đẳng cấp." },
+            ].map((item, idx) => (
+              <motion.div 
+                key={idx}
+                whileHover={{ y: -12 }}
+                className="bg-gray-800 p-12 rounded-[3rem] border border-gray-700 shadow-xl hover:shadow-2xl hover:border-gray-600 transition-all duration-500"
+              >
+                <div className="flex justify-between items-start mb-6">
+                  <h3 className="text-xl font-black text-white leading-tight pr-4">{item.name}</h3>
+                  <span className="text-cyan-400 font-black text-sm whitespace-nowrap">{item.price}</span>
                 </div>
-              </FadeInView>
+                <p className="text-gray-400 text-sm font-medium leading-relaxed mb-8">{item.desc}</p>
+                <button className="text-[10px] font-black uppercase tracking-widest text-white border-b-2 border-white pb-1 hover:text-cyan-400 hover:border-cyan-400 transition-colors">
+                  Chi Tiết
+                </button>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-              <FadeInView direction="left">
-                <div className="space-y-10">
-                  <div className="inline-block px-4 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-[10px] font-black uppercase tracking-[0.3em]">Cận cảnh sản phẩm</div>
-                  <h2 className="text-5xl md:text-7xl font-black tracking-tighter text-white leading-tight">
-                    ÂM THANH CỦA <br /> <span className="text-indigo-400">SỰ IM LẶNG.</span>
-                  </h2>
-                  <p className="text-slate-400 text-lg leading-relaxed">
-                    Trang bị công nghệ chống ồn chủ động Hyper-Cancel thế hệ thứ 4, tai nghe Aether Pro mang đến không gian âm thanh thuần khiết nhất mà bạn từng trải nghiệm.
-                  </p>
-                  <ul className="space-y-4">
-                    {[
-                      "Thời lượng pin 60 giờ liên tục",
-                      "Driver Titanium 50mm tùy chỉnh",
-                      "Kết nối Bluetooth 5.4 Low Latency",
-                      "Vật liệu Alcantara siêu mềm mại"
-                    ].map((feat) => (
-                      <li key={feat} className="flex items-center gap-4 text-white font-bold">
-                        <CheckCircle2 className="w-5 h-5 text-indigo-500" /> {feat}
-                      </li>
-                    ))}
-                  </ul>
-                  <button className="px-12 py-6 bg-white text-slate-900 rounded-full font-black text-xs uppercase tracking-[0.3em] hover:bg-indigo-500 hover:text-white transition-all shadow-2xl">
-                    Đặt hàng ngay
-                  </button>
+      {/* Testimonials */}
+      <section 
+        className="relative pt-[10vw] pb-[14vw] bg-[#22D3EE]" 
+        id="testimonials"
+        style={{ marginTop: '-3vw', clipPath: 'polygon(0 3vw, 100% 0, 100% calc(100% - 3vw), 0 100%)', zIndex: 5 }}
+      >
+        <div className="container mx-auto px-12 relative z-10">
+          <div className="text-center max-w-3xl mx-auto mb-20">
+            <h2 className="text-5xl font-black text-slate-900 mb-6 tracking-tighter">Đánh Giá Khách Hàng</h2>
+            <p className="text-slate-800 font-bold tracking-widest text-[10px] uppercase italic">Sự hài lòng của bạn là thành công của chúng tôi</p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              { name: "Anh Tuấn (DJ)", role: "Quán Bar Quận 1", text: "Máy khói DuongDIY đánh rất bốc, lượng khói phủ kín sàn chỉ trong vài giây. Rất hài lòng về hiệu suất của máy 1500W!" },
+              { name: "Chị Lan Anh", role: "Quản lý sự kiện", text: "Mình mua 3 máy cho công ty tổ chức sự kiện. Máy chạy êm, ít bị nghẹt sưởi như mấy dòng giá rẻ trước đây. Sẽ tiếp tục ủng hộ." },
+              { name: "Minh Hoàng", role: "Karaoke VIP", text: "Dung dịch khói bạc hà mùi cực kỳ dễ chịu, khách khen rất nhiều. Máy khói mini 400W nhỏ mà có võ, rất phù hợp với phòng VIP." }
+            ].map((item, idx) => (
+              <motion.div 
+                key={idx}
+                whileHover={{ y: -10 }}
+                className="bg-white/30 backdrop-blur-md p-10 rounded-[2.5rem] border border-white/40 shadow-xl shadow-cyan-900/10"
+              >
+                <div className="flex text-amber-600 mb-6">
+                  {[...Array(5)].map((_, i) => <svg key={i} className="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>)}
                 </div>
-              </FadeInView>
-           </div>
-        </section>
+                <p className="text-slate-900 font-medium leading-relaxed mb-8 italic">"{item.text}"</p>
+                <div>
+                  <h4 className="text-lg font-black text-slate-900">{item.name}</h4>
+                  <p className="text-slate-800 text-xs font-bold uppercase tracking-wider mt-1">{item.role}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-        {/* SECTION 6: TESTIMONIALS */}
-        <section className="py-40 px-6 md:px-12 lg:px-24">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-24">
-              <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-slate-900 mb-6">NHỮNG CHIA SẺ <span className="text-indigo-600">THẬT LÒNG.</span></h2>
-              <div className="w-24 h-1 bg-indigo-600 mx-auto rounded-full" />
+      {/* Footer */}
+      <footer 
+        className="bg-gradient-to-b from-slate-900 to-slate-950 pt-[16vw] pb-20 relative overflow-hidden z-0"
+        style={{ marginTop: '-3vw', clipPath: 'polygon(0 3vw, 100% 0, 100% 100%, 0 100%)' }}
+      >
+        <div className="container mx-auto px-12 relative z-10 grid md:grid-cols-3 gap-24 text-white">
+          <div className="space-y-8">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-indigo-600 rounded-xl flex items-center justify-center font-black italic">D</div>
+              <span className="text-2xl font-black italic tracking-tighter">DuongDIY</span>
             </div>
+            <p className="text-slate-500 font-medium leading-relaxed">
+              Thương hiệu hàng đầu về giải pháp tạo khói và hiệu ứng sân khấu tại Việt Nam. Uy tín - Chất lượng - Tận tâm.
+            </p>
+          </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {[
-                { name: "Hoàng Minh", role: "Kiến trúc sư", text: "Thiết kế của Aether thực sự khác biệt. Nó không chỉ đẹp mà còn mang lại cảm hứng làm việc mỗi ngày cho tôi." },
-                { name: "Thảo Vy", role: "Content Creator", text: "Tôi chưa từng thấy hệ thống hỗ trợ nào nhanh đến thế. Mọi vấn đề của tôi đều được xử lý chỉ trong vài phút." },
-                { name: "Anh Đức", role: "Tech Enthusiast", text: "Độ hoàn thiện sản phẩm ở mức cực kỳ cao. Đây chắc chắn là thương hiệu công nghệ yêu thích mới của tôi." }
-              ].map((item, i) => (
-                <FadeInView key={i} delay={0.2 * i}>
-                  <div className="p-12 rounded-[3rem] bg-white border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-500">
-                    <div className="flex gap-1 mb-8">
-                      {[...Array(5)].map((_, star) => <Star key={star} className="w-4 h-4 fill-amber-400 text-amber-400" />)}
-                    </div>
-                    <p className="text-slate-600 font-medium italic mb-10 leading-relaxed text-lg">"{item.text}"</p>
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-full bg-slate-100" />
-                      <div>
-                        <p className="font-black text-slate-800 tracking-tight">{item.name}</p>
-                        <p className="text-[10px] font-black uppercase text-indigo-600 tracking-widest">{item.role}</p>
-                      </div>
-                    </div>
+          <div className="space-y-8">
+             <h4 className="text-lg font-black tracking-tight">Liên Hệ</h4>
+             <ul className="space-y-4 text-slate-400 font-medium">
+               <li>Email: duongdiy@techchain.com</li>
+               <li>Hotline: 09xx xxx xxx</li>
+               <li>Địa chỉ: TP. Hồ Chí Minh, Việt Nam</li>
+             </ul>
+          </div>
+
+          <div className="space-y-8">
+             <h4 className="text-lg font-black tracking-tight">Theo Dõi</h4>
+             <div className="flex gap-4">
+                {[Facebook, Twitter, Instagram].map((Icon, i) => (
+                  <div key={i} className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center hover:bg-indigo-600 transition-all cursor-pointer">
+                    <Icon className="w-5 h-5" />
                   </div>
-                </FadeInView>
-              ))}
-            </div>
+                ))}
+             </div>
           </div>
-        </section>
+        </div>
+      </footer>
 
-        {/* FINAL CALL TO ACTION */}
-        <section className="py-40 px-6 relative overflow-hidden">
-           <div className="max-w-5xl mx-auto rounded-[5rem] bg-slate-900 p-20 text-center relative overflow-hidden shadow-[0_50px_100px_rgba(0,0,0,0.2)]">
-              <div className="absolute inset-0 opacity-30">
-                 <div className="absolute top-0 right-0 w-full h-full bg-[radial-gradient(circle_at_100%_0%,rgba(99,102,241,0.4),transparent_50%)]" />
-              </div>
-              
-              <div className="relative z-10 space-y-12">
-                 <h3 className="text-5xl md:text-7xl font-black tracking-tighter text-white leading-tight">
-                    SẴN SÀNG CHO <br /> <span className="text-indigo-400">BƯỚC NHẢY TIẾP THEO?</span>
-                 </h3>
-                 <p className="text-slate-400 text-lg font-medium max-w-xl mx-auto">
-                    Gia nhập cộng đồng 2 triệu người dùng tiên phong ngay hôm nay và nhận ưu đãi 10% cho đơn hàng đầu tiên.
-                 </p>
-                 <button 
-                  onClick={() => navigate('/register')}
-                  className="px-16 py-7 bg-white text-slate-900 rounded-full font-black text-sm uppercase tracking-[0.4em] hover:bg-indigo-500 hover:text-white transition-all shadow-2xl"
-                 >
-                    Đăng ký tài khoản
-                 </button>
-              </div>
-           </div>
-        </section>
-
-        {/* EXTENDED FOOTER */}
-        <NeuralynFooter />
-
-      </main>
-
-      {/* Global Scrollbar Customization */}
+      {/* Custom Styles */}
       <style dangerouslySetInnerHTML={{ __html: `
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #cbd5e1; }
-        html { scroll-behavior: smooth; }
+        @keyframes slow-zoom {
+          0% { transform: scale(1); }
+          50% { transform: scale(1.03); }
+          100% { transform: scale(1); }
+        }
+        .animate-slow-zoom {
+          animation: slow-zoom 25s infinite ease-in-out;
+        }
       `}} />
     </div>
   );

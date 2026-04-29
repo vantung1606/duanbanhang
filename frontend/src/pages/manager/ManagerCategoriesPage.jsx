@@ -13,9 +13,9 @@ import {
   ChevronRight,
   FolderTree
 } from 'lucide-react';
-import { cn } from '../lib/utils';
-import { adminService } from '../services/api/adminService';
-import { useToast } from '../components/common/Toast';
+import { cn } from '../../lib/utils';
+import { adminService } from '../../services/api/adminService';
+import { useToast } from '../../components/common/Toast';
 
 // Reusable Modal Layout
 const ModalLayout = ({ isOpen, onClose, title, children, icon: Icon }) => (

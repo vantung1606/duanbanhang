@@ -21,6 +21,7 @@ public class ProductSaveRequest {
     private String imageUrl;
     private String ribbon;
     private boolean active = true;
+    private String specifications;
     
     // Odoo fields
     private String productType;

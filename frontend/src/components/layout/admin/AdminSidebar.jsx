@@ -62,29 +62,29 @@ export default function AdminSidebar({ isOpen, setIsOpen }) {
 
   return (
     <aside className={cn(
-      "w-72 h-[calc(100vh-3rem)] sticky top-6 z-50 flex flex-col transition-all duration-300",
+      "w-80 h-[calc(100vh-2rem)] sticky top-4 z-50 flex flex-col transition-all duration-500",
       "fixed lg:relative lg:translate-x-0",
       isOpen ? "translate-x-0" : "-translate-x-[150%] lg:-translate-x-0"
     )}>
       <motion.div 
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
-        className="flex-1 bg-white rounded-[2.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.02)] border border-slate-100 flex flex-col overflow-hidden py-8 px-6"
+        className="flex-1 bg-white/40 backdrop-blur-3xl rounded-[3rem] border border-white/40 flex flex-col overflow-hidden py-10 px-8 shadow-[0_20px_50px_rgba(0,0,0,0.05)]"
       >
         
         {/* Logo Section */}
-        <div className="flex items-center gap-4 mb-12 px-2">
-          <div className="w-12 h-12 rounded-2xl bg-slate-800 flex items-center justify-center">
-            <Grid className="text-white w-5 h-5" />
+        <div className="flex items-center gap-4 mb-14 px-2">
+          <div className="w-12 h-12 rounded-2xl bg-white shadow-sm flex items-center justify-center">
+            <Grid className="text-slate-800 w-6 h-6" />
           </div>
           <div>
-            <h2 className="text-lg font-black text-slate-800 tracking-tight leading-tight">Aether</h2>
-            <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest leading-tight mt-0.5">PREMIUM<br/>DASHBOARD</p>
+            <h2 className="text-xl font-black text-slate-800 tracking-tight leading-tight">Ether UI</h2>
+            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest leading-tight mt-0.5">EDITORIAL SOFT-FORM</p>
           </div>
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 space-y-1 overflow-y-auto custom-scrollbar pr-2">
+        <nav className="flex-1 space-y-2 overflow-y-auto custom-scrollbar pr-2">
           {menuItems.map((item) => (
             <div key={item.label} className="space-y-1">
               {item.children ? (
@@ -92,12 +92,12 @@ export default function AdminSidebar({ isOpen, setIsOpen }) {
                   <button
                     onClick={() => toggleDropdown(item.label)}
                     className={cn(
-                      "w-full flex items-center justify-between px-4 py-4 rounded-2xl transition-all font-bold text-xs tracking-widest uppercase",
-                      openDropdown === item.label ? "text-indigo-600 bg-indigo-50/50" : "text-slate-500 hover:text-slate-800 hover:bg-slate-50/50"
+                      "w-full flex items-center justify-between px-6 py-4 rounded-3xl transition-all duration-300 font-bold text-xs tracking-wider",
+                      openDropdown === item.label ? "text-slate-900 bg-white shadow-sm" : "text-slate-500 hover:text-slate-800 hover:bg-white/30"
                     )}
                   >
                     <div className="flex items-center gap-4">
-                      <item.icon className="w-5 h-5" strokeWidth={2.5} />
+                      <item.icon className="w-5 h-5" />
                       <span>{item.label}</span>
                     </div>
                     <ChevronDown className={cn("w-4 h-4 transition-transform duration-300", openDropdown === item.label && "rotate-180")} />
@@ -109,16 +109,16 @@ export default function AdminSidebar({ isOpen, setIsOpen }) {
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        className="overflow-hidden pl-4 space-y-1"
+                        className="overflow-hidden pl-6 space-y-1 mt-1"
                       >
                         {item.children.map((child) => (
                           <NavLink
                             key={child.path}
                             to={child.path}
                             className={({ isActive }) => cn(
-                              "flex items-center gap-4 px-4 py-3 rounded-xl transition-all font-bold text-[10px] tracking-widest uppercase",
+                              "flex items-center gap-4 px-6 py-3 rounded-2xl transition-all font-bold text-[10px] tracking-widest uppercase",
                               isActive 
-                                ? "text-indigo-600 bg-white shadow-sm border border-indigo-100" 
+                                ? "text-slate-900" 
                                 : "text-slate-400 hover:text-slate-700"
                             )}
                           >
@@ -135,13 +135,13 @@ export default function AdminSidebar({ isOpen, setIsOpen }) {
                   to={item.path}
                   end={item.path === '/admin'}
                   className={({ isActive }) => cn(
-                    "flex items-center gap-4 px-4 py-4 rounded-2xl transition-all font-bold text-xs tracking-widest uppercase",
+                    "flex items-center gap-4 px-6 py-4 rounded-3xl transition-all duration-300 font-bold text-xs tracking-wider",
                     isActive 
-                      ? "text-slate-800 bg-slate-50 shadow-sm" 
-                      : "text-slate-500 hover:text-slate-800 hover:bg-slate-50/50"
+                      ? "text-slate-900 bg-white shadow-sm" 
+                      : "text-slate-500 hover:text-slate-800 hover:bg-white/30"
                   )}
                 >
-                  <item.icon className="w-5 h-5" strokeWidth={2.5} />
+                  <item.icon className="w-5 h-5" />
                   <span>{item.label}</span>
                 </NavLink>
               )}
@@ -149,14 +149,25 @@ export default function AdminSidebar({ isOpen, setIsOpen }) {
           ))}
         </nav>
 
-        {/* Logout */}
-        <div className="mt-auto pt-8 border-t border-slate-50">
+        {/* Action Button */}
+        <div className="mt-8 mb-6">
+          <button className="w-full bg-[#3d4d73] hover:bg-[#2d3a5a] text-white py-5 rounded-[2rem] font-bold text-xs uppercase tracking-widest shadow-xl shadow-blue-900/20 flex items-center justify-center gap-3 transition-all duration-300 hover:scale-[1.02]">
+            <span className="text-lg">+</span> New Transaction
+          </button>
+        </div>
+
+        {/* Footer */}
+        <div className="space-y-2">
+          <button className="flex items-center gap-4 px-6 py-3 w-full text-slate-500 hover:text-slate-800 font-bold text-[10px] tracking-widest uppercase transition-colors">
+            <Settings className="w-4 h-4" />
+            <span>Help</span>
+          </button>
           <button 
             onClick={handleLogout}
-            className="flex items-center gap-4 px-4 py-4 w-full rounded-2xl transition-all font-bold text-xs tracking-widest uppercase text-slate-500 hover:text-slate-800 hover:bg-slate-50/50"
+            className="flex items-center gap-4 px-6 py-3 w-full text-slate-500 hover:text-red-600 font-bold text-[10px] tracking-widest uppercase transition-colors"
           >
-            <LogOut className="w-5 h-5" strokeWidth={2.5} />
-            <span>ĐĂNG XUẤT</span>
+            <LogOut className="w-4 h-4 rotate-180" />
+            <span>Logout</span>
           </button>
         </div>
       </motion.div>
