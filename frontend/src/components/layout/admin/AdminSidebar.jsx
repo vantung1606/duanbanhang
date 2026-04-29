@@ -16,7 +16,13 @@ import {
   ChevronDown,
   Palette,
   Box,
-  Star
+  Star,
+  Globe,
+  Home,
+  Info,
+  LifeBuoy,
+  Newspaper,
+  MessageSquare
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../../../lib/utils';
@@ -43,6 +49,18 @@ const menuItems = [
   { icon: UserCircle, label: 'QUẢN LÝ (MANAGER)', path: '/admin/managers' },
   { icon: Wrench, label: 'BẢO HÀNH', path: '/admin/warranties' },
   { icon: ActivitySquare, label: 'NHẬT KÝ (LOGS)', path: '/admin/logs' },
+  { 
+    icon: Globe, 
+    label: 'QUẢN LÝ WEBSITE', 
+    path: '/admin/website',
+    children: [
+      { label: 'TRANG CHỦ', path: '/admin/website/home', icon: Home },
+      { label: 'GIỚI THIỆU', path: '/admin/website/about', icon: Info },
+      { label: 'DỊCH VỤ', path: '/admin/website/services', icon: LifeBuoy },
+      { label: 'TIN TỨC', path: '/admin/website/blog', icon: Newspaper },
+      { label: 'LIÊN HỆ', path: '/admin/website/contact', icon: MessageSquare },
+    ]
+  },
   { icon: Settings, label: 'CÀI ĐẶT', path: '/admin/settings' },
 ];
 
@@ -74,12 +92,12 @@ export default function AdminSidebar({ isOpen, setIsOpen }) {
         
         {/* Logo Section */}
         <div className="flex items-center gap-4 mb-14 px-2">
-          <div className="w-12 h-12 rounded-2xl bg-white shadow-sm flex items-center justify-center">
-            <Grid className="text-slate-800 w-6 h-6" />
+          <div className="w-12 h-12 rounded-2xl bg-slate-900 shadow-sm flex items-center justify-center">
+            <LayoutDashboard className="text-white w-6 h-6" />
           </div>
           <div>
-            <h2 className="text-xl font-black text-slate-800 tracking-tight leading-tight">Ether UI</h2>
-            <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest leading-tight mt-0.5">EDITORIAL SOFT-FORM</p>
+            <h2 className="text-xl font-black text-slate-800 tracking-tight leading-tight uppercase">DuongDIY</h2>
+            <p className="text-[10px] font-bold text-indigo-500 uppercase tracking-widest leading-tight mt-0.5">ERP SYSTEM v1.0</p>
           </div>
         </div>
 

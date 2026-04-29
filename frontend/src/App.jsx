@@ -15,7 +15,7 @@ import OrderSuccessPage from './pages/customer/OrderSuccessPage';
 import NotFoundPage from './pages/NotFoundPage';
 import CartSidebar from './components/customer/CartSidebar';
 import CheckoutPage from './pages/customer/CheckoutPage';
-import ProfilePage from './pages/customer/ProfilePage';
+import FloatingContact from './components/customer/FloatingContact';
 import StaffOrdersPage from './pages/staff/StaffOrdersPage';
 import StaffOrderDetailPage from './pages/staff/StaffOrderDetailPage';
 import ManagerDashboardPage from './pages/manager/ManagerDashboardPage';
@@ -23,6 +23,11 @@ import AdminDashboardPage from './pages/admin/AdminDashboardPage';
 import AdminCustomersPage from './pages/admin/AdminCustomersPage';
 import AdminManagersPage from './pages/admin/AdminManagersPage';
 import AdminStaffPage from './pages/admin/AdminStaffPage';
+import AdminBlogManagementPage from './pages/admin/AdminBlogManagementPage';
+import AdminServicesManagementPage from './pages/admin/AdminServicesManagementPage';
+import AdminAboutManagementPage from './pages/admin/AdminAboutManagementPage';
+import AdminContactManagementPage from './pages/admin/AdminContactManagementPage';
+import AdminHomeManagementPage from './pages/admin/AdminHomeManagementPage';
 import ManagerPromotionsPage from './pages/manager/ManagerPromotionsPage';
 import ManagerCategoriesPage from './pages/manager/ManagerCategoriesPage';
 import ManagerLogsPage from './pages/manager/ManagerLogsPage';
@@ -34,11 +39,12 @@ import AdminAttributesPage from './pages/admin/AdminAttributesPage';
 import AdminBrandsPage from './pages/admin/AdminBrandsPage';
 import AdminInventoryPage from './pages/admin/AdminInventoryPage';
 import ShopperHubPage from './pages/customer/ShopperHubPage';
-import ShopperProfilePage from './pages/customer/ShopperProfilePage';
+import AboutUs from './pages/customer/AboutUs';
+import Services from './pages/customer/Services';
+import Blog from './pages/customer/Blog';
+import Contact from './pages/customer/Contact';
 
-// Auth Pages
-import AuthPage from './pages/auth/AuthPage';
-import ForgotPasswordPage from './pages/auth/ForgotPasswordPage';
+// Auth
 import ProtectedRoute from './components/common/ProtectedRoute';
 import ToastContainer from './components/common/Toast';
 
@@ -52,6 +58,7 @@ function App() {
     <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <ToastContainer />
       <CartSidebar />
+      <FloatingContact />
       <Routes>
         {/* Admin Section */}
         <Route path="/admin" element={<ProtectedRoute allowedRoles={['ADMIN']}><AdminLayout /></ProtectedRoute>}>
@@ -67,6 +74,11 @@ function App() {
           <Route path="orders" element={<div className="p-10 text-center font-black uppercase tracking-widest text-slate-400 border-2 border-dashed border-slate-200 rounded-[3rem]">Quản Lý Đơn Hàng (Đang Phát Triển)</div>} />
           <Route path="warranties" element={<div className="p-10 text-center font-black uppercase tracking-widest text-slate-400 border-2 border-dashed border-slate-200 rounded-[3rem]">Quản Lý Bảo Hành (Đang Phát Triển)</div>} />
           <Route path="logs" element={<ManagerLogsPage />} />
+          <Route path="website/home" element={<AdminHomeManagementPage />} />
+          <Route path="website/about" element={<AdminAboutManagementPage />} />
+          <Route path="website/services" element={<AdminServicesManagementPage />} />
+          <Route path="website/blog" element={<AdminBlogManagementPage />} />
+          <Route path="website/contact" element={<AdminContactManagementPage />} />
           <Route path="settings" element={<div className="p-10 text-center font-black uppercase tracking-widest text-slate-400 border-2 border-dashed border-slate-200 rounded-[3rem]">Cài Đặt Hệ Thống (Đang Phát Triển)</div>} />
           <Route path="*" element={<Navigate to="/admin" replace />} />
         </Route>
@@ -100,15 +112,12 @@ function App() {
         <Route path="/product/:slug" element={<ProductDetail />} />
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/checkout/success" element={<OrderSuccessPage />} />
-        <Route path="/account" element={<Navigate to="/home" replace />} />
-        <Route path="/profile" element={<Navigate to="/home" replace />} />
+        <Route path="/about" element={<AboutUs />} />
+        <Route path="/support" element={<Services />} />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/contact" element={<Contact />} />
 
-        {/* Auth Routes */}
-        <Route path="/login" element={<AuthPage />} />
-        <Route path="/register" element={<AuthPage />} />
-        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-
-        {/* Root Redirect */}
+        {/* Protected Routes */}
         <Route path="/" element={<Navigate to="/home" replace />} />
       </Routes>
     </Router>

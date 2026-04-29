@@ -25,7 +25,7 @@ export const useAuthStore = create(
       }),
     }),
     {
-      name: 'techchain-auth', // name of the item in storage (default: localStorage)
+      name: 'duongdiy-auth', // name of the item in storage (default: localStorage)
     }
   )
 );

@@ -5,37 +5,39 @@ import { adminService } from '../../services/api/adminService';
 import { useToast } from '../../components/common/Toast';
 
 // Icon Placeholders
-const Package = () => <span>[PKG]</span>;
-const Plus = () => <span>[+]</span>;
-const Search = () => <span>[S]</span>;
-const Filter = () => <span>[F]</span>;
-const Edit3 = () => <span>[E]</span>;
-const Trash2 = () => <span>[T]</span>;
-const Grid = () => <span>[G]</span>;
-const ListIcon = () => <span>[L]</span>;
-const X = () => <span>[X]</span>;
-const FileText = () => <span>[DOC]</span>;
-const Tag = () => <span>[TAG]</span>;
-const Shield = () => <span>[SH]</span>;
-const DollarSign = () => <span>[$]</span>;
-const Layers = () => <span>[LY]</span>;
-const ChevronDown = () => <span>[v]</span>;
-const ImageIcon = () => <span>[IMG]</span>;
-const Zap = () => <span>[Z]</span>;
-const Eye = () => <span>[EYE]</span>;
-const EyeOff = () => <span>[HID]</span>;
-const Infinity = () => <span>[INF]</span>;
-const PlusCircle = () => <span>[+O]</span>;
-const Percent = () => <span>[%]</span>;
-const CheckCircle2 = () => <span>[OK]</span>;
-const Settings2 = () => <span>[SET]</span>;
-const Box = () => <span>[BOX]</span>;
-const Truck = () => <span>[TR]</span>;
-const Globe = () => <span>[GL]</span>;
-const Camera = () => <span>[CAM]</span>;
-const Info = () => <span>[I]</span>;
-const ListFilter = () => <span>[LF]</span>;
-const ShoppingCart = () => <span>[CART]</span>;
+import { 
+  Package, 
+  Plus, 
+  Search, 
+  Filter, 
+  Edit3, 
+  Trash2, 
+  Grid, 
+  List as ListIcon, 
+  X, 
+  FileText, 
+  Tag, 
+  Shield, 
+  DollarSign, 
+  Layers, 
+  ChevronDown, 
+  Image as ImageIcon, 
+  Zap, 
+  Eye, 
+  EyeOff, 
+  Infinity, 
+  PlusCircle, 
+  Percent, 
+  CheckCircle2, 
+  Settings2, 
+  Box, 
+  Truck, 
+  Globe, 
+  Camera, 
+  Info, 
+  ListFilter, 
+  ShoppingCart 
+} from 'lucide-react';
 
 // Reusable Modal Layout
 const ModalLayout = ({ isOpen, onClose, title, children }) => (
@@ -545,7 +547,7 @@ export default function ManagerProductsPage() {
       {/* Filters */}
       <div className="relative group">
           <Search className="absolute left-8 top-1/2 -translate-y-1/2 w-6 h-6 text-slate-300 group-focus-within:text-indigo-500 transition-all" />
-          <input type="text" placeholder="Tìm theo tên sản phẩm, mã danh mục hoặc giá..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="w-full bg-white dark:bg-white/5 border border-slate-100 dark:border-white/10 pl-18 pr-8 py-6 rounded-[2.5rem] text-sm font-bold shadow-sm focus:border-indigo-500 transition-all" />
+          <input type="text" placeholder="Tìm theo tên sản phẩm, mã danh mục hoặc giá..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="w-full bg-white dark:bg-white/5 border border-slate-100 dark:border-white/10 pl-20 pr-8 py-6 rounded-[2.5rem] text-sm font-bold shadow-sm focus:border-indigo-500 transition-all" />
       </div>
 
       {/* Product List */}
@@ -563,8 +565,12 @@ export default function ManagerProductsPage() {
               key={p.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.05 }}
               className="bg-white border border-slate-100 rounded-[3rem] overflow-hidden group hover:shadow-2xl transition-all"
             >
-              <div className="relative h-64 bg-slate-50">
-                <img src={p.thumbnailUrl} className="w-full h-full object-cover group-hover:scale-110 transition-all duration-700" alt={p.name} />
+              <div className="relative h-64 bg-white flex items-center justify-center">
+                <img 
+                  src={p.thumbnailUrl || 'https://images.unsplash.com/photo-1598462039073-902996504a34?q=80&w=400&auto=format&fit=crop'} 
+                  className="w-full h-full object-contain p-8 group-hover:scale-110 transition-all duration-700" 
+                  alt={p.name} 
+                />
                 <div className="absolute top-6 right-6 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-all">
                    <button onClick={() => handleOpenEdit(p)} className="p-3 bg-white text-indigo-500 rounded-xl shadow-lg hover:bg-indigo-500 hover:text-white transition-all"><Edit3 className="w-5 h-5" /></button>
                    <button onClick={() => handleDelete(p.id)} className="p-3 bg-white text-red-500 rounded-xl shadow-lg hover:bg-red-500 hover:text-white transition-all"><Trash2 className="w-5 h-5" /></button>

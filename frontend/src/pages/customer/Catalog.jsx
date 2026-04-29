@@ -11,6 +11,8 @@ import { Link } from 'react-router-dom';
 import SEO from '../../components/common/SEO';
 import NeuralynNavbar from '../../components/layout/customer/NeuralynNavbar';
 import NeuralynFooter from '../../components/layout/customer/NeuralynFooter';
+import { useToast } from '../../components/common/Toast';
+import { useAuthStore } from '../../store/authStore';
 
 const FloatingOrb = ({ color, size, top, left, delay }) => (
   <motion.div
@@ -39,13 +41,38 @@ const FloatingOrb = ({ color, size, top, left, delay }) => (
 
 export default function Catalog() {
   const { t } = useTranslation();
-  const [products] = useState(catalogService.getMockProducts());
+  const [products, setProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const { addItem } = useCartStore();
+  const { addToast } = useToast();
+  const { isAuthenticated } = useAuthStore();
   const [viewMode, setViewMode] = useState('grid');
   const [sortBy] = useState('Mới nhất');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setIsLoading(true);
+        const data = await catalogService.getProducts({ 
+          page: currentPage - 1, 
+          size: 12 
+        });
+        setProducts(data.content || []);
+        setTotalPages(data.totalPages || 1);
+      } catch (error) {
+        console.error('Error fetching catalog products:', error);
+        setProducts(catalogService.getMockProducts());
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchProducts();
+  }, [currentPage]);
 
   const containerRef = useRef(null);
 
@@ -85,23 +112,23 @@ export default function Catalog() {
           </motion.div>
         </section>
 
-        <div className="flex flex-col lg:flex-row gap-6 lg:gap-12 items-start">
-          {/* Sidebar - Toggleable */}
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-12 items-start relative">
+          {/* Sidebar - Fix: Added fixed width and proper z-index */}
           <div className={cn(
-            "w-full lg:w-64 sticky top-28 z-20 transition-all duration-300",
+            "w-full lg:w-[320px] lg:shrink-0 sticky top-28 z-20 transition-all duration-300",
             isFilterOpen ? "block" : "hidden lg:block"
           )}>
-            <div className="bg-white border-2 border-white rounded-[2rem] p-6 shadow-xl lg:shadow-none">
-               <div className="flex justify-between items-center mb-6 lg:hidden">
-                  <h3 className="font-heading font-black text-lg">Bộ Lọc</h3>
-                  <button onClick={() => setIsFilterOpen(false)} className="text-[#4981cf] font-black text-[10px] uppercase tracking-widest underline">Đóng</button>
+            <div className="bg-white/90 backdrop-blur-xl border-2 border-white rounded-[2.5rem] p-8 shadow-2xl lg:shadow-xl lg:shadow-slate-200/50">
+               <div className="flex justify-between items-center mb-8 lg:hidden">
+                  <h3 className="font-heading font-black text-xl text-[#1a365d]">Bộ Lọc</h3>
+                  <button onClick={() => setIsFilterOpen(false)} className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-[#1a365d]"><Filter className="w-4 h-4" /></button>
                </div>
                <FilterSidebar />
             </div>
           </div>
 
-          {/* Right Content */}
-          <div className="flex-1 w-full min-w-0">
+          {/* Right Content - Fix: Ensure flex-1 and overflow-hidden to prevent shrinking */}
+          <div className="flex-1 w-full min-w-0 overflow-hidden lg:overflow-visible">
             
             {/* Header & Tools */}
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8 w-full bg-white/40 backdrop-blur-md p-3 md:p-4 rounded-[1.5rem] md:rounded-[2rem] border border-white/50">
@@ -144,10 +171,15 @@ export default function Catalog() {
 
             {/* Product Grid - 2 Columns on Mobile, Shrunken Cards */}
             <div className={cn(
-              "grid gap-3 md:gap-8",
+              "grid gap-3 md:gap-8 min-h-[400px]",
               viewMode === 'grid' ? "grid-cols-2 lg:grid-cols-3" : "grid-cols-1"
             )}>
-              <AnimatePresence mode="popLayout">
+              {isLoading ? (
+                [...Array(6)].map((_, i) => (
+                  <div key={i} className="h-80 bg-white/20 animate-pulse rounded-[2.5rem]" />
+                ))
+              ) : (
+                <AnimatePresence mode="popLayout">
                 {products.map((product, idx) => (
                   <motion.div
                     key={product.id}
@@ -194,7 +226,22 @@ export default function Catalog() {
                           <p className="text-[11px] md:text-2xl font-black text-[#4981cf] tracking-tighter truncate">{formatCurrency(product.minPrice)}</p>
                         </div>
                         <button 
-                          onClick={(e) => { e.preventDefault(); addItem(product); }}
+                          onClick={async (e) => { 
+                            e.preventDefault(); 
+                            if (!isAuthenticated) {
+                              addToast('Vui lòng đăng nhập để thêm vào giỏ hàng!', 'info');
+                              return;
+                            }
+                            
+                            try {
+                              const variantId = product.defaultVariantId || product.id;
+                              const variant = { id: variantId, price: product.minPrice, sku: product.sku || `SKU-${product.id}`, attributeValues: [] };
+                              await addItem(product, variant, 1);
+                              addToast(`Đã thêm ${product.name} vào giỏ hàng!`, 'success');
+                            } catch (error) {
+                              addToast('Không thể thêm vào giỏ hàng!', 'error');
+                            }
+                          }}
                           className="w-8 h-8 md:w-14 md:h-14 rounded-lg md:rounded-2xl bg-[#1a365d] text-white flex items-center justify-center hover:bg-[#4981cf] transition-all duration-300 shadow-lg active:scale-90 flex-shrink-0"
                         >
                           <ShoppingCart className="w-4 h-4 md:w-6 md:h-6" />
@@ -204,13 +251,49 @@ export default function Catalog() {
                   </motion.div>
                 ))}
               </AnimatePresence>
+            )}
             </div>
 
-            {/* Load More Section */}
-            <div className="mt-16 md:mt-24 text-center">
-               <button className="w-full sm:w-auto px-10 py-4 rounded-full bg-white border-2 border-[#cadaee] text-[#1a365d] text-[9px] font-black uppercase tracking-[0.3em] hover:bg-[#1a365d] hover:text-white hover:border-[#1a365d] transition-all shadow-xl active:scale-95">
-                  Xem thêm sản phẩm
-               </button>
+            {/* Pagination Section */}
+            <div className="mt-16 md:mt-24 flex flex-col items-center gap-8">
+               <div className="flex items-center gap-2 md:gap-4 p-2 bg-white/60 backdrop-blur-xl rounded-full border border-white/80 shadow-xl">
+                  <button 
+                    onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                    disabled={currentPage === 1}
+                    className="w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center text-[#1a365d] hover:bg-[#4981cf] hover:text-white transition-all disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-[#1a365d]"
+                  >
+                    <ChevronDown className="w-5 h-5 rotate-90" />
+                  </button>
+
+                  <div className="flex items-center gap-1">
+                    {[1, 2, 3, '...', 5].map((page, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => typeof page === 'number' && setCurrentPage(page)}
+                        className={cn(
+                          "w-10 h-10 md:w-12 md:h-12 rounded-full font-black text-[10px] md:text-xs transition-all",
+                          currentPage === page 
+                            ? "bg-[#1a365d] text-white shadow-lg" 
+                            : "text-[#1a365d]/50 hover:bg-white hover:text-[#4981cf]"
+                        )}
+                      >
+                        {page}
+                      </button>
+                    ))}
+                  </div>
+
+                  <button 
+                    onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                    disabled={currentPage === totalPages}
+                    className="w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center text-[#1a365d] hover:bg-[#4981cf] hover:text-white transition-all disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-[#1a365d]"
+                  >
+                    <ChevronDown className="w-5 h-5 -rotate-90" />
+                  </button>
+               </div>
+               
+               <p className="text-[9px] font-black uppercase tracking-[0.2em] text-[#1a365d]/40 italic">
+                  Trang {currentPage} trên {totalPages}
+               </p>
             </div>
           </div>
         </div>

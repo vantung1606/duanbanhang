@@ -12,9 +12,9 @@ apiClient.interceptors.request.use(
   (config) => {
     // Get token from multiple possible locations for consistency
     let token = null;
-    
-    // 1. Check techchain-auth (Zustand)
-    const authData = localStorage.getItem('techchain-auth');
+
+    // 1. Check duongdiy-auth (Zustand)
+    const authData = localStorage.getItem('duongdiy-auth');
     if (authData) {
       try {
         const parsed = JSON.parse(authData);
@@ -29,7 +29,10 @@ apiClient.interceptors.request.use(
       token = localStorage.getItem('token');
     }
 
-    if (token) {
+    // Don't send token for login/register requests to avoid stale token issues
+    const isAuthRequest = config.url.includes('/auth/login') || config.url.includes('/auth/register');
+
+    if (token && !isAuthRequest) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;

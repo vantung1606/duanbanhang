@@ -58,6 +58,13 @@ const recentHub = [
 ];
 
 export default function AdminDashboardPage() {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsMounted(true), 500);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div className="relative pb-20 w-full">
       
@@ -112,19 +119,26 @@ export default function AdminDashboardPage() {
             </div>
           </div>
 
-          <div className="flex-1 min-h-[300px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={chartData} barSize={32} barGap={8}>
-                <XAxis dataKey="name" hide />
-                <YAxis hide />
-                <Tooltip 
-                  cursor={{fill: 'transparent'}}
-                  contentStyle={{ borderRadius: '1rem', border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.05)' }}
-                />
-                <Bar dataKey="projection" fill="#cbd5e1" radius={[8, 8, 8, 8]} />
-                <Bar dataKey="actual" fill="#475569" radius={[8, 8, 8, 8]} />
-              </BarChart>
-            </ResponsiveContainer>
+          <div className="h-[350px] w-full mt-auto relative" id="chart-container">
+            {isMounted && (
+              <ResponsiveContainer 
+                width="99%" 
+                height={350} 
+                minWidth={0}
+                debounce={50}
+              >
+                <BarChart data={chartData} barSize={32} barGap={8}>
+                  <XAxis dataKey="name" hide />
+                  <YAxis hide />
+                  <Tooltip 
+                    cursor={{fill: 'transparent'}}
+                    contentStyle={{ borderRadius: '1rem', border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.05)' }}
+                  />
+                  <Bar dataKey="projection" fill="#cbd5e1" radius={[8, 8, 8, 8]} />
+                  <Bar dataKey="actual" fill="#475569" radius={[8, 8, 8, 8]} />
+                </BarChart>
+              </ResponsiveContainer>
+            )}
           </div>
         </motion.div>
 

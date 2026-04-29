@@ -17,7 +17,7 @@ export default function FilterSidebar({ onFilterChange }) {
   };
   
   return (
-    <aside className="w-full lg:w-80 flex flex-col gap-12 sticky top-24 max-h-[calc(100vh-6rem)] overflow-y-auto no-scrollbar pb-10">
+    <aside className="w-full flex flex-col gap-10">
       <div className="flex items-center justify-between pb-6 border-b border-slate-200/50">
         <h2 className="text-2xl font-black uppercase tracking-tighter flex items-center gap-3 text-slate-800">
           <Filter className="w-5 h-5 text-indigo-600" /> Bộ lọc

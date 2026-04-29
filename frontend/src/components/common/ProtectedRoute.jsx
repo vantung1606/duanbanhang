@@ -10,9 +10,9 @@ export default function ProtectedRoute({ children, allowedRoles }) {
   const { isAuthenticated, user } = useAuthStore();
   const location = useLocation();
 
-  // Chưa login → về /login
+  // Chưa login → về trang chủ
   if (!isAuthenticated || !user) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    return <Navigate to="/" replace />;
   }
 
   // Đã login, kiểm tra role nếu có yêu cầu

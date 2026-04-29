@@ -107,14 +107,14 @@ export default function ManagerLogsPage() {
       </div>
 
       {/* Stats Summary */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         {[
-          { label: 'Tổng Sự Kiện', val: stats.total, color: 'text-slate-800', bg: 'bg-white/50' },
-          { label: 'Cảnh Báo Đỏ', val: stats.critical, color: 'text-red-500', bg: 'bg-red-500/5' },
-          { label: 'Thay Đổi Bảo Mật', val: stats.warn, color: 'text-amber-500', bg: 'bg-amber-500/5' },
-          { label: 'Thao Tác Thành Công', val: stats.success, color: 'text-emerald-500', bg: 'bg-emerald-500/5' },
+          { label: 'Tổng Sự Kiện', val: stats.total, color: 'text-slate-900', bg: 'bg-white', border: 'border-slate-200' },
+          { label: 'Cảnh Báo Đỏ', val: stats.critical, color: 'text-red-600', bg: 'bg-red-50', border: 'border-red-100' },
+          { label: 'Thay Đổi Bảo Mật', val: stats.warn, color: 'text-amber-600', bg: 'bg-amber-50', border: 'border-amber-100' },
+          { label: 'Thao Tác Thành Công', val: stats.success, color: 'text-emerald-600', bg: 'bg-emerald-50', border: 'border-emerald-100' },
         ].map((stat, i) => (
-          <div key={i} className={cn("backdrop-blur-xl border border-white/20 dark:border-white/10 p-6 rounded-[2rem] shadow-sm", stat.bg)}>
+          <div key={i} className={cn("p-6 rounded-[2rem] border shadow-sm transition-all hover:shadow-md", stat.bg, stat.border)}>
             <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">{stat.label}</p>
             <p className={cn("text-2xl font-black", stat.color)}>{stat.val}</p>
           </div>

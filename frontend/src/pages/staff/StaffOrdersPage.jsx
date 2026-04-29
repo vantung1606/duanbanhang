@@ -32,6 +32,13 @@ const GlassCard = ({ className, children, delay = 0 }) => (
 export default function StaffOrdersPage() {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    // Ép biểu đồ vẽ lại sau khi DOM ổn định
+    const timer = setTimeout(() => setIsMounted(true), 500);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     // Simulated fetch
@@ -78,8 +85,8 @@ export default function StaffOrdersPage() {
       {/* Header Section */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pt-4 mb-8">
         <div>
-          <h1 className="text-5xl md:text-6xl font-black text-[#2b3a55] tracking-tight leading-[1.1] mb-4">
-            Bảng<br/>Điều Khiển.
+          <h1 className="text-4xl md:text-6xl font-black text-[#2b3a55] tracking-tight leading-tight mb-4">
+            Bảng Điều Khiển.
           </h1>
           <span className="inline-block px-4 py-1.5 bg-[#e2e8f0]/80 backdrop-blur-sm text-[#475569] text-[10px] font-black uppercase tracking-widest rounded-full">
             TRỰC TIẾP CẬP NHẬT
@@ -88,7 +95,7 @@ export default function StaffOrdersPage() {
       </div>
 
       {/* 4 Top Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 relative z-10">
         
         {/* Card 1: Pending */}
         <GlassCard delay={0.1} className="p-6">
@@ -152,32 +159,34 @@ export default function StaffOrdersPage() {
              
              {/* Large Soft Bar Chart */}
              <div className="flex-1 w-full mt-4 min-h-[250px]">
-               <ResponsiveContainer width="100%" height="100%">
-                 <BarChart data={stats.chartData} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
-                   <XAxis 
-                     dataKey="name" 
-                     axisLine={false} 
-                     tickLine={false} 
-                     tick={{ fill: '#94a3b8', fontSize: 12, fontWeight: 700 }}
-                     dy={10}
-                   />
-                   <Tooltip 
-                     cursor={{ fill: 'transparent' }}
-                     contentStyle={{ 
-                       backgroundColor: 'rgba(255, 255, 255, 0.9)', 
-                       borderRadius: '16px', 
-                       border: 'none',
-                       boxShadow: '0 10px 30px rgba(0,0,0,0.05)',
-                       fontWeight: 'bold'
-                     }}
-                   />
-                   <Bar dataKey="val" radius={[10, 10, 10, 10]} barSize={40}>
-                     {stats.chartData.map((entry, index) => (
-                       <Cell key={`cell-${index}`} fill={index === 3 ? '#2b3a55' : '#cbd5e1'} />
-                     ))}
-                   </Bar>
-                 </BarChart>
-               </ResponsiveContainer>
+               {isMounted && (
+                 <ResponsiveContainer width="99%" height="100%" minHeight={250}>
+                   <BarChart data={stats.chartData} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
+                     <XAxis 
+                       dataKey="name" 
+                       axisLine={false} 
+                       tickLine={false} 
+                       tick={{ fill: '#94a3b8', fontSize: 12, fontWeight: 700 }}
+                       dy={10}
+                     />
+                     <Tooltip 
+                       cursor={{ fill: 'transparent' }}
+                       contentStyle={{ 
+                         backgroundColor: 'rgba(255, 255, 255, 0.9)', 
+                         borderRadius: '16px', 
+                         border: 'none',
+                         boxShadow: '0 10px 30px rgba(0,0,0,0.05)',
+                         fontWeight: 'bold'
+                       }}
+                     />
+                     <Bar dataKey="val" radius={[10, 10, 10, 10]} barSize={40}>
+                       {stats.chartData.map((entry, index) => (
+                         <Cell key={`cell-${index}`} fill={index === 3 ? '#2b3a55' : '#cbd5e1'} />
+                       ))}
+                     </Bar>
+                   </BarChart>
+                 </ResponsiveContainer>
+               )}
              </div>
           </GlassCard>
         </div>

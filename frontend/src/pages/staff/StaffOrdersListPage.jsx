@@ -51,8 +51,8 @@ export default function StaffOrdersListPage() {
     >
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-4xl md:text-5xl font-black text-[#2b3a55] tracking-tight leading-[1.1] mb-2">
-          Danh Sách<br/>Đơn Hàng.
+        <h1 className="text-4xl md:text-6xl font-black text-[#2b3a55] tracking-tight leading-tight mb-2">
+          Danh Sách Đơn Hàng.
         </h1>
         <p className="text-slate-500 font-medium">Theo dõi và quản lý trạng thái của tất cả đơn hàng.</p>
       </div>

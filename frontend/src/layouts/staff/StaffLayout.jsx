@@ -17,9 +17,9 @@ export default function StaffLayout() {
         }
       `}} />
       <div className="min-h-screen text-slate-800 flex overflow-hidden font-sans p-4 md:p-6 gap-6 relative bg-transparent">
-        {/* Background Decorative Elements - Emerald Theme */}
-        <div className="fixed top-[-10%] left-[-5%] w-[40%] h-[50%] bg-emerald-500/10 blur-[120px] rounded-full z-0 pointer-events-none" />
-        <div className="fixed bottom-[-10%] right-[10%] w-[30%] h-[40%] bg-teal-500/10 blur-[100px] rounded-full z-0 pointer-events-none" />
+        {/* Background Decorative Elements - Sharpened Emerald Theme */}
+        <div className="fixed top-[-5%] left-[-5%] w-[35%] h-[45%] bg-emerald-500/15 blur-[60px] rounded-full z-0 pointer-events-none" />
+        <div className="fixed bottom-[-5%] right-[5%] w-[25%] h-[35%] bg-teal-500/15 blur-[40px] rounded-full z-0 pointer-events-none" />
 
         <StaffSidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
         

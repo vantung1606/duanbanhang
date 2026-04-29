@@ -19,6 +19,8 @@ import useCartStore from '../../store/cart-store';
 import SEO from '../../components/common/SEO';
 import NeuralynNavbar from '../../components/layout/customer/NeuralynNavbar';
 import NeuralynFooter from '../../components/layout/customer/NeuralynFooter';
+import { useToast } from '../../components/common/Toast';
+import { useAuthStore } from '../../store/authStore';
 
 const SpecsTable = ({ specs }) => {
   if (!specs) return <div className="text-[#1a365d]/40 text-[10px] italic">Không có thông số kỹ thuật.</div>;
@@ -63,6 +65,8 @@ export default function ProductDetail() {
   const [selectedOptions, setSelectedOptions] = useState({});
   const [activeImage, setActiveImage] = useState(0);
   const { addItem } = useCartStore();
+  const { addToast } = useToast();
+  const { isAuthenticated } = useAuthStore();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -234,7 +238,24 @@ export default function ProductDetail() {
             {/* Actions */}
             <div className="pt-4 space-y-4 md:space-y-6">
               <button 
-                onClick={() => addItem(product, selectedVariant)}
+                onClick={async () => {
+                  if (!isAuthenticated) {
+                    addToast('Vui lòng đăng nhập để thêm vào giỏ hàng!', 'info');
+                    return;
+                  }
+
+                  if (!selectedVariant) {
+                    addToast('Vui lòng chọn phiên bản sản phẩm!', 'error');
+                    return;
+                  }
+
+                  try {
+                    await addItem(product, selectedVariant, 1);
+                    addToast(`Đã thêm ${product.name} vào giỏ hàng!`, 'success');
+                  } catch (error) {
+                    addToast('Không thể thêm vào giỏ hàng. Vui lòng thử lại!', 'error');
+                  }
+                }}
                 className="w-full bg-[#1a365d] text-white hover:bg-[#4981cf] py-5 md:py-6 rounded-2xl text-base md:text-lg font-black flex items-center justify-center gap-3 shadow-2xl active:scale-95 transition-all"
               >
                 <ShoppingCart className="w-5 h-5" /> THÊM VÀO GIỎ HÀNG
