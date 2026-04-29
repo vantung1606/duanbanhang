@@ -72,33 +72,33 @@ function LoginForm({ onSwitch }) {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="space-y-3 group/field">
-          <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 group-focus-within/field:text-cyan-400 transition-colors">ID Tài khoản</label>
+          <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 group-focus-within/field:text-[#B39A84] transition-colors">ID Tài khoản</label>
           <div className="relative group/input">
-            <div className="absolute inset-0 bg-cyan-500/20 blur-xl opacity-0 group-focus-within/input:opacity-100 transition-opacity pointer-events-none" />
-            <Mail className="absolute left-6 top-1/2 -translate-y-1/2 text-white/20 w-5 h-5 group-focus-within/input:text-cyan-400 transition-colors" />
+            <div className="absolute inset-0 bg-[#B39A84]/20 blur-xl opacity-0 group-focus-within/input:opacity-100 transition-opacity pointer-events-none" />
+            <Mail className="absolute left-6 top-1/2 -translate-y-1/2 text-white/20 w-5 h-5 group-focus-within/input:text-[#B39A84] transition-colors" />
             <input 
               type="text" 
               required
               value={formData.username}
               onChange={(e) => setFormData({ ...formData, username: e.target.value })}
               placeholder="USERNAME"
-              className="w-full bg-white/[0.03] border border-white/10 focus:border-cyan-500/40 pl-16 pr-6 py-5 rounded-[1.2rem] text-white font-black transition-all outline-none placeholder:text-white/10 focus:bg-white/[0.06]"
+              className="w-full bg-white/[0.03] border border-white/10 focus:border-[#B39A84]/40 pl-16 pr-6 py-5 rounded-[1.2rem] text-white font-black transition-all outline-none placeholder:text-white/10 focus:bg-white/[0.06]"
             />
           </div>
         </div>
 
         <div className="space-y-3 group/field">
-          <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 group-focus-within/field:text-cyan-400 transition-colors">Mật mã truy cập</label>
+          <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 group-focus-within/field:text-[#B39A84] transition-colors">Mật mã truy cập</label>
           <div className="relative group/input">
-            <div className="absolute inset-0 bg-cyan-500/20 blur-xl opacity-0 group-focus-within/input:opacity-100 transition-opacity pointer-events-none" />
-            <Lock className="absolute left-6 top-1/2 -translate-y-1/2 text-white/20 w-5 h-5 group-focus-within/input:text-cyan-400 transition-colors" />
+            <div className="absolute inset-0 bg-[#B39A84]/20 blur-xl opacity-0 group-focus-within/input:opacity-100 transition-opacity pointer-events-none" />
+            <Lock className="absolute left-6 top-1/2 -translate-y-1/2 text-white/20 w-5 h-5 group-focus-within/input:text-[#B39A84] transition-colors" />
             <input 
               type={showPassword ? 'text' : 'password'}
               required
               value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
               placeholder="••••••••"
-              className="w-full bg-white/[0.03] border border-white/10 focus:border-cyan-500/40 pl-16 pr-16 py-5 rounded-[1.2rem] text-white font-black transition-all outline-none placeholder:text-white/10 focus:bg-white/[0.06]"
+              className="w-full bg-white/[0.03] border border-white/10 focus:border-[#B39A84]/40 pl-16 pr-16 py-5 rounded-[1.2rem] text-white font-black transition-all outline-none placeholder:text-white/10 focus:bg-white/[0.06]"
             />
             <button 
               type="button"
@@ -114,11 +114,11 @@ function LoginForm({ onSwitch }) {
           <label className="flex items-center gap-2 cursor-pointer group shrink-0">
             <input type="checkbox" className="hidden" />
             <div className="w-5 h-5 border-2 border-white/10 rounded-lg flex items-center justify-center group-hover:border-white/30 transition-colors">
-               <div className="w-2 h-2 rounded-sm bg-cyan-400 opacity-0 group-hover:opacity-40" />
+               <div className="w-2 h-2 rounded-sm bg-[#B39A84] opacity-0 group-hover:opacity-40" />
             </div>
             <span className="text-[10px] font-bold text-white/40 group-hover:text-white/60 transition-colors">Ghi nhớ phiên</span>
           </label>
-          <button type="button" onClick={() => onSwitch('forgot')} className="text-[10px] font-black text-cyan-400 hover:text-cyan-300 transition-colors whitespace-nowrap">
+          <button type="button" onClick={() => onSwitch('forgot')} className="text-[10px] font-black text-[#B39A84] hover:text-[#CFC7C8] transition-colors whitespace-nowrap">
             Khôi phục mã?
           </button>
         </div>
@@ -128,10 +128,10 @@ function LoginForm({ onSwitch }) {
           disabled={isLoading}
           className="w-full relative group overflow-hidden mt-4"
         >
-          <div className="absolute inset-0 bg-cyan-500 blur-2xl opacity-20 group-hover:opacity-40 transition-opacity" />
-          <div className="relative bg-white text-black py-5 rounded-[1.2rem] font-black text-xs tracking-[0.2em] uppercase transition-transform active:scale-[0.98] flex items-center justify-center gap-3">
+          <div className="absolute inset-0 bg-[#B39A84] blur-2xl opacity-20 group-hover:opacity-40 transition-opacity" />
+          <div className="relative bg-white text-[#0A1E54] py-5 rounded-[1.2rem] font-black text-xs tracking-[0.2em] uppercase transition-transform active:scale-[0.98] flex items-center justify-center gap-3">
             {isLoading ? (
-              <div className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin" />
+              <div className="w-5 h-5 border-2 border-[#0A1E54]/30 border-t-[#0A1E54] rounded-full animate-spin" />
             ) : (
               <> Yêu cầu xác thực <ArrowRight className="w-5 h-5" /></>
             )}
@@ -143,7 +143,7 @@ function LoginForm({ onSwitch }) {
         Chưa có danh tính?{' '}
         <button 
           onClick={() => onSwitch('register')} 
-          className="text-cyan-400 hover:text-cyan-300 transition-colors font-black uppercase tracking-widest ml-1"
+          className="text-[#B39A84] hover:text-[#CFC7C8] transition-colors font-black uppercase tracking-widest ml-1"
         >
           Khởi tạo ngay
         </button>
@@ -213,49 +213,49 @@ function RegisterForm({ onSwitch }) {
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-1.5 group/field">
-          <label className="text-[9px] font-black uppercase tracking-[0.2em] text-white/40 group-focus-within/field:text-cyan-400 transition-colors">Tên đăng nhập</label>
+          <label className="text-[9px] font-black uppercase tracking-[0.2em] text-white/40 group-focus-within/field:text-[#B39A84] transition-colors">Tên đăng nhập</label>
           <div className="relative group/input">
-            <div className="absolute inset-0 bg-cyan-500/20 blur-xl opacity-0 group-focus-within/input:opacity-100 transition-opacity pointer-events-none" />
-            <User className="absolute left-5 top-1/2 -translate-y-1/2 text-white/20 w-4 h-4 group-focus-within/input:text-cyan-400 transition-colors" />
+            <div className="absolute inset-0 bg-[#B39A84]/20 blur-xl opacity-0 group-focus-within/input:opacity-100 transition-opacity pointer-events-none" />
+            <User className="absolute left-5 top-1/2 -translate-y-1/2 text-white/20 w-4 h-4 group-focus-within/input:text-[#B39A84] transition-colors" />
             <input 
               type="text" 
               required
               value={formData.username}
               onChange={(e) => setFormData({ ...formData, username: e.target.value })}
               placeholder="USERNAME"
-              className="w-full bg-white/[0.03] border border-white/10 focus:border-cyan-500/40 pl-14 pr-4 py-3 rounded-xl text-white font-black transition-all outline-none placeholder:text-white/10 focus:bg-white/[0.06]"
+              className="w-full bg-white/[0.03] border border-white/10 focus:border-[#B39A84]/40 pl-14 pr-4 py-3 rounded-xl text-white font-black transition-all outline-none placeholder:text-white/10 focus:bg-white/[0.06]"
             />
           </div>
         </div>
 
         <div className="space-y-1.5 group/field">
-          <label className="text-[9px] font-black uppercase tracking-[0.2em] text-white/40 group-focus-within/field:text-cyan-400 transition-colors">Email</label>
+          <label className="text-[9px] font-black uppercase tracking-[0.2em] text-white/40 group-focus-within/field:text-[#B39A84] transition-colors">Email</label>
           <div className="relative group/input">
-            <div className="absolute inset-0 bg-cyan-500/20 blur-xl opacity-0 group-focus-within/input:opacity-100 transition-opacity pointer-events-none" />
-            <Mail className="absolute left-5 top-1/2 -translate-y-1/2 text-white/20 w-4 h-4 group-focus-within/input:text-cyan-400 transition-colors" />
+            <div className="absolute inset-0 bg-[#B39A84]/20 blur-xl opacity-0 group-focus-within/input:opacity-100 transition-opacity pointer-events-none" />
+            <Mail className="absolute left-5 top-1/2 -translate-y-1/2 text-white/20 w-4 h-4 group-focus-within/input:text-[#B39A84] transition-colors" />
             <input 
               type="email" 
               required
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               placeholder="email@example.com"
-              className="w-full bg-white/[0.03] border border-white/10 focus:border-cyan-500/40 pl-14 pr-4 py-3 rounded-xl text-white font-black transition-all outline-none placeholder:text-white/10 focus:bg-white/[0.06]"
+              className="w-full bg-white/[0.03] border border-white/10 focus:border-[#B39A84]/40 pl-14 pr-4 py-3 rounded-xl text-white font-black transition-all outline-none placeholder:text-white/10 focus:bg-white/[0.06]"
             />
           </div>
         </div>
 
         <div className="space-y-1.5 group/field">
-          <label className="text-[9px] font-black uppercase tracking-[0.2em] text-white/40 group-focus-within/field:text-cyan-400 transition-colors">Mật mã truy cập</label>
+          <label className="text-[9px] font-black uppercase tracking-[0.2em] text-white/40 group-focus-within/field:text-[#B39A84] transition-colors">Mật mã truy cập</label>
           <div className="relative group/input">
-            <div className="absolute inset-0 bg-cyan-500/20 blur-xl opacity-0 group-focus-within/input:opacity-100 transition-opacity pointer-events-none" />
-            <Lock className="absolute left-5 top-1/2 -translate-y-1/2 text-white/20 w-4 h-4 group-focus-within/input:text-cyan-400 transition-colors" />
+            <div className="absolute inset-0 bg-[#B39A84]/20 blur-xl opacity-0 group-focus-within/input:opacity-100 transition-opacity pointer-events-none" />
+            <Lock className="absolute left-5 top-1/2 -translate-y-1/2 text-white/20 w-4 h-4 group-focus-within/input:text-[#B39A84] transition-colors" />
             <input 
               type={showPassword ? 'text' : 'password'}
               required
               value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
               placeholder="••••••••"
-              className="w-full bg-white/[0.03] border border-white/10 focus:border-cyan-500/40 pl-14 pr-12 py-3 rounded-xl text-white font-black transition-all outline-none placeholder:text-white/10 focus:bg-white/[0.06]"
+              className="w-full bg-white/[0.03] border border-white/10 focus:border-[#B39A84]/40 pl-14 pr-12 py-3 rounded-xl text-white font-black transition-all outline-none placeholder:text-white/10 focus:bg-white/[0.06]"
             />
             <button 
               type="button"
@@ -268,17 +268,17 @@ function RegisterForm({ onSwitch }) {
         </div>
 
         <div className="space-y-1.5 group/field">
-          <label className="text-[9px] font-black uppercase tracking-[0.2em] text-white/40 group-focus-within/field:text-cyan-400 transition-colors">Xác nhận mật mã</label>
+          <label className="text-[9px] font-black uppercase tracking-[0.2em] text-white/40 group-focus-within/field:text-[#B39A84] transition-colors">Xác nhận mật mã</label>
           <div className="relative group/input">
-            <div className="absolute inset-0 bg-cyan-500/20 blur-xl opacity-0 group-focus-within/input:opacity-100 transition-opacity pointer-events-none" />
-            <Lock className="absolute left-5 top-1/2 -translate-y-1/2 text-white/20 w-4 h-4 group-focus-within/input:text-cyan-400 transition-colors" />
+            <div className="absolute inset-0 bg-[#B39A84]/20 blur-xl opacity-0 group-focus-within/input:opacity-100 transition-opacity pointer-events-none" />
+            <Lock className="absolute left-5 top-1/2 -translate-y-1/2 text-white/20 w-4 h-4 group-focus-within/input:text-[#B39A84] transition-colors" />
             <input 
               type={showPassword ? 'text' : 'password'}
               required
               value={formData.confirmPassword}
               onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
               placeholder="••••••••"
-              className="w-full bg-white/[0.03] border border-white/10 focus:border-cyan-500/40 pl-14 pr-4 py-3 rounded-xl text-white font-black transition-all outline-none placeholder:text-white/10 focus:bg-white/[0.06]"
+              className="w-full bg-white/[0.03] border border-white/10 focus:border-[#B39A84]/40 pl-14 pr-4 py-3 rounded-xl text-white font-black transition-all outline-none placeholder:text-white/10 focus:bg-white/[0.06]"
             />
           </div>
         </div>
@@ -288,10 +288,10 @@ function RegisterForm({ onSwitch }) {
           disabled={isLoading}
           className="w-full relative group overflow-hidden mt-4"
         >
-          <div className="absolute inset-0 bg-cyan-500 blur-2xl opacity-20 group-hover:opacity-40 transition-opacity" />
-          <div className="relative bg-white text-black py-4 rounded-xl font-black text-xs tracking-[0.2em] uppercase transition-transform active:scale-[0.98] flex items-center justify-center gap-3">
+          <div className="absolute inset-0 bg-[#B39A84] blur-2xl opacity-20 group-hover:opacity-40 transition-opacity" />
+          <div className="relative bg-white text-[#0A1E54] py-4 rounded-xl font-black text-xs tracking-[0.2em] uppercase transition-transform active:scale-[0.98] flex items-center justify-center gap-3">
             {isLoading ? (
-              <div className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin" />
+              <div className="w-5 h-5 border-2 border-[#0A1E54]/30 border-t-[#0A1E54] rounded-full animate-spin" />
             ) : (
               <> Xác nhận khởi tạo <ArrowRight className="w-4 h-4" /></>
             )}
@@ -303,7 +303,7 @@ function RegisterForm({ onSwitch }) {
         Đã có danh tính?{' '}
         <button 
           onClick={() => onSwitch('login')} 
-          className="text-cyan-400 hover:text-cyan-300 transition-colors font-black uppercase tracking-widest ml-1"
+          className="text-[#B39A84] hover:text-[#CFC7C8] transition-colors font-black uppercase tracking-widest ml-1"
         >
           Đăng nhập
         </button>
@@ -366,17 +366,17 @@ function ForgotForm({ onSwitch }) {
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-3 group/field">
-              <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 group-focus-within/field:text-cyan-400 transition-colors">ĐỊA CHỈ EMAIL</label>
+              <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 group-focus-within/field:text-[#B39A84] transition-colors">ĐỊA CHỈ EMAIL</label>
               <div className="relative group/input">
-                <div className="absolute inset-0 bg-cyan-500/20 blur-xl opacity-0 group-focus-within/input:opacity-100 transition-opacity pointer-events-none" />
-                <Mail className="absolute left-6 top-1/2 -translate-y-1/2 text-white/20 w-5 h-5 group-focus-within/input:text-cyan-400 transition-colors" />
+                <div className="absolute inset-0 bg-[#B39A84]/20 blur-xl opacity-0 group-focus-within/input:opacity-100 transition-opacity pointer-events-none" />
+                <Mail className="absolute left-6 top-1/2 -translate-y-1/2 text-white/20 w-5 h-5 group-focus-within/input:text-[#B39A84] transition-colors" />
                 <input 
                   type="email" 
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="email@example.com"
-                  className="w-full bg-white/[0.03] border border-white/10 focus:border-cyan-500/40 pl-16 pr-6 py-5 rounded-[1.2rem] text-white font-black transition-all outline-none placeholder:text-white/10 focus:bg-white/[0.06]"
+                  className="w-full bg-white/[0.03] border border-white/10 focus:border-[#B39A84]/40 pl-16 pr-6 py-5 rounded-[1.2rem] text-white font-black transition-all outline-none placeholder:text-white/10 focus:bg-white/[0.06]"
                 />
               </div>
             </div>
@@ -386,10 +386,10 @@ function ForgotForm({ onSwitch }) {
               disabled={isLoading}
               className="w-full relative group overflow-hidden mt-4"
             >
-              <div className="absolute inset-0 bg-cyan-500 blur-2xl opacity-20 group-hover:opacity-40 transition-opacity" />
-              <div className="relative bg-white text-black py-5 rounded-[1.2rem] font-black text-xs tracking-[0.2em] uppercase transition-transform active:scale-[0.98] flex items-center justify-center gap-3">
+              <div className="absolute inset-0 bg-[#B39A84] blur-2xl opacity-20 group-hover:opacity-40 transition-opacity" />
+              <div className="relative bg-white text-[#0A1E54] py-5 rounded-[1.2rem] font-black text-xs tracking-[0.2em] uppercase transition-transform active:scale-[0.98] flex items-center justify-center gap-3">
                 {isLoading ? (
-                  <div className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin" />
+                  <div className="w-5 h-5 border-2 border-[#0A1E54]/30 border-t-[#0A1E54] rounded-full animate-spin" />
                 ) : (
                   <> Gửi liên kết xác thực </>
                 )}
@@ -399,19 +399,19 @@ function ForgotForm({ onSwitch }) {
         </>
       ) : (
         <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="text-center py-6">
-          <div className="w-20 h-20 rounded-full bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center mx-auto mb-6 relative">
-            <div className="absolute inset-0 bg-cyan-500 blur-xl opacity-20 rounded-full" />
-            <CheckCircle className="w-10 h-10 text-cyan-400 relative z-10" />
+          <div className="w-20 h-20 rounded-full bg-[#B39A84]/10 border border-[#B39A84]/20 flex items-center justify-center mx-auto mb-6 relative">
+            <div className="absolute inset-0 bg-[#B39A84] blur-xl opacity-20 rounded-full" />
+            <CheckCircle className="w-10 h-10 text-[#B39A84] relative z-10" />
           </div>
           <h2 className="text-2xl font-black text-white uppercase tracking-tight mb-2">Đã truyền tín hiệu</h2>
-          <p className="text-sm text-white/50">Vui lòng kiểm tra cổng thông tin <span className="text-cyan-400">{email}</span> để thực hiện khôi phục.</p>
+          <p className="text-sm text-white/50">Vui lòng kiểm tra cổng thông tin <span className="text-[#B39A84]">{email}</span> để thực hiện khôi phục.</p>
         </motion.div>
       )}
 
       <div className="mt-8 pt-6 border-t border-white/5 flex justify-center">
         <button 
           onClick={() => onSwitch('login')} 
-          className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-white/30 hover:text-cyan-400 transition-colors"
+          className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-white/30 hover:text-[#B39A84] transition-colors"
         >
           <ArrowLeft className="w-4 h-4" /> Quay lại cổng đăng nhập
         </button>
@@ -428,30 +428,25 @@ export default function AuthModal() {
 
   if (!isAuthModalOpen) return null;
 
-  // We set a fixed height on the container so the flip animation works correctly
-  // without the box changing size abruptly.
   return (
     <AnimatePresence>
       <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 perspective-[1500px]">
-        {/* Backdrop stays fixed */}
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={closeAuthModal}
-          className="absolute inset-0 bg-slate-900/60 backdrop-blur-md"
+          className="absolute inset-0 bg-[#0A1E54]/60 backdrop-blur-md"
         />
         
-        {/* Modal Container flips internally */}
         <motion.div 
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          className="relative w-full max-w-md h-[600px] bg-slate-900 rounded-[2.5rem] shadow-2xl overflow-hidden border border-white/10"
+          className="relative w-full max-w-md h-[600px] bg-[#0A1E54] rounded-[2.5rem] shadow-2xl overflow-hidden border border-white/10"
           style={{ transformStyle: 'preserve-3d' }}
         >
-          {/* Decorative Elements (Shared) */}
-          <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent z-20 pointer-events-none" />
+          <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#B39A84]/50 to-transparent z-20 pointer-events-none" />
           <button 
             onClick={closeAuthModal}
             className="absolute top-6 right-6 w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/50 hover:text-white hover:bg-white/10 transition-colors z-20"
@@ -459,7 +454,6 @@ export default function AuthModal() {
             <X className="w-4 h-4" />
           </button>
 
-          {/* AnimatePresence for the flipping views */}
           <AnimatePresence mode="wait">
             {authView === 'login' && <LoginForm key="login" onSwitch={setAuthView} />}
             {authView === 'register' && <RegisterForm key="register" onSwitch={setAuthView} />}

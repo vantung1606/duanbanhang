@@ -1,236 +1,169 @@
+import React from 'react';
 import { motion } from 'framer-motion';
-import { 
-  ArrowRight, 
-  Play, 
-  Facebook, 
-  Twitter, 
-  Instagram, 
-  Globe,
-  Search,
-  ShoppingCart,
-  Menu as MenuIcon
-} from 'lucide-react';
-import { Link } from 'react-router-dom';
-import NeuralynNavbar from '../../components/layout/customer/NeuralynNavbar';
-import homepageImg from '../../assets/images/homepage.png';
+import { Zap, Play, ArrowRight, Instagram, Twitter, Facebook, ChevronRight, Star, Shield, Award } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const FloatingOrb = ({ color, size, top, left, delay }) => (
   <motion.div
     animate={{
-      y: [0, -40, 0],
-      x: [0, 30, 0],
-      scale: [1, 1.1, 1],
-      opacity: [0.3, 0.6, 0.3],
+      y: [0, -20, 0],
+      scale: [1, 1.05, 1],
+      opacity: [0.3, 0.5, 0.3]
     }}
-    transition={{
-      duration: 8 + Math.random() * 4,
-      repeat: Infinity,
-      delay,
-      ease: "easeInOut"
-    }}
-    className="absolute pointer-events-none blur-[100px] rounded-full z-0 opacity-40"
-    style={{
-      backgroundColor: color,
-      width: size,
-      height: size,
-      top,
-      left,
-    }}
+    transition={{ duration: 4, repeat: Infinity, delay }}
+    className="absolute rounded-full blur-[80px] pointer-events-none z-0"
+    style={{ backgroundColor: color, width: size, height: size, top, left }}
   />
 );
 
-const PerspectiveGrid = () => (
-  <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-[0.15] bg-slate-900 rounded-[3.5rem]">
-    <div 
-      className="absolute inset-0"
-      style={{
-        backgroundImage: `linear-gradient(#22d3ee 1.5px, transparent 1.5px), linear-gradient(90deg, #22d3ee 1.5px, transparent 1.5px)`,
-        backgroundSize: '60px 60px',
-        perspective: '1000px',
-        transform: 'rotateX(60deg) scale(2.5) translateY(-50px)',
-        transformOrigin: '50% 100%',
-        maskImage: 'linear-gradient(to top, black 40%, transparent 100%)'
-      }}
-    />
-  </div>
-);
-
-const MenuItem = ({ name, price, description }) => (
-  <motion.div 
-    whileHover={{ y: -8, shadow: "0 25px 50px -12px rgba(0, 0, 0, 0.1)" }}
-    className="bg-white/80 backdrop-blur-xl p-10 rounded-[2.5rem] border border-white/50 flex flex-col justify-between group h-full shadow-sm"
-  >
-    <div className="flex justify-between items-start mb-4">
-      <h3 className="text-2xl font-black text-slate-800 tracking-tighter group-hover:text-[#c49b63] transition-colors">{name}</h3>
-      <span className="text-xl font-black text-[#c49b63]">${price}</span>
-    </div>
-    <p className="text-slate-500 font-medium leading-relaxed text-sm">
-      {description}
-    </p>
-  </motion.div>
-);
+const Navbar = () => {
+  const navigate = useNavigate();
+  return (
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-[#F9F0EE]/80 backdrop-blur-xl border-b border-[#B39A84]/20 px-8 py-5 flex items-center justify-between">
+      <div className="flex items-center gap-3 cursor-pointer group" onClick={() => navigate('/')}>
+        <div className="w-10 h-10 bg-[#0A1E54] rounded-lg flex items-center justify-center">
+          <Zap className="w-6 h-6 text-[#B39A84] fill-[#B39A84]" />
+        </div>
+        <span className="text-xl font-bold tracking-tight text-[#0A1E54]">DUONGDIY</span>
+      </div>
+      <div className="hidden md:flex items-center gap-8">
+        {['Sản phẩm', 'Quy trình', 'Về chúng tôi', 'Hỗ trợ'].map((item) => (
+          <a key={item} href="#" className="text-sm font-semibold text-[#0A1E54]/70 hover:text-[#0A1E54] transition-colors uppercase tracking-widest">{item}</a>
+        ))}
+      </div>
+      <button 
+        onClick={() => navigate('/login')}
+        className="px-6 py-2.5 bg-[#0A1E54] text-[#F9F0EE] text-sm font-bold rounded-full hover:bg-[#B39A84] hover:text-[#0A1E54] transition-all"
+      >
+        KHÁM PHÁ
+      </button>
+    </nav>
+  );
+};
 
 export default function NeuralynHome() {
+  const navigate = useNavigate();
+
   return (
-    <div className="bg-[#0A1E54] font-sans selection:bg-[#B39A84] selection:text-white overflow-x-hidden scroll-smooth custom-scrollbar relative">
-      <NeuralynNavbar />
+    <div className="min-h-screen bg-[#F9F0EE] text-[#0A1E54] font-sans selection:bg-[#B39A84] selection:text-[#0A1E54]">
+      <Navbar />
 
       {/* Hero Section */}
-      <section 
-        className="relative min-h-screen flex items-center pt-20 pb-[10vw] bg-[#0A1E54] z-30" 
-        id="home"
-        style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 3vw), 0 100%)' }}
-      >
-        <div className="container mx-auto px-12 relative z-10 grid lg:grid-cols-2 gap-12 items-center">
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1.2 }}
-            className="text-center lg:text-left"
-          >
-            <h2 className="text-[#CFC7C8] font-black tracking-[0.5em] uppercase text-[10px] mb-8 block">Thiết Bị Sân Khấu Chuyên Nghiệp DuongDIY</h2>
-            <h1 className="text-5xl md:text-[4.5rem] font-black text-[#F9F0EE] leading-[1.1] tracking-tighter mb-10">
-              Máy Tạo Khói <br/> <span className="text-[#B39A84]">Chinh Phục Mọi Ánh Nhìn</span>
-            </h1>
-            <p className="text-[#CFC7C8] text-lg mb-12 max-w-lg leading-relaxed font-medium">
-              DuongDIY - Đơn vị hàng đầu chuyên cung cấp máy tạo khói, dung dịch khói và giải pháp hiệu ứng sân khấu cao cấp. Nâng tầm không gian sự kiện, quán bar và phòng karaoke VIP của bạn.
-            </p>
-            <motion.button
-              whileHover={{ scale: 1.05, backgroundColor: '#F9F0EE', color: '#0A1E54' }}
-              className="bg-white/10 backdrop-blur-md border border-white/30 text-white px-14 py-5 rounded-full font-black text-[10px] tracking-[0.3em] uppercase transition-all shadow-xl shadow-black/20"
+      <section className="relative pt-40 pb-32 overflow-hidden px-8">
+        <FloatingOrb color="#B39A84" size="400px" top="-10%" left="60%" delay={0} />
+        <FloatingOrb color="#CFC7C8" size="300px" top="40%" left="-5%" delay={2} />
+
+        <div className="container mx-auto relative z-10">
+          <div className="max-w-4xl mx-auto text-center space-y-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#B39A84]/10 border border-[#B39A84]/30 text-[#B39A84] text-xs font-bold tracking-widest uppercase"
             >
-              Khám Phá Ngay
-            </motion.button>
-          </motion.div>
+              <Star className="w-3 h-3 fill-current" /> SỰ LỰA CHỌN CỦA CHUYÊN GIA
+            </motion.div>
+            
+            <motion.h1 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="text-7xl md:text-8xl font-black tracking-tighter leading-[0.9] text-[#0A1E54]"
+            >
+              Nâng Tầm Không Gian <br/>
+              <span className="text-[#B39A84]">Hiệu Ứng Ánh Sáng</span>
+            </motion.h1>
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.5, type: "spring" }}
-            className="hidden lg:block relative"
-          >
-            <div className="absolute -inset-20 bg-[#B39A84]/20 blur-[100px] rounded-full animate-pulse" />
-            <img 
-              src={homepageImg} 
-              alt="Homepage Image" 
-              className="relative z-10 w-full max-w-[600px] h-auto drop-shadow-2xl hover:scale-105 transition-transform duration-700"
-            />
-          </motion.div>
-        </div>
-      </section>
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="text-xl text-[#0A1E54]/60 max-w-2xl mx-auto font-medium"
+            >
+              DuongDIY cung cấp các giải pháp máy tạo khói chuyên nghiệp, mang đến không gian huyền ảo và đẳng cấp cho mọi sự kiện.
+            </motion.p>
 
-      {/* Production Process */}
-      <section 
-        className="relative pt-[12vw] pb-[16vw] bg-[#F9F0EE] z-20" 
-        id="about"
-        style={{ marginTop: '-3vw', clipPath: 'polygon(0 3vw, 100% 0, 100% calc(100% - 3vw), 0 100%)' }}
-      >
-        <div className="container mx-auto px-12 grid lg:grid-cols-2 gap-32 items-center relative z-10">
-          <motion.div 
-            whileInView={{ opacity: 1, y: 0 }}
-            initial={{ opacity: 0, y: 40 }}
-            viewport={{ once: true }}
-            className="relative group rounded-[3.5rem] overflow-hidden shadow-2xl shadow-cyan-900/10 w-full aspect-video bg-slate-900 flex items-center justify-center border border-slate-800"
-          >
-            {/* 3D Visuals from Login */}
-            <PerspectiveGrid />
-            <FloatingOrb color="#B39A84" size="300px" top="-10%" left="-10%" delay={0} />
-            <FloatingOrb color="#CFC7C8" size="250px" top="50%" left="60%" delay={1} />
-            <FloatingOrb color="#0A1E54" size="200px" top="20%" left="40%" delay={2} />
-
-            <div className="absolute inset-0 bg-[#0A1E54]/40 flex items-center justify-center z-10">
-              <div className="w-24 h-24 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center text-[#B39A84] cursor-pointer hover:scale-110 transition-transform shadow-xl border border-white/20 hover:bg-white/20">
-                <Play className="w-8 h-8 fill-current ml-1" />
-              </div>
-            </div>
-          </motion.div>
-
-          <div className="space-y-10">
-            <span className="text-[#0A1E54] font-black tracking-[0.3em] uppercase text-[10px]">Tận tâm trong từng linh kiện</span>
-            <h2 className="text-5xl md:text-6xl font-black text-[#0A1E54] leading-[1.1] tracking-tighter">
-              Quy trình chế tạo <br/>máy khói DuongDIY
-            </h2>
-            <p className="text-slate-600 text-lg leading-relaxed font-medium">
-              Mỗi chiếc máy tạo khói rời xưởng đều trải qua quy trình kiểm tra nghiêm ngặt về độ bền nhiệt, lưu lượng khói và độ an toàn điện, đảm bảo trải nghiệm tốt nhất cho khách hàng.
-            </p>
-            <div className="pt-6 flex items-center gap-6">
-              <div className="w-px h-16 bg-[#CFC7C8]" />
-              <p className="text-[#B39A84] text-sm italic font-medium">"Chất lượng tạo nên thương hiệu DuongDIY"</p>
-            </div>
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="pt-8 flex flex-col sm:flex-row items-center justify-center gap-6"
+            >
+              <button 
+                onClick={() => navigate('/catalog')}
+                className="group px-10 py-5 bg-[#0A1E54] text-[#F9F0EE] rounded-full font-black text-sm tracking-widest uppercase flex items-center gap-3 hover:bg-[#B39A84] hover:text-[#0A1E54] transition-all shadow-xl shadow-[#0A1E54]/20"
+              >
+                XEM BỘ SƯU TẬP <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </button>
+              <button className="flex items-center gap-4 text-[#0A1E54] font-black tracking-widest text-sm hover:text-[#B39A84] transition-colors group">
+                <div className="w-12 h-12 rounded-full border border-[#B39A84] flex items-center justify-center group-hover:bg-[#B39A84]/10">
+                  <Play className="w-5 h-5 fill-current" />
+                </div>
+                XEM VIDEO REVIEW
+              </button>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Product List */}
-      <section 
-        className="relative pt-[12vw] pb-[16vw] bg-[#0A1E54] z-10" 
-        id="products"
-        style={{ marginTop: '-3vw', clipPath: 'polygon(0 3vw, 100% 0, 100% calc(100% - 3vw), 0 100%)' }}
-      >
-        <div className="container mx-auto px-12">
-          <div className="text-center max-w-3xl mx-auto mb-24">
-            <h2 className="text-5xl font-black text-white mb-6 tracking-tighter">Sản phẩm tiêu biểu</h2>
-            <p className="text-cyan-400 font-bold tracking-widest text-[10px] uppercase italic">Mang hiệu ứng sân khấu chuyên nghiệp đến không gian của bạn</p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-12">
+      {/* Features */}
+      <section className="py-32 px-8 bg-white/50">
+        <div className="container mx-auto">
+          <div className="grid md:grid-cols-3 gap-16">
             {[
-              { name: "Máy Khói 400W Mini", price: "850.000đ", desc: "Dành cho phòng karaoke gia đình, nhỏ gọn, lên khói nhanh." },
-              { name: "Máy Khói 900W Sân Khấu", price: "1.250.000đ", desc: "Hiệu suất mạnh mẽ, phù hợp quán bar, phòng bay." },
-              { name: "Máy Khói 1500W Pro", price: "2.450.000đ", desc: "Công suất cực đại, điều khiển DMX, dành cho sự kiện lớn." },
-              { name: "Dung Dịch Khói 5L", price: "250.000đ", desc: "Khói trắng, dày, lâu tan, không mùi, an toàn tuyệt đối." },
-              { name: "Tinh Dầu Khói Bạc Hà", price: "120.000đ", desc: "Tạo hương thơm mát lạnh sảng khoái cho không gian." },
-              { name: "Máy Tạo Khói Lạnh 3000W", price: "5.800.000đ", desc: "Hiệu ứng khói bay là là mặt đất cực kỳ đẳng cấp." },
+              { icon: Shield, title: "Độ Bền Vượt Trội", desc: "Chất liệu cao cấp, hoạt động liên tục trong môi trường khắc nghiệt." },
+              { icon: Award, title: "Chất Lượng Pro", desc: "Lưu lượng khói dày, mịn và tản đều trong không gian lớn." },
+              { icon: Zap, title: "Tiết Kiệm Nhiên Liệu", desc: "Công nghệ sưởi tiên tiến giúp giảm 30% lượng dung dịch tiêu thụ." }
             ].map((item, idx) => (
               <motion.div 
-                key={idx}
-                whileHover={{ y: -12 }}
-                className="bg-white/5 p-12 rounded-[3rem] border border-white/10 shadow-xl hover:shadow-2xl hover:border-[#B39A84]/40 transition-all duration-500 backdrop-blur-sm"
+                whileHover={{ y: -10 }}
+                key={idx} 
+                className="space-y-6 group"
               >
-                <div className="flex justify-between items-start mb-6">
-                  <h3 className="text-xl font-black text-[#F9F0EE] leading-tight pr-4">{item.name}</h3>
-                  <span className="text-[#B39A84] font-black text-sm whitespace-nowrap">{item.price}</span>
+                <div className="w-16 h-16 bg-[#F9F0EE] rounded-2xl flex items-center justify-center border border-[#B39A84]/20 text-[#B39A84] group-hover:bg-[#0A1E54] group-hover:text-[#F9F0EE] transition-all duration-500">
+                  <item.icon className="w-8 h-8" />
                 </div>
-                <p className="text-[#CFC7C8] text-sm font-medium leading-relaxed mb-8">{item.desc}</p>
-                <button className="text-[10px] font-black uppercase tracking-widest text-white border-b-2 border-[#B39A84] pb-1 hover:text-[#B39A84] transition-colors">
-                  Chi Tiết
-                </button>
+                <h3 className="text-2xl font-black tracking-tight">{item.title}</h3>
+                <p className="text-[#0A1E54]/60 font-medium leading-relaxed">{item.desc}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section 
-        className="relative pt-[10vw] pb-[14vw] bg-[#B39A84]" 
-        id="testimonials"
-        style={{ marginTop: '-3vw', clipPath: 'polygon(0 3vw, 100% 0, 100% calc(100% - 3vw), 0 100%)', zIndex: 5 }}
-      >
-        <div className="container mx-auto px-12 relative z-10">
-          <div className="text-center max-w-3xl mx-auto mb-20">
-            <h2 className="text-5xl font-black text-[#0A1E54] mb-6 tracking-tighter">Đánh Giá Khách Hàng</h2>
-            <p className="text-[#0A1E54] font-bold tracking-widest text-[10px] uppercase italic opacity-70">Sự hài lòng của bạn là thành công của chúng tôi</p>
+      {/* Products Showcase */}
+      <section className="py-32 px-8 overflow-hidden">
+        <div className="container mx-auto">
+          <div className="flex flex-col md:flex-row items-end justify-between mb-20 gap-8">
+            <div className="space-y-4">
+              <span className="text-[#B39A84] font-black tracking-[0.3em] uppercase text-xs">Danh mục sản phẩm</span>
+              <h2 className="text-5xl font-black text-[#0A1E54] tracking-tighter">Sản phẩm tiêu biểu</h2>
+            </div>
+            <button className="text-sm font-black tracking-widest text-[#0A1E54] border-b-2 border-[#B39A84] pb-2 hover:text-[#B39A84] transition-colors uppercase">
+              Xem tất cả sản phẩm
+            </button>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-12">
             {[
-              { name: "Anh Tuấn (DJ)", role: "Quán Bar Quận 1", text: "Máy khói DuongDIY đánh rất bốc, lượng khói phủ kín sàn chỉ trong vài giây. Rất hài lòng về hiệu suất của máy 1500W!" },
-              { name: "Chị Lan Anh", role: "Quản lý sự kiện", text: "Mình mua 3 máy cho công ty tổ chức sự kiện. Máy chạy êm, ít bị nghẹt sưởi như mấy dòng giá rẻ trước đây. Sẽ tiếp tục ủng hộ." },
-              { name: "Minh Hoàng", role: "Karaoke VIP", text: "Dung dịch khói bạc hà mùi cực kỳ dễ chịu, khách khen rất nhiều. Máy khói mini 400W nhỏ mà có võ, rất phù hợp với phòng VIP." }
+              { name: "Máy Khói 1500W Pro", type: "Professional", price: "2.450.000đ" },
+              { name: "Máy Khói 900W LED", type: "Standard", price: "1.250.000đ" },
+              { name: "Máy Khói Lạnh 3000W", type: "Special Effects", price: "5.800.000đ" }
             ].map((item, idx) => (
               <motion.div 
+                whileHover={{ y: -15 }}
                 key={idx}
-                whileHover={{ y: -10 }}
-                className="bg-white/30 backdrop-blur-md p-10 rounded-[2.5rem] border border-white/40 shadow-xl shadow-black/10"
+                className="bg-white rounded-[3rem] p-10 border border-[#B39A84]/10 shadow-sm hover:shadow-2xl hover:shadow-[#B39A84]/10 transition-all duration-500 group"
               >
-                <div className="flex text-[#0A1E54] mb-6">
-                  {[...Array(5)].map((_, i) => <svg key={i} className="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>)}
+                <div className="aspect-[4/5] bg-[#F9F0EE] rounded-[2.5rem] mb-8 flex items-center justify-center group-hover:scale-105 transition-transform duration-500 relative overflow-hidden">
+                   <div className="absolute inset-0 bg-gradient-to-tr from-[#0A1E54]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                   <Zap className="w-20 h-20 text-[#B39A84]/20" />
                 </div>
-                <p className="text-slate-900 font-medium leading-relaxed mb-8 italic">"{item.text}"</p>
-                <div>
-                  <h4 className="text-lg font-black text-slate-900">{item.name}</h4>
-                  <p className="text-slate-800 text-xs font-bold uppercase tracking-wider mt-1">{item.role}</p>
+                <div className="space-y-4">
+                  <span className="text-[#B39A84] text-[10px] font-black uppercase tracking-widest">{item.type}</span>
+                  <div className="flex justify-between items-start">
+                    <h4 className="text-xl font-black text-[#0A1E54]">{item.name}</h4>
+                    <span className="font-bold text-[#0A1E54]">{item.price}</span>
+                  </div>
                 </div>
               </motion.div>
             ))}
@@ -239,54 +172,57 @@ export default function NeuralynHome() {
       </section>
 
       {/* Footer */}
-      <footer 
-        className="bg-gradient-to-b from-[#0A1E54] to-[#050c26] pt-[16vw] pb-20 relative overflow-hidden z-0"
-        style={{ marginTop: '-3vw', clipPath: 'polygon(0 3vw, 100% 0, 100% 100%, 0 100%)' }}
-      >
-        <div className="container mx-auto px-12 relative z-10 grid md:grid-cols-3 gap-24 text-white">
-          <div className="space-y-8">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-[#B39A84] rounded-xl flex items-center justify-center font-black italic">D</div>
-              <span className="text-2xl font-black italic tracking-tighter">DuongDIY</span>
-            </div>
-            <p className="text-[#CFC7C8] font-medium leading-relaxed">
-              Thương hiệu hàng đầu về giải pháp tạo khói và hiệu ứng sân khấu tại Việt Nam. Uy tín - Chất lượng - Tận tâm.
-            </p>
-          </div>
-
-          <div className="space-y-8">
-             <h4 className="text-lg font-black tracking-tight">Liên Hệ</h4>
-             <ul className="space-y-4 text-[#CFC7C8] font-medium">
-               <li>Email: duongdiy@techchain.com</li>
-               <li>Hotline: 09xx xxx xxx</li>
-               <li>Địa chỉ: TP. Hồ Chí Minh, Việt Nam</li>
-             </ul>
-          </div>
-
-          <div className="space-y-8">
-             <h4 className="text-lg font-black tracking-tight">Theo Dõi</h4>
-             <div className="flex gap-4">
-                {[Facebook, Twitter, Instagram].map((Icon, i) => (
-                  <div key={i} className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center hover:bg-[#B39A84] transition-all cursor-pointer">
+      <footer className="bg-[#0A1E54] text-[#F9F0EE] pt-32 pb-16 px-8 rounded-t-[5rem]">
+        <div className="container mx-auto">
+          <div className="grid md:grid-cols-4 gap-20 mb-20">
+            <div className="col-span-2 space-y-8">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-[#B39A84] rounded-lg flex items-center justify-center">
+                  <Zap className="w-6 h-6 text-[#0A1E54] fill-[#0A1E54]" />
+                </div>
+                <span className="text-2xl font-bold tracking-tight">DUONGDIY</span>
+              </div>
+              <p className="text-[#F9F0EE]/60 max-w-sm text-lg font-medium">
+                Chuyên gia về giải pháp máy tạo khói sân khấu và hiệu ứng ánh sáng chuyên nghiệp tại Việt Nam.
+              </p>
+              <div className="flex gap-6">
+                {[Instagram, Twitter, Facebook].map((Icon, i) => (
+                  <a key={i} href="#" className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-[#B39A84] hover:text-[#0A1E54] transition-all">
                     <Icon className="w-5 h-5" />
-                  </div>
+                  </a>
                 ))}
-             </div>
+              </div>
+            </div>
+            
+            <div className="space-y-8">
+              <h4 className="text-lg font-black tracking-tight">Liên hệ</h4>
+              <ul className="space-y-4 text-[#F9F0EE]/60 font-medium">
+                <li>TP. Hồ Chí Minh, Việt Nam</li>
+                <li>09xx xxx xxx</li>
+                <li>duongdiy@gmail.com</li>
+              </ul>
+            </div>
+
+            <div className="space-y-8">
+              <h4 className="text-lg font-black tracking-tight">Công ty</h4>
+              <ul className="space-y-4 text-[#F9F0EE]/60 font-medium">
+                <li>Về chúng tôi</li>
+                <li>Dịch vụ bảo hành</li>
+                <li>Chính sách đại lý</li>
+                <li>Tin tức</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div className="pt-16 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-8 text-sm font-medium text-[#F9F0EE]/30 uppercase tracking-widest">
+            <p>© 2026 DUONGDIY. ALL RIGHTS RESERVED.</p>
+            <div className="flex gap-10">
+              <a href="#">Privacy Policy</a>
+              <a href="#">Terms of Service</a>
+            </div>
           </div>
         </div>
       </footer>
-
-      {/* Custom Styles */}
-      <style dangerouslySetInnerHTML={{ __html: `
-        @keyframes slow-zoom {
-          0% { transform: scale(1); }
-          50% { transform: scale(1.03); }
-          100% { transform: scale(1); }
-        }
-        .animate-slow-zoom {
-          animation: slow-zoom 25s infinite ease-in-out;
-        }
-      `}} />
     </div>
   );
 }

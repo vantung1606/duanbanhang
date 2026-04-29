@@ -29,18 +29,18 @@ export default function NeuralynNavbar() {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 px-6 md:px-12 py-6 flex items-center justify-between transition-all duration-500 backdrop-blur-2xl bg-slate-900/60 border-b border-white/10 shadow-lg">
+      <nav className="fixed top-0 left-0 right-0 z-50 px-6 md:px-12 py-6 flex items-center justify-between transition-all duration-500 backdrop-blur-2xl bg-[#0A1E54]/80 border-b border-white/10 shadow-lg">
       <div className="flex items-center gap-3 cursor-pointer group" onClick={() => { navigate('/'); window.scrollTo({top:0, behavior:'smooth'}); }}>
-        <div className="w-12 h-12 rounded-2xl bg-indigo-600 text-white flex items-center justify-center shadow-2xl group-hover:rotate-12 transition-transform duration-500">
+        <div className="w-12 h-12 rounded-2xl bg-[#B39A84] text-white flex items-center justify-center shadow-2xl group-hover:rotate-12 transition-transform duration-500">
           <Zap className="w-6 h-6 fill-white" />
         </div>
-        <span className="text-2xl font-black tracking-tighter text-white italic">DUONGDIY<span className="text-cyan-400">.</span></span>
+        <span className="text-2xl font-black tracking-tighter text-white italic">DUONGDIY<span className="text-[#B39A84]">.</span></span>
       </div>
 
       <div className="hidden lg:flex items-center gap-10">
         <Link 
           to="/" 
-          className={`text-xs font-black uppercase tracking-[0.2em] transition-colors ${location.pathname === '/' ? 'text-cyan-400' : 'text-slate-300 hover:text-cyan-400'}`}
+          className={`text-xs font-black uppercase tracking-[0.2em] transition-colors ${location.pathname === '/' ? 'text-[#B39A84]' : 'text-slate-300 hover:text-[#B39A84]'}`}
         >
           Trang chủ
         </Link>
@@ -53,7 +53,7 @@ export default function NeuralynNavbar() {
           <Link 
             key={item.name} 
             to={item.path} 
-            className={`text-xs font-black uppercase tracking-[0.2em] transition-colors ${isActive(item.path) ? 'text-cyan-400' : 'text-slate-300 hover:text-cyan-400'}`}
+            className={`text-xs font-black uppercase tracking-[0.2em] transition-colors ${isActive(item.path) ? 'text-[#B39A84]' : 'text-slate-300 hover:text-[#B39A84]'}`}
           >
             {item.name}
           </Link>
@@ -67,7 +67,7 @@ export default function NeuralynNavbar() {
         >
           <ShoppingBag className="w-5 h-5" />
           {getTotalItems() > 0 && (
-            <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-cyan-500 text-slate-900 text-[10px] font-black flex items-center justify-center border-2 border-slate-900">
+            <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-[#B39A84] text-white text-[10px] font-black flex items-center justify-center border-2 border-[#0A1E54]">
               {getTotalItems()}
             </span>
           )}
@@ -75,14 +75,14 @@ export default function NeuralynNavbar() {
         {isAuthenticated ? (
           <button 
             onClick={() => setIsLogoutModalOpen(true)} 
-            className="px-8 py-3.5 rounded-full bg-cyan-500 text-slate-900 text-[10px] font-black uppercase tracking-widest shadow-lg hover:bg-cyan-400 transition-all"
+            className="px-8 py-3.5 rounded-full bg-[#B39A84] text-white text-[10px] font-black uppercase tracking-widest shadow-lg hover:bg-white hover:text-[#0A1E54] transition-all"
           >
             Đăng xuất
           </button>
         ) : (
           <button 
             onClick={() => openAuthModal('login')}
-            className="px-8 py-3.5 rounded-full bg-cyan-500 text-slate-900 text-[10px] font-black uppercase tracking-widest shadow-lg hover:bg-cyan-400 transition-all"
+            className="px-8 py-3.5 rounded-full bg-[#B39A84] text-white text-[10px] font-black uppercase tracking-widest shadow-lg hover:bg-white hover:text-[#0A1E54] transition-all"
           >
             Đăng nhập
           </button>
