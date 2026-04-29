@@ -1,11 +1,11 @@
-import axios from 'axios';
+import apiClient from './api/apiClient';
 
-const API_BASE_URL = '/api/public/catalog';
+const API_BASE_URL = '/public/catalog';
 
 export const catalogService = {
   getProducts: async (params) => {
     try {
-      const response = await axios.get(API_BASE_URL, { params });
+      const response = await apiClient.get(API_BASE_URL, { params });
       return response.data;
     } catch (error) {
       console.error('Error fetching catalog products:', error);
@@ -15,7 +15,7 @@ export const catalogService = {
 
   getProductBySlug: async (slug) => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/${slug}`);
+      const response = await apiClient.get(`${API_BASE_URL}/${slug}`);
       return response.data;
     } catch (error) {
       console.error('Error fetching product detail:', error);

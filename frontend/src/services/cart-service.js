@@ -4,7 +4,7 @@ export const cartService = {
   // Get cart for logged in user
   getCart: async () => {
     try {
-      const response = await apiClient.get('/cart');
+      const response = await apiClient.get('/v1/cart');
       return response.data;
     } catch (error) {
       console.error('Error fetching cart:', error);
@@ -16,7 +16,7 @@ export const cartService = {
   addToCart: async (variantId, quantity) => {
     try {
       // Backend expects variantId and quantity as RequestParams
-      const response = await apiClient.post(`/cart/add?variantId=${variantId}&quantity=${quantity}`);
+      const response = await apiClient.post(`/v1/cart/add?variantId=${variantId}&quantity=${quantity}`);
       return response.data;
     } catch (error) {
       console.error('Error adding to cart:', error);
@@ -27,7 +27,7 @@ export const cartService = {
   // Update quantity
   updateQuantity: async (itemId, quantity) => {
     try {
-      const response = await apiClient.put(`/cart/update/${itemId}?quantity=${quantity}`);
+      const response = await apiClient.put(`/v1/cart/update/${itemId}?quantity=${quantity}`);
       return response.data;
     } catch (error) {
       console.error('Error updating cart quantity:', error);
@@ -38,7 +38,7 @@ export const cartService = {
   // Remove item
   removeItem: async (itemId) => {
     try {
-      const response = await apiClient.delete(`/cart/remove/${itemId}`);
+      const response = await apiClient.delete(`/v1/cart/remove/${itemId}`);
       return response.data;
     } catch (error) {
       console.error('Error removing cart item:', error);
@@ -49,7 +49,7 @@ export const cartService = {
   // Clear cart
   clearCart: async () => {
     try {
-      await apiClient.delete('/cart/clear');
+      await apiClient.delete('/v1/cart/clear');
     } catch (error) {
       console.error('Error clearing cart:', error);
       throw error;
