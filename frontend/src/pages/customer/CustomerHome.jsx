@@ -32,22 +32,22 @@ const TornEdge = ({ color = "white", flip = false }) => (
 
 const MenuItem = ({ name, price, description }) => (
   <motion.div 
-    whileHover={{ y: -5, shadow: "0 10px 30px rgba(0,0,0,0.1)" }}
-    className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex justify-between items-start group cursor-pointer"
+    whileHover={{ y: -5, shadow: "0 10px 30px rgba(10,30,84,0.1)" }}
+    className="bg-white p-6 rounded-xl shadow-sm border border-[#CFC7C8] flex justify-between items-start group cursor-pointer"
   >
     <div>
-      <h3 className="text-xl font-bold text-slate-800 group-hover:text-[#c49b63] transition-colors">{name}</h3>
-      <p className="text-sm text-slate-500 mt-1">{description}</p>
+      <h3 className="text-xl font-bold text-[#0A1E54] group-hover:text-[#B39A84] transition-colors">{name}</h3>
+      <p className="text-sm text-[#B39A84] mt-1">{description}</p>
     </div>
-    <span className="text-xl font-black text-[#c49b63]">${price}</span>
+    <span className="text-xl font-black text-[#0A1E54]">${price}</span>
   </motion.div>
 );
 
 export default function CustomerHome() {
   return (
-    <div className="bg-white">
+    <div className="bg-[#F9F0EE]">
       {/* Hero Section */}
-      <section className="relative min-h-[700px] flex items-center overflow-hidden bg-gradient-to-br from-amber-50 via-white to-orange-50">
+      <section className="relative min-h-[700px] flex items-center overflow-hidden bg-gradient-to-br from-[#F9F0EE] via-white to-[#CFC7C8]/30">
         <div className="container mx-auto px-6 relative z-10 pt-20 pb-20">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Content Left */}
@@ -57,17 +57,17 @@ export default function CustomerHome() {
               transition={{ duration: 1 }}
               className="max-w-2xl"
             >
-              <span className="text-[#c49b63] font-bold tracking-[0.3em] uppercase text-sm mb-6 block">Now you can feel the energy</span>
-              <h1 className="text-5xl md:text-7xl font-black text-slate-900 leading-tight mb-8">
+              <span className="text-[#0A1E54] font-bold tracking-[0.3em] uppercase text-sm mb-6 block">Now you can feel the energy</span>
+              <h1 className="text-5xl md:text-7xl font-black text-[#0A1E54] leading-tight mb-8">
                 Start your day with <br/>a perfect coffee
               </h1>
-              <p className="text-slate-600 text-lg mb-8 max-w-lg leading-relaxed">
+              <p className="text-[#B39A84] text-lg mb-8 max-w-lg leading-relaxed">
                 Experience the finest blends and carefully roasted beans that awaken your senses and energize your entire day.
               </p>
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-[#c49b63] text-white px-10 py-4 rounded-full font-black text-xs tracking-widest uppercase hover:bg-slate-900 transition-all shadow-xl shadow-[#c49b63]/30"
+                className="bg-[#0A1E54] text-white px-10 py-4 rounded-full font-black text-xs tracking-widest uppercase hover:bg-[#B39A84] transition-all shadow-xl shadow-[#0A1E54]/20"
               >
                 Buy Now
               </motion.button>
@@ -80,7 +80,7 @@ export default function CustomerHome() {
               transition={{ duration: 1, delay: 0.2 }}
               className="relative"
             >
-              <div className="absolute inset-0 bg-[#c49b63]/20 blur-3xl rounded-full transform scale-90"></div>
+              <div className="absolute inset-0 bg-[#0A1E54]/10 blur-3xl rounded-full transform scale-90"></div>
               <img 
                 src={homepageImg} 
                 alt="Coffee Display" 
@@ -91,7 +91,7 @@ export default function CustomerHome() {
         </div>
 
         {/* Torn Edge at Bottom */}
-        <TornEdge color="white" />
+        <TornEdge color="#F9F0EE" />
       </section>
 
       {/* Video/About Section */}
@@ -104,21 +104,21 @@ export default function CustomerHome() {
           <img 
             src="/assets/process.png" 
             alt="Coffee Making" 
-            className="rounded-2xl shadow-2xl w-full aspect-video object-cover"
+            className="rounded-2xl shadow-2xl w-full aspect-video object-cover border-4 border-[#CFC7C8]"
           />
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-20 h-20 bg-[#c49b63] rounded-full flex items-center justify-center text-white animate-pulse shadow-2xl group-hover:scale-110 transition-transform">
+            <div className="w-20 h-20 bg-[#0A1E54] rounded-full flex items-center justify-center text-white animate-pulse shadow-2xl group-hover:scale-110 transition-transform">
               <Play className="w-8 h-8 fill-current ml-1" />
             </div>
           </div>
         </motion.div>
-
+ 
         <div className="space-y-6">
-          <span className="text-[#c49b63] font-bold tracking-[0.2em] uppercase text-xs block">Live coffee making process</span>
-          <h2 className="text-4xl md:text-5xl font-black text-slate-900 leading-tight">
+          <span className="text-[#B39A84] font-bold tracking-[0.2em] uppercase text-xs block">Live coffee making process</span>
+          <h2 className="text-4xl md:text-5xl font-black text-[#0A1E54] leading-tight">
             We Telecast our <br/>Coffee Making Live
           </h2>
-          <p className="text-slate-500 font-medium leading-relaxed">
+          <p className="text-[#B39A84] font-medium leading-relaxed">
             We are here to listen from you deliver excellence. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim.
           </p>
           <img src="/assets/signature.png" alt="" className="h-12 opacity-50" />
@@ -126,16 +126,16 @@ export default function CustomerHome() {
       </section>
 
       {/* Menu Section */}
-      <section className="relative py-24 bg-slate-50 overflow-hidden">
+      <section className="relative py-24 bg-[#F9F0EE] overflow-hidden">
         {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-10 pointer-events-none">
+        <div className="absolute inset-0 opacity-5 pointer-events-none">
           <img src="/assets/pattern.png" alt="" className="w-full h-full object-cover" />
         </div>
 
         <div className="container mx-auto px-6 relative z-10">
           <div className="text-center max-w-2xl mx-auto mb-20">
-            <h2 className="text-4xl font-black text-slate-900 mb-4">What kind of Coffee we serve for you</h2>
-            <p className="text-slate-500 font-medium italic">Who are in extremely love with eco friendly system.</p>
+            <h2 className="text-4xl font-black text-[#0A1E54] mb-4">What kind of Coffee we serve for you</h2>
+            <p className="text-[#B39A84] font-medium italic">Who are in extremely love with eco friendly system.</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -153,23 +153,23 @@ export default function CustomerHome() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-24 bg-[#c49b63] text-white">
+      <section className="py-24 bg-[#0A1E54] text-white">
         <div className="container mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
           <div>
             <span className="text-5xl font-black block mb-2">2536</span>
-            <span className="text-sm font-bold opacity-80 uppercase tracking-widest">Happy Clients</span>
+            <span className="text-sm font-bold text-[#B39A84] uppercase tracking-widest">Happy Clients</span>
           </div>
           <div>
             <span className="text-5xl font-black block mb-2">7562</span>
-            <span className="text-sm font-bold opacity-80 uppercase tracking-widest">Total Projects</span>
+            <span className="text-sm font-bold text-[#B39A84] uppercase tracking-widest">Total Projects</span>
           </div>
           <div>
             <span className="text-5xl font-black block mb-2">2013</span>
-            <span className="text-sm font-bold opacity-80 uppercase tracking-widest">Cups Coffee</span>
+            <span className="text-sm font-bold text-[#B39A84] uppercase tracking-widest">Cups Coffee</span>
           </div>
           <div>
             <span className="text-5xl font-black block mb-2">10536</span>
-            <span className="text-sm font-bold opacity-80 uppercase tracking-widest">Total Submitted</span>
+            <span className="text-sm font-bold text-[#B39A84] uppercase tracking-widest">Total Submitted</span>
           </div>
         </div>
       </section>
@@ -201,33 +201,33 @@ export default function CustomerHome() {
 
           <div>
             <h4 className="text-xl font-bold mb-6">Newsletter</h4>
-            <p className="text-slate-400 text-sm mb-6">Stay update with our latest</p>
+            <p className="text-[#B39A84] text-sm mb-6">Stay update with our latest</p>
             <div className="flex">
               <input 
                 type="email" 
                 placeholder="Enter Email" 
-                className="bg-white/10 border border-white/20 px-4 py-3 rounded-l-lg flex-1 focus:outline-none focus:ring-1 focus:ring-[#c49b63]"
+                className="bg-white/10 border border-white/20 px-4 py-3 rounded-l-lg flex-1 focus:outline-none focus:ring-1 focus:ring-[#B39A84] text-white"
               />
-              <button className="bg-[#c49b63] px-6 rounded-r-lg">
+              <button className="bg-[#0A1E54] px-6 rounded-r-lg border border-white/20 border-l-0 hover:bg-[#B39A84] transition-colors">
                 <ArrowRight className="w-5 h-5" />
               </button>
             </div>
           </div>
-
+ 
           <div>
             <h4 className="text-xl font-bold mb-6">Follow Us</h4>
-            <p className="text-slate-400 text-sm mb-6">Let us be social</p>
+            <p className="text-[#B39A84] text-sm mb-6">Let us be social</p>
             <div className="flex gap-4">
-              <a href="#" className="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-[#c49b63] transition-colors">
+              <a href="#" className="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-[#B39A84] transition-colors">
                 <Facebook className="w-5 h-5" />
               </a>
-              <a href="#" className="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-[#c49b63] transition-colors">
+              <a href="#" className="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-[#B39A84] transition-colors">
                 <Twitter className="w-5 h-5" />
               </a>
-              <a href="#" className="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-[#c49b63] transition-colors">
+              <a href="#" className="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-[#B39A84] transition-colors">
                 <Instagram className="w-5 h-5" />
               </a>
-              <a href="#" className="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-[#c49b63] transition-colors">
+              <a href="#" className="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-[#B39A84] transition-colors">
                 <Globe className="w-5 h-5" />
               </a>
             </div>
