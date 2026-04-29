@@ -28,7 +28,7 @@ const FloatingOrb = ({ color, size, top, left, delay }) => (
       delay,
       ease: "easeInOut"
     }}
-    className="absolute pointer-events-none blur-[100px] rounded-full z-0"
+    className="absolute pointer-events-none blur-[100px] rounded-full z-0 opacity-40"
     style={{
       backgroundColor: color,
       width: size,
@@ -72,12 +72,12 @@ const MenuItem = ({ name, price, description }) => (
 
 export default function NeuralynHome() {
   return (
-    <div className="bg-slate-900 font-sans selection:bg-indigo-600 selection:text-white overflow-x-hidden scroll-smooth custom-scrollbar relative">
+    <div className="bg-[#0A1E54] font-sans selection:bg-[#B39A84] selection:text-white overflow-x-hidden scroll-smooth custom-scrollbar relative">
       <NeuralynNavbar />
 
       {/* Hero Section */}
       <section 
-        className="relative min-h-screen flex items-center pt-20 pb-[10vw] bg-gray-900 z-30" 
+        className="relative min-h-screen flex items-center pt-20 pb-[10vw] bg-[#0A1E54] z-30" 
         id="home"
         style={{ clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 3vw), 0 100%)' }}
       >
@@ -88,16 +88,16 @@ export default function NeuralynHome() {
             transition={{ duration: 1.2 }}
             className="text-center lg:text-left"
           >
-            <h2 className="text-gray-400 font-black tracking-[0.5em] uppercase text-[10px] mb-8 block">Thiết Bị Sân Khấu Chuyên Nghiệp DuongDIY</h2>
-            <h1 className="text-5xl md:text-[4.5rem] font-black text-white leading-[1.1] tracking-tighter mb-10">
-              Máy Tạo Khói <br/> <span className="text-cyan-400">Chinh Phục Mọi Ánh Nhìn</span>
+            <h2 className="text-[#CFC7C8] font-black tracking-[0.5em] uppercase text-[10px] mb-8 block">Thiết Bị Sân Khấu Chuyên Nghiệp DuongDIY</h2>
+            <h1 className="text-5xl md:text-[4.5rem] font-black text-[#F9F0EE] leading-[1.1] tracking-tighter mb-10">
+              Máy Tạo Khói <br/> <span className="text-[#B39A84]">Chinh Phục Mọi Ánh Nhìn</span>
             </h1>
-            <p className="text-gray-400 text-lg mb-12 max-w-lg leading-relaxed font-medium">
+            <p className="text-[#CFC7C8] text-lg mb-12 max-w-lg leading-relaxed font-medium">
               DuongDIY - Đơn vị hàng đầu chuyên cung cấp máy tạo khói, dung dịch khói và giải pháp hiệu ứng sân khấu cao cấp. Nâng tầm không gian sự kiện, quán bar và phòng karaoke VIP của bạn.
             </p>
             <motion.button
-              whileHover={{ scale: 1.05, backgroundColor: '#ffffff', color: '#22d3ee' }}
-              className="bg-white/10 backdrop-blur-md border border-white/30 text-white px-14 py-5 rounded-full font-black text-[10px] tracking-[0.3em] uppercase transition-all shadow-xl shadow-cyan-900/20"
+              whileHover={{ scale: 1.05, backgroundColor: '#F9F0EE', color: '#0A1E54' }}
+              className="bg-white/10 backdrop-blur-md border border-white/30 text-white px-14 py-5 rounded-full font-black text-[10px] tracking-[0.3em] uppercase transition-all shadow-xl shadow-black/20"
             >
               Khám Phá Ngay
             </motion.button>
@@ -109,7 +109,7 @@ export default function NeuralynHome() {
             transition={{ duration: 1.5, type: "spring" }}
             className="hidden lg:block relative"
           >
-            <div className="absolute -inset-20 bg-indigo-500/20 blur-[100px] rounded-full animate-pulse" />
+            <div className="absolute -inset-20 bg-[#B39A84]/20 blur-[100px] rounded-full animate-pulse" />
             <img 
               src={homepageImg} 
               alt="Homepage Image" 
@@ -121,7 +121,7 @@ export default function NeuralynHome() {
 
       {/* Production Process */}
       <section 
-        className="relative pt-[12vw] pb-[16vw] bg-white z-20" 
+        className="relative pt-[12vw] pb-[16vw] bg-[#F9F0EE] z-20" 
         id="about"
         style={{ marginTop: '-3vw', clipPath: 'polygon(0 3vw, 100% 0, 100% calc(100% - 3vw), 0 100%)' }}
       >
@@ -134,28 +134,28 @@ export default function NeuralynHome() {
           >
             {/* 3D Visuals from Login */}
             <PerspectiveGrid />
-            <FloatingOrb color="#22d3ee" size="300px" top="-10%" left="-10%" delay={0} />
-            <FloatingOrb color="#3b82f6" size="250px" top="50%" left="60%" delay={1} />
-            <FloatingOrb color="#8b5cf6" size="200px" top="20%" left="40%" delay={2} />
+            <FloatingOrb color="#B39A84" size="300px" top="-10%" left="-10%" delay={0} />
+            <FloatingOrb color="#CFC7C8" size="250px" top="50%" left="60%" delay={1} />
+            <FloatingOrb color="#0A1E54" size="200px" top="20%" left="40%" delay={2} />
 
-            <div className="absolute inset-0 bg-slate-900/20 flex items-center justify-center z-10">
-              <div className="w-24 h-24 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center text-cyan-400 cursor-pointer hover:scale-110 transition-transform shadow-xl border border-white/20 hover:bg-white/20">
+            <div className="absolute inset-0 bg-[#0A1E54]/40 flex items-center justify-center z-10">
+              <div className="w-24 h-24 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center text-[#B39A84] cursor-pointer hover:scale-110 transition-transform shadow-xl border border-white/20 hover:bg-white/20">
                 <Play className="w-8 h-8 fill-current ml-1" />
               </div>
             </div>
           </motion.div>
 
           <div className="space-y-10">
-            <span className="text-indigo-600 font-black tracking-[0.3em] uppercase text-[10px]">Tận tâm trong từng linh kiện</span>
-            <h2 className="text-5xl md:text-6xl font-black text-slate-900 leading-[1.1] tracking-tighter">
+            <span className="text-[#0A1E54] font-black tracking-[0.3em] uppercase text-[10px]">Tận tâm trong từng linh kiện</span>
+            <h2 className="text-5xl md:text-6xl font-black text-[#0A1E54] leading-[1.1] tracking-tighter">
               Quy trình chế tạo <br/>máy khói DuongDIY
             </h2>
             <p className="text-slate-600 text-lg leading-relaxed font-medium">
               Mỗi chiếc máy tạo khói rời xưởng đều trải qua quy trình kiểm tra nghiêm ngặt về độ bền nhiệt, lưu lượng khói và độ an toàn điện, đảm bảo trải nghiệm tốt nhất cho khách hàng.
             </p>
             <div className="pt-6 flex items-center gap-6">
-              <div className="w-px h-16 bg-slate-300" />
-              <p className="text-slate-500 text-sm italic font-medium">"Chất lượng tạo nên thương hiệu DuongDIY"</p>
+              <div className="w-px h-16 bg-[#CFC7C8]" />
+              <p className="text-[#B39A84] text-sm italic font-medium">"Chất lượng tạo nên thương hiệu DuongDIY"</p>
             </div>
           </div>
         </div>
@@ -163,7 +163,7 @@ export default function NeuralynHome() {
 
       {/* Product List */}
       <section 
-        className="relative pt-[12vw] pb-[16vw] bg-gray-900 z-10" 
+        className="relative pt-[12vw] pb-[16vw] bg-[#0A1E54] z-10" 
         id="products"
         style={{ marginTop: '-3vw', clipPath: 'polygon(0 3vw, 100% 0, 100% calc(100% - 3vw), 0 100%)' }}
       >
@@ -185,14 +185,14 @@ export default function NeuralynHome() {
               <motion.div 
                 key={idx}
                 whileHover={{ y: -12 }}
-                className="bg-gray-800 p-12 rounded-[3rem] border border-gray-700 shadow-xl hover:shadow-2xl hover:border-gray-600 transition-all duration-500"
+                className="bg-white/5 p-12 rounded-[3rem] border border-white/10 shadow-xl hover:shadow-2xl hover:border-[#B39A84]/40 transition-all duration-500 backdrop-blur-sm"
               >
                 <div className="flex justify-between items-start mb-6">
-                  <h3 className="text-xl font-black text-white leading-tight pr-4">{item.name}</h3>
-                  <span className="text-cyan-400 font-black text-sm whitespace-nowrap">{item.price}</span>
+                  <h3 className="text-xl font-black text-[#F9F0EE] leading-tight pr-4">{item.name}</h3>
+                  <span className="text-[#B39A84] font-black text-sm whitespace-nowrap">{item.price}</span>
                 </div>
-                <p className="text-gray-400 text-sm font-medium leading-relaxed mb-8">{item.desc}</p>
-                <button className="text-[10px] font-black uppercase tracking-widest text-white border-b-2 border-white pb-1 hover:text-cyan-400 hover:border-cyan-400 transition-colors">
+                <p className="text-[#CFC7C8] text-sm font-medium leading-relaxed mb-8">{item.desc}</p>
+                <button className="text-[10px] font-black uppercase tracking-widest text-white border-b-2 border-[#B39A84] pb-1 hover:text-[#B39A84] transition-colors">
                   Chi Tiết
                 </button>
               </motion.div>
@@ -203,14 +203,14 @@ export default function NeuralynHome() {
 
       {/* Testimonials */}
       <section 
-        className="relative pt-[10vw] pb-[14vw] bg-[#22D3EE]" 
+        className="relative pt-[10vw] pb-[14vw] bg-[#B39A84]" 
         id="testimonials"
         style={{ marginTop: '-3vw', clipPath: 'polygon(0 3vw, 100% 0, 100% calc(100% - 3vw), 0 100%)', zIndex: 5 }}
       >
         <div className="container mx-auto px-12 relative z-10">
           <div className="text-center max-w-3xl mx-auto mb-20">
-            <h2 className="text-5xl font-black text-slate-900 mb-6 tracking-tighter">Đánh Giá Khách Hàng</h2>
-            <p className="text-slate-800 font-bold tracking-widest text-[10px] uppercase italic">Sự hài lòng của bạn là thành công của chúng tôi</p>
+            <h2 className="text-5xl font-black text-[#0A1E54] mb-6 tracking-tighter">Đánh Giá Khách Hàng</h2>
+            <p className="text-[#0A1E54] font-bold tracking-widest text-[10px] uppercase italic opacity-70">Sự hài lòng của bạn là thành công của chúng tôi</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
@@ -222,9 +222,9 @@ export default function NeuralynHome() {
               <motion.div 
                 key={idx}
                 whileHover={{ y: -10 }}
-                className="bg-white/30 backdrop-blur-md p-10 rounded-[2.5rem] border border-white/40 shadow-xl shadow-cyan-900/10"
+                className="bg-white/30 backdrop-blur-md p-10 rounded-[2.5rem] border border-white/40 shadow-xl shadow-black/10"
               >
-                <div className="flex text-amber-600 mb-6">
+                <div className="flex text-[#0A1E54] mb-6">
                   {[...Array(5)].map((_, i) => <svg key={i} className="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>)}
                 </div>
                 <p className="text-slate-900 font-medium leading-relaxed mb-8 italic">"{item.text}"</p>
@@ -240,23 +240,23 @@ export default function NeuralynHome() {
 
       {/* Footer */}
       <footer 
-        className="bg-gradient-to-b from-slate-900 to-slate-950 pt-[16vw] pb-20 relative overflow-hidden z-0"
+        className="bg-gradient-to-b from-[#0A1E54] to-[#050c26] pt-[16vw] pb-20 relative overflow-hidden z-0"
         style={{ marginTop: '-3vw', clipPath: 'polygon(0 3vw, 100% 0, 100% 100%, 0 100%)' }}
       >
         <div className="container mx-auto px-12 relative z-10 grid md:grid-cols-3 gap-24 text-white">
           <div className="space-y-8">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-indigo-600 rounded-xl flex items-center justify-center font-black italic">D</div>
+              <div className="w-8 h-8 bg-[#B39A84] rounded-xl flex items-center justify-center font-black italic">D</div>
               <span className="text-2xl font-black italic tracking-tighter">DuongDIY</span>
             </div>
-            <p className="text-slate-500 font-medium leading-relaxed">
+            <p className="text-[#CFC7C8] font-medium leading-relaxed">
               Thương hiệu hàng đầu về giải pháp tạo khói và hiệu ứng sân khấu tại Việt Nam. Uy tín - Chất lượng - Tận tâm.
             </p>
           </div>
 
           <div className="space-y-8">
              <h4 className="text-lg font-black tracking-tight">Liên Hệ</h4>
-             <ul className="space-y-4 text-slate-400 font-medium">
+             <ul className="space-y-4 text-[#CFC7C8] font-medium">
                <li>Email: duongdiy@techchain.com</li>
                <li>Hotline: 09xx xxx xxx</li>
                <li>Địa chỉ: TP. Hồ Chí Minh, Việt Nam</li>
@@ -267,7 +267,7 @@ export default function NeuralynHome() {
              <h4 className="text-lg font-black tracking-tight">Theo Dõi</h4>
              <div className="flex gap-4">
                 {[Facebook, Twitter, Instagram].map((Icon, i) => (
-                  <div key={i} className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center hover:bg-indigo-600 transition-all cursor-pointer">
+                  <div key={i} className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center hover:bg-[#B39A84] transition-all cursor-pointer">
                     <Icon className="w-5 h-5" />
                   </div>
                 ))}
