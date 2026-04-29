@@ -42,6 +42,7 @@ export default {
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
+        heading: ['Montserrat', 'sans-serif'],
         serif: ['Instrument Serif', 'serif'],
       },
       boxShadow: {

@@ -29,18 +29,18 @@ export default function NeuralynNavbar() {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 px-6 md:px-12 py-6 flex items-center justify-between transition-all duration-500 backdrop-blur-2xl bg-[#0A1E54]/80 border-b border-white/10 shadow-lg">
-      <div className="flex items-center gap-3 cursor-pointer group" onClick={() => { navigate('/'); window.scrollTo({top:0, behavior:'smooth'}); }}>
-        <div className="w-12 h-12 rounded-2xl bg-[#B39A84] text-white flex items-center justify-center shadow-2xl group-hover:rotate-12 transition-transform duration-500">
-          <Zap className="w-6 h-6 fill-white" />
+      <nav className="fixed top-0 left-0 right-0 z-50 px-4 md:px-12 py-4 md:py-6 flex items-center justify-between transition-all duration-500 backdrop-blur-2xl bg-[#4981cf]/80 border-b border-white/10 shadow-lg">
+      <div className="flex items-center gap-2 md:gap-3 cursor-pointer group" onClick={() => { navigate('/'); window.scrollTo({top:0, behavior:'smooth'}); }}>
+        <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-[#cadaee] text-[#4981cf] flex items-center justify-center shadow-2xl group-hover:rotate-12 transition-transform duration-500">
+          <Zap className="w-5 h-5 md:w-6 md:h-6 fill-current" />
         </div>
-        <span className="text-2xl font-black tracking-tighter text-white italic">DUONGDIY<span className="text-[#B39A84]">.</span></span>
+        <span className="text-xl md:text-2xl font-black tracking-tighter text-white italic">DUONGDIY<span className="text-[#cadaee]">.</span></span>
       </div>
 
       <div className="hidden lg:flex items-center gap-10">
         <Link 
           to="/" 
-          className={`text-xs font-black uppercase tracking-[0.2em] transition-colors ${location.pathname === '/' ? 'text-[#B39A84]' : 'text-slate-300 hover:text-[#B39A84]'}`}
+          className={`text-xs font-black uppercase tracking-[0.2em] transition-colors ${location.pathname === '/' ? 'text-[#cadaee]' : 'text-slate-100 hover:text-[#cadaee]'}`}
         >
           Trang chủ
         </Link>
@@ -53,21 +53,21 @@ export default function NeuralynNavbar() {
           <Link 
             key={item.name} 
             to={item.path} 
-            className={`text-xs font-black uppercase tracking-[0.2em] transition-colors ${isActive(item.path) ? 'text-[#B39A84]' : 'text-slate-300 hover:text-[#B39A84]'}`}
+            className={`text-xs font-black uppercase tracking-[0.2em] transition-colors ${isActive(item.path) ? 'text-[#cadaee]' : 'text-slate-100 hover:text-[#cadaee]'}`}
           >
             {item.name}
           </Link>
         ))}
       </div>
 
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2 md:gap-4">
         <button 
           onClick={toggleCart} 
-          className="w-12 h-12 rounded-full bg-white/10 border border-white/20 flex items-center justify-center relative hover:bg-white/20 transition-all text-white"
+          className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/10 border border-white/20 flex items-center justify-center relative hover:bg-white/20 transition-all text-white"
         >
-          <ShoppingBag className="w-5 h-5" />
+          <ShoppingBag className="w-4 h-4 md:w-5 md:h-5" />
           {getTotalItems() > 0 && (
-            <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-[#B39A84] text-white text-[10px] font-black flex items-center justify-center border-2 border-[#0A1E54]">
+            <span className="absolute -top-1 -right-1 w-4 h-4 md:w-5 md:h-5 rounded-full bg-[#cadaee] text-[#4981cf] text-[8px] md:text-[10px] font-black flex items-center justify-center border-2 border-[#4981cf]">
               {getTotalItems()}
             </span>
           )}
@@ -75,14 +75,14 @@ export default function NeuralynNavbar() {
         {isAuthenticated ? (
           <button 
             onClick={() => setIsLogoutModalOpen(true)} 
-            className="px-8 py-3.5 rounded-full bg-[#B39A84] text-white text-[10px] font-black uppercase tracking-widest shadow-lg hover:bg-white hover:text-[#0A1E54] transition-all"
+            className="px-4 md:px-8 py-2.5 md:py-3.5 rounded-full bg-white text-[#4981cf] text-[9px] md:text-[10px] font-black uppercase tracking-widest shadow-lg hover:bg-[#cadaee] transition-all"
           >
             Đăng xuất
           </button>
         ) : (
           <button 
             onClick={() => openAuthModal('login')}
-            className="px-8 py-3.5 rounded-full bg-[#B39A84] text-white text-[10px] font-black uppercase tracking-widest shadow-lg hover:bg-white hover:text-[#0A1E54] transition-all"
+            className="px-4 md:px-8 py-2.5 md:py-3.5 rounded-full bg-white text-[#4981cf] text-[9px] md:text-[10px] font-black uppercase tracking-widest shadow-lg hover:bg-[#cadaee] transition-all"
           >
             Đăng nhập
           </button>

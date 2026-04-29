@@ -6,12 +6,12 @@ import { login as loginApi, register as registerApi } from '../../services/api/a
 import { useAuthStore } from '../../store/authStore';
 
 const InputField = ({ icon: Icon, label, ...props }) => (
-  <div className="space-y-1.5">
-    <label className="text-[10px] font-black text-[#0A1E54]/40 uppercase tracking-[0.2em]">{label}</label>
+  <div className="space-y-2">
+    <label className="text-[10px] md:text-[11px] font-black text-[#1a365d] uppercase tracking-[0.2em]">{label}</label>
     <div className="relative group">
-      <Icon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#B39A84] group-focus-within:text-[#0A1E54] transition-colors duration-200 z-10" />
+      <Icon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#4981cf] group-focus-within:text-[#1a365d] transition-colors duration-200 z-10" />
       <input
-        className="w-full bg-white/40 border border-[#B39A84]/20 focus:border-[#B39A84] focus:ring-4 focus:ring-[#B39A84]/5 text-[#0A1E54] placeholder-[#0A1E54]/20 py-4 pl-11 pr-4 rounded-2xl text-sm font-bold outline-none transition-all duration-200 backdrop-blur-sm"
+        className="w-full bg-white border-2 border-[#cadaee] focus:border-[#4981cf] focus:ring-8 focus:ring-[#4981cf]/5 text-[#1a365d] placeholder-[#1a365d]/20 py-4 md:py-4.5 pl-11 pr-4 rounded-xl md:rounded-2xl text-sm font-black outline-none transition-all duration-200"
         {...props}
       />
     </div>
@@ -63,13 +63,13 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F9F0EE] flex overflow-hidden font-sans relative">
-      {/* Decorative blobs */}
-      <div className="fixed top-[-10%] left-[-5%] w-[40%] h-[50%] bg-[#B39A84]/10 blur-[120px] rounded-full z-0 pointer-events-none" />
-      <div className="fixed bottom-[-10%] right-[10%] w-[30%] h-[40%] bg-[#0A1E54]/5 blur-[100px] rounded-full z-0 pointer-events-none" />
+    <div className="min-h-screen bg-[#e8ebf2] flex overflow-x-hidden font-sans relative">
+      {/* Decorative blobs - hidden on very small mobile to save perf */}
+      <div className="fixed top-[-10%] left-[-5%] w-[40%] h-[50%] bg-[#cadaee]/40 blur-[100px] md:blur-[120px] rounded-full z-0 pointer-events-none" />
+      <div className="fixed bottom-[-10%] right-[10%] w-[30%] h-[40%] bg-[#4981cf]/10 blur-[80px] md:blur-[100px] rounded-full z-0 pointer-events-none" />
 
       {/* ── LEFT PANEL: Form ── */}
-      <div className="relative z-10 w-full lg:w-1/2 flex items-center justify-center p-8">
+      <div className="relative z-10 w-full lg:w-1/2 flex items-center justify-center p-6 md:p-8">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
@@ -77,24 +77,24 @@ export default function AuthPage() {
           className="w-full max-w-md"
         >
           {/* Logo */}
-          <div className="flex items-center gap-3 mb-10 cursor-pointer" onClick={() => navigate('/home')}>
-            <div className="w-12 h-12 rounded-2xl bg-[#0A1E54] flex items-center justify-center shadow-xl shadow-[#0A1E54]/20">
-              <Zap className="w-6 h-6 text-[#B39A84] fill-[#B39A84]" />
+          <div className="flex items-center gap-3 md:gap-4 mb-8 md:mb-12 cursor-pointer group justify-center lg:justify-start" onClick={() => navigate('/home')}>
+            <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-[#4981cf] flex items-center justify-center shadow-2xl group-hover:rotate-12 transition-transform">
+              <Zap className="w-6 h-6 md:w-7 md:h-7 text-white fill-white" />
             </div>
-            <span className="text-[#0A1E54] text-2xl font-black tracking-tighter italic">DUONGDIY</span>
+            <span className="text-[#1a365d] text-2xl md:text-3xl font-heading font-black tracking-tighter italic">DUONGDIY</span>
           </div>
 
-          {/* Glass card */}
-          <div className="bg-white/50 backdrop-blur-2xl border border-white rounded-[2.5rem] p-10 shadow-2xl shadow-[#B39A84]/10">
+          {/* Solid White Card */}
+          <div className="bg-white border-[3px] md:border-4 border-white rounded-[2.5rem] md:rounded-[3rem] p-8 md:p-12 shadow-[0_50px_100px_rgba(73,129,207,0.15)]">
 
             {/* Tab switch */}
-            <div className="flex bg-[#0A1E54]/5 rounded-2xl p-1.5 mb-8">
+            <div className="flex bg-[#e8ebf2] rounded-xl md:rounded-2xl p-1.5 md:p-2 mb-8 md:mb-10 border-2 border-[#cadaee]/30">
               <Link to="/login"
-                className={`flex-1 py-3 text-[10px] font-black uppercase tracking-[0.2em] text-center rounded-xl transition-all duration-300 ${!isRegister ? 'bg-[#0A1E54] text-[#F9F0EE] shadow-lg' : 'text-[#0A1E54]/40 hover:text-[#0A1E54]'}`}>
+                className={`flex-1 py-3 md:py-4 text-[10px] md:text-[11px] font-black uppercase tracking-[0.2em] text-center rounded-lg md:rounded-xl transition-all duration-300 ${!isRegister ? 'bg-[#4981cf] text-white shadow-xl' : 'text-[#1a365d]/40 hover:text-[#1a365d]'}`}>
                 Đăng nhập
               </Link>
               <Link to="/register"
-                className={`flex-1 py-3 text-[10px] font-black uppercase tracking-[0.2em] text-center rounded-xl transition-all duration-300 ${isRegister ? 'bg-[#0A1E54] text-[#F9F0EE] shadow-lg' : 'text-[#0A1E54]/40 hover:text-[#0A1E54]'}`}>
+                className={`flex-1 py-3 md:py-4 text-[10px] md:text-[11px] font-black uppercase tracking-[0.2em] text-center rounded-lg md:rounded-xl transition-all duration-300 ${isRegister ? 'bg-[#4981cf] text-white shadow-xl' : 'text-[#1a365d]/40 hover:text-[#1a365d]'}`}>
                 Đăng ký
               </Link>
             </div>
@@ -105,36 +105,37 @@ export default function AuthPage() {
                 initial={{ opacity: 0, x: isRegister ? 20 : -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.25 }}>
-                <h1 className="text-3xl font-black text-[#0A1E54] mb-2 tracking-tighter">
-                  {isRegister ? 'Khởi tạo danh tính' : 'Xác thực truy cập'}
+                transition={{ duration: 0.25 }}
+                className="text-center lg:text-left">
+                <h1 className="text-3xl md:text-4xl font-heading font-black text-[#1a365d] mb-2 md:mb-3 tracking-tighter">
+                  {isRegister ? 'Khởi tạo' : 'Chào mừng'}
                 </h1>
-                <p className="text-sm font-medium text-[#0A1E54]/50 mb-8 uppercase tracking-widest text-[10px]">
-                  {isRegister ? 'Gia nhập cộng đồng DuongDIY chuyên nghiệp' : 'Chào mừng bạn quay trở lại với hệ thống'}
+                <p className="text-[10px] md:text-xs font-black text-[#4981cf] mb-8 md:mb-10 uppercase tracking-[0.2em] md:tracking-[0.3em]">
+                  {isRegister ? 'Tham gia hệ thống DuongDIY' : 'Tiếp tục hành trình của bạn'}
                 </p>
               </motion.div>
             </AnimatePresence>
 
             {/* Form */}
-            <form onSubmit={isRegister ? handleRegister : handleLogin} className="space-y-5">
+            <form onSubmit={isRegister ? handleRegister : handleLogin} className="space-y-4 md:space-y-6">
               <InputField icon={User} label="Tên tài khoản" type="text" name="username"
                 required value={formData.username} onChange={handleChange} placeholder="USERNAME" />
 
               {isRegister && (
-                <InputField icon={Mail} label="Địa chỉ Email" type="email" name="email"
+                <InputField icon={Mail} label="Email xác thực" type="email" name="email"
                   required value={formData.email} onChange={handleChange} placeholder="EMAIL@EXAMPLE.COM" />
               )}
 
-              <div className="space-y-1.5">
-                <label className="text-[10px] font-black text-[#0A1E54]/40 uppercase tracking-[0.2em]">Mật mã truy cập</label>
+              <div className="space-y-2">
+                <label className="text-[10px] md:text-[11px] font-black text-[#1a365d] uppercase tracking-[0.2em]">Mật mã truy cập</label>
                 <div className="relative group">
-                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#B39A84] group-focus-within:text-[#0A1E54] transition-colors z-10" />
+                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#4981cf] group-focus-within:text-[#1a365d] transition-colors z-10" />
                   <input type={showPassword ? 'text' : 'password'} name="password" required
                     value={formData.password} onChange={handleChange} placeholder="••••••••"
-                    className="w-full bg-white/40 border border-[#B39A84]/20 focus:border-[#B39A84] focus:ring-4 focus:ring-[#B39A84]/5 text-[#0A1E54] placeholder-[#0A1E54]/20 py-4 pl-11 pr-11 rounded-2xl text-sm font-bold outline-none transition-all duration-200" />
+                    className="w-full bg-white border-2 border-[#cadaee] focus:border-[#4981cf] focus:ring-8 focus:ring-[#4981cf]/5 text-[#1a365d] placeholder-[#1a365d]/20 py-4 md:py-4.5 pl-11 pr-11 rounded-xl md:rounded-2xl text-sm font-black outline-none transition-all duration-200" />
                   <button type="button" onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-[#0A1E54]/20 hover:text-[#0A1E54] transition-colors">
-                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-[#1a365d]/30 hover:text-[#4981cf] transition-colors">
+                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                   </button>
                 </div>
               </div>
@@ -146,38 +147,38 @@ export default function AuthPage() {
 
               {!isRegister && (
                 <div className="flex justify-end">
-                  <Link to="/forgot-password" className="text-[10px] font-black text-[#B39A84] hover:text-[#0A1E54] transition-colors uppercase tracking-widest">
-                    Khôi phục mã?
+                  <Link to="/forgot-password" className="text-[10px] md:text-[11px] font-black text-[#4981cf] hover:text-[#1a365d] transition-colors uppercase tracking-[0.2em]">
+                    Quên mật mã?
                   </Link>
                 </div>
               )}
 
               {error && (
                 <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}
-                  className="bg-red-500/5 border border-red-500/20 rounded-2xl px-5 py-4 text-[10px] font-black text-red-500 uppercase tracking-widest">
+                  className="bg-red-500 border-2 border-red-500/20 rounded-xl md:rounded-2xl px-5 md:px-6 py-3 md:py-4 text-[10px] md:text-[11px] font-black text-white uppercase tracking-widest shadow-lg shadow-red-500/20 text-center">
                   {error}
                 </motion.div>
               )}
 
               <motion.button type="submit" disabled={isLoading}
-                whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }}
-                className="w-full bg-[#0A1E54] text-[#F9F0EE] py-5 rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-xl shadow-[#0A1E54]/20 hover:bg-[#B39A84] hover:text-[#0A1E54] transition-all duration-300 disabled:opacity-50 flex items-center justify-center gap-3 mt-4">
+                whileHover={{ scale: 1.01 }} whileTap={{ scale:0.99 }}
+                className="w-full bg-[#4981cf] text-white py-5 md:py-6 rounded-xl md:rounded-[1.5rem] font-black text-[10px] md:text-xs uppercase tracking-[0.3em] shadow-2xl shadow-[#4981cf]/30 hover:bg-[#1a365d] transition-all duration-300 disabled:opacity-50 flex items-center justify-center gap-3 mt-4 md:mt-6">
                 {isLoading
-                  ? <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  : <>{isRegister ? 'Khởi tạo ngay' : 'Yêu cầu xác thực'} <ArrowRight className="w-5 h-5" /></>}
+                  ? <div className="w-5 h-5 md:w-6 md:h-6 border-4 border-white/30 border-t-white rounded-full animate-spin" />
+                  : <>{isRegister ? 'KHỞI TẠO NGAY' : 'ĐĂNG NHẬP'} <ArrowRight className="w-4 h-4 md:w-5 md:h-5" /></>}
               </motion.button>
             </form>
 
             {/* Footer info */}
-            <div className="mt-10 pt-8 border-t border-[#0A1E54]/5 flex items-center justify-center gap-8">
+            <div className="mt-8 md:mt-12 pt-8 md:pt-10 border-t-2 border-[#e8ebf2] flex items-center justify-center gap-6 md:gap-10">
               {[
-                { icon: ShieldCheck, label: 'SECURE SSL' },
-                { icon: Sparkles, label: 'PREMIUM UX' },
-                { icon: Zap, label: 'FAST TRANS' },
+                { icon: ShieldCheck, label: 'SECURE' },
+                { icon: Sparkles, label: 'PREMIUM' },
+                { icon: Zap, label: 'FAST' },
               ].map(({ icon: Icon, label }) => (
-                <div key={label} className="flex items-center gap-2 text-[#0A1E54]/30">
-                  <Icon className="w-4 h-4 text-[#B39A84]" />
-                  <span className="text-[9px] font-black tracking-widest">{label}</span>
+                <div key={label} className="flex items-center gap-2 text-[#1a365d]/40">
+                  <Icon className="w-3.5 h-3.5 md:w-4 md:h-4 text-[#4981cf]" />
+                  <span className="text-[9px] md:text-[10px] font-black tracking-[0.2em]">{label}</span>
                 </div>
               ))}
             </div>
@@ -185,27 +186,27 @@ export default function AuthPage() {
         </motion.div>
       </div>
 
-      {/* ── RIGHT PANEL: Image ── */}
+      {/* ── RIGHT PANEL: Image (Hidden on mobile) ── */}
       <div className="hidden lg:block lg:w-1/2 relative z-10 p-8">
         <motion.div
           initial={{ opacity: 0, x: 40 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
-          className="w-full h-full rounded-[3rem] overflow-hidden relative shadow-2xl"
+          className="w-full h-full rounded-[4rem] overflow-hidden relative shadow-2xl border-8 border-white"
         >
-          <div className="absolute inset-0 bg-[#0A1E54]/20 mix-blend-multiply z-10" />
+          <div className="absolute inset-0 bg-[#1a365d]/20 mix-blend-multiply z-10" />
           <img 
-            src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" 
+            src="https://images.unsplash.com/photo-1594909122845-11baa439b7bf?auto=format&fit=crop&w=1350&q=80" 
             className="absolute inset-0 w-full h-full object-cover"
             alt="Event Stage"
           />
-          <div className="absolute bottom-12 left-12 right-12 z-20 space-y-4">
-            <div className="w-12 h-1 bg-[#B39A84] rounded-full" />
-            <h2 className="text-5xl font-black text-white leading-tight tracking-tighter">
-              Kiến Tạo <br/> Không Gian <br/> Đẳng Cấp
+          <div className="absolute bottom-16 left-16 right-16 z-20 space-y-6">
+            <div className="w-20 h-2 bg-[#cadaee] rounded-full shadow-lg" />
+            <h2 className="text-6xl font-heading font-black text-white leading-none tracking-tighter drop-shadow-2xl">
+              TRẢI NGHIỆM <br/> ĐẲNG CẤP <br/> DUONGDIY
             </h2>
-            <p className="text-white/70 font-medium text-lg max-w-sm">
-              Trang thiết bị chuyên dụng mang tầm vóc quốc tế cho sự kiện của bạn.
+            <p className="text-white text-xl font-bold max-w-sm drop-shadow-md">
+              Thiết bị chuyên dụng tối tân nhất cho sự kiện chuyên nghiệp của bạn.
             </p>
           </div>
         </motion.div>
