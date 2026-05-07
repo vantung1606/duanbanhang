@@ -68,6 +68,13 @@ export default function NeuralynNavbar() {
   const navLinks = [
     { name: 'Trang chủ', path: '/', icon: Home },
     { name: 'Sản phẩm', path: '/catalog', icon: Package },
+    ...(isAuthenticated && ['ADMIN', 'MANAGER', 'STAFF'].includes(user?.role) ? [
+      { 
+        name: user.role === 'ADMIN' ? 'Admin Hub' : 'Quản trị', 
+        path: `/${user.role.toLowerCase()}`, 
+        icon: ShieldCheck 
+      }
+    ] : []),
     { name: 'Về chúng tôi', path: '/about', icon: Users },
     { name: 'Dịch vụ', path: '/support', icon: LifeBuoy },
     { name: 'Tin tức', path: '/blog', icon: Newspaper },
