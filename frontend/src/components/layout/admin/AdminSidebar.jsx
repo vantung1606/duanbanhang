@@ -80,24 +80,24 @@ export default function AdminSidebar({ isOpen, setIsOpen }) {
 
   return (
     <aside className={cn(
-      "w-80 h-[calc(100vh-2rem)] sticky top-4 z-50 flex flex-col transition-all duration-500",
+      "w-72 h-[calc(100vh-2rem)] sticky top-4 z-50 flex flex-col transition-all duration-500",
       "fixed lg:relative lg:translate-x-0",
       isOpen ? "translate-x-0" : "-translate-x-[150%] lg:-translate-x-0"
     )}>
       <motion.div 
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
-        className="flex-1 bg-white/40 backdrop-blur-3xl rounded-[3rem] border border-white/40 flex flex-col overflow-hidden py-10 px-8 shadow-[0_20px_50px_rgba(0,0,0,0.05)]"
+        className="flex-1 bg-white/40 backdrop-blur-3xl rounded-[2.5rem] border border-white/40 flex flex-col overflow-hidden py-8 px-6 shadow-[0_20px_50px_rgba(0,0,0,0.05)]"
       >
         
         {/* Logo Section */}
-        <div className="flex items-center gap-4 mb-14 px-2">
-          <div className="w-12 h-12 rounded-2xl bg-slate-900 shadow-sm flex items-center justify-center">
-            <LayoutDashboard className="text-white w-6 h-6" />
+        <div className="flex items-center gap-4 mb-10 px-2">
+          <div className="w-10 h-10 rounded-2xl bg-slate-900 shadow-sm flex items-center justify-center">
+            <LayoutDashboard className="text-white w-5 h-5" />
           </div>
           <div>
-            <h2 className="text-xl font-black text-slate-800 tracking-tight leading-tight uppercase">DuongDIY</h2>
-            <p className="text-[10px] font-bold text-indigo-500 uppercase tracking-widest leading-tight mt-0.5">ERP SYSTEM v1.0</p>
+            <h2 className="text-lg font-black text-slate-800 tracking-tight leading-tight uppercase">DuongDIY</h2>
+            <p className="text-[9px] font-bold text-indigo-500 uppercase tracking-widest leading-tight mt-0.5">ERP SYSTEM v1.0</p>
           </div>
         </div>
 
@@ -110,7 +110,7 @@ export default function AdminSidebar({ isOpen, setIsOpen }) {
                   <button
                     onClick={() => toggleDropdown(item.label)}
                     className={cn(
-                      "w-full flex items-center justify-between px-6 py-4 rounded-3xl transition-all duration-300 font-bold text-xs tracking-wider",
+                      "w-full flex items-center justify-between px-5 py-3 rounded-2xl transition-all duration-300 font-bold text-[11px] tracking-wider",
                       openDropdown === item.label ? "text-slate-900 bg-white shadow-sm" : "text-slate-500 hover:text-slate-800 hover:bg-white/30"
                     )}
                   >
@@ -134,7 +134,7 @@ export default function AdminSidebar({ isOpen, setIsOpen }) {
                             key={child.path}
                             to={child.path}
                             className={({ isActive }) => cn(
-                              "flex items-center gap-4 px-6 py-3 rounded-2xl transition-all font-bold text-[10px] tracking-widest uppercase",
+                              "flex items-center gap-4 px-5 py-2.5 rounded-2xl transition-all font-bold text-[9px] tracking-widest uppercase",
                               isActive 
                                 ? "text-slate-900" 
                                 : "text-slate-400 hover:text-slate-700"
@@ -153,7 +153,7 @@ export default function AdminSidebar({ isOpen, setIsOpen }) {
                   to={item.path}
                   end={item.path === '/admin'}
                   className={({ isActive }) => cn(
-                    "flex items-center gap-4 px-6 py-4 rounded-3xl transition-all duration-300 font-bold text-xs tracking-wider",
+                    "flex items-center gap-4 px-5 py-3 rounded-2xl transition-all duration-300 font-bold text-[11px] tracking-wider",
                     isActive 
                       ? "text-slate-900 bg-white shadow-sm" 
                       : "text-slate-500 hover:text-slate-800 hover:bg-white/30"
@@ -168,9 +168,9 @@ export default function AdminSidebar({ isOpen, setIsOpen }) {
         </nav>
 
         {/* Action Button */}
-        <div className="mt-8 mb-6">
-          <button className="w-full bg-[#3d4d73] hover:bg-[#2d3a5a] text-white py-5 rounded-[2rem] font-bold text-xs uppercase tracking-widest shadow-xl shadow-blue-900/20 flex items-center justify-center gap-3 transition-all duration-300 hover:scale-[1.02]">
-            <span className="text-lg">+</span> New Transaction
+        <div className="mt-6 mb-4">
+          <button className="w-full bg-[#3d4d73] hover:bg-[#2d3a5a] text-white py-4 rounded-[1.5rem] font-bold text-[10px] uppercase tracking-widest shadow-xl shadow-blue-900/20 flex items-center justify-center gap-3 transition-all duration-300 hover:scale-[1.02]">
+            <span className="text-base">+</span> New Transaction
           </button>
         </div>
 

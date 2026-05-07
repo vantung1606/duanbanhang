@@ -35,13 +35,13 @@ export default function AdminDataGrid({
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-[2.5rem] p-8 shadow-[0_8px_30px_rgb(0,0,0,0.02)] border border-slate-100 flex flex-col w-full"
+      className="bg-white rounded-[2rem] p-6 shadow-[0_8px_30px_rgb(0,0,0,0.02)] border border-slate-100 flex flex-col w-full"
     >
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
         <div>
-          <h2 className="text-xl font-black text-slate-800 tracking-tight">{title}</h2>
-          {subtitle && <p className="text-xs font-medium text-slate-400 mt-1">{subtitle}</p>}
+          <h2 className="text-lg font-black text-slate-800 tracking-tight">{title}</h2>
+          {subtitle && <p className="text-[11px] font-medium text-slate-400 mt-1">{subtitle}</p>}
         </div>
 
         <div className="flex items-center gap-3 w-full md:w-auto">
@@ -52,18 +52,18 @@ export default function AdminDataGrid({
               placeholder={searchPlaceholder}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full bg-slate-50/80 hover:bg-slate-100 focus:bg-slate-100 border-none px-10 py-2.5 rounded-full text-sm font-bold text-slate-700 placeholder:text-slate-400 transition-all outline-none"
+              className="w-full bg-slate-50/80 hover:bg-slate-100 focus:bg-slate-100 border-none px-10 py-2 rounded-full text-xs font-bold text-slate-700 placeholder:text-slate-400 transition-all outline-none"
             />
           </div>
-          <button className="w-10 h-10 rounded-full flex items-center justify-center bg-slate-50 text-slate-500 hover:bg-slate-100 hover:text-slate-800 transition-colors shrink-0">
-            <Filter className="w-4 h-4" />
+          <button className="w-8 h-8 rounded-full flex items-center justify-center bg-slate-50 text-slate-500 hover:bg-slate-100 hover:text-slate-800 transition-colors shrink-0">
+            <Filter className="w-3.5 h-3.5" />
           </button>
           {onAdd && (
             <button 
               onClick={onAdd}
-              className="flex items-center gap-2 px-5 py-2.5 bg-slate-800 rounded-full text-sm font-bold text-white shadow-lg shadow-slate-800/20 hover:bg-slate-900 transition-colors shrink-0 whitespace-nowrap"
+              className="flex items-center gap-2 px-4 py-2 bg-slate-800 rounded-full text-xs font-bold text-white shadow-lg shadow-slate-800/20 hover:bg-slate-900 transition-colors shrink-0 whitespace-nowrap"
             >
-              <Plus className="w-4 h-4" /> Thêm Mới
+              <Plus className="w-3.5 h-3.5" /> Thêm Mới
             </button>
           )}
         </div>
@@ -75,11 +75,11 @@ export default function AdminDataGrid({
           <thead>
             <tr>
               {columns.map((col, index) => (
-                <th key={index} className="pb-4 px-4 text-[10px] font-black uppercase tracking-widest text-slate-400 border-b border-slate-100">
+                <th key={index} className="pb-3 px-3 text-[9px] font-black uppercase tracking-widest text-slate-400 border-b border-slate-100">
                   {col.header}
                 </th>
               ))}
-              <th className="pb-4 px-4 text-[10px] font-black uppercase tracking-widest text-slate-400 border-b border-slate-100 text-right">
+              <th className="pb-3 px-3 text-[9px] font-black uppercase tracking-widest text-slate-400 border-b border-slate-100 text-right">
                 Thao Tác
               </th>
             </tr>
@@ -88,11 +88,11 @@ export default function AdminDataGrid({
             {filteredData.map((row, rowIndex) => (
               <tr key={rowIndex} className="group hover:bg-slate-50/50 transition-colors">
                 {columns.map((col, colIndex) => (
-                  <td key={colIndex} className="py-4 px-4 border-b border-slate-50 text-sm font-semibold text-slate-700">
+                  <td key={colIndex} className="py-3 px-3 border-b border-slate-50 text-xs font-semibold text-slate-700">
                     {col.render ? col.render(row) : row[col.accessor]}
                   </td>
                 ))}
-                <td className="py-4 px-4 border-b border-slate-50 text-right relative">
+                <td className="py-3 px-3 border-b border-slate-50 text-right relative">
                   <button 
                     onClick={() => setActiveMenu(activeMenu === rowIndex ? null : rowIndex)}
                     className="w-8 h-8 rounded-full inline-flex items-center justify-center text-slate-400 hover:bg-slate-100 hover:text-slate-800 transition-colors"
@@ -106,25 +106,25 @@ export default function AdminDataGrid({
                       {onEdit && (
                         <button 
                           onClick={() => { onEdit(row); setActiveMenu(null); }}
-                          className="flex items-center gap-3 px-3 py-2 text-sm font-bold text-slate-600 hover:bg-slate-50 hover:text-slate-800 rounded-xl transition-colors"
+                          className="flex items-center gap-3 px-3 py-2 text-xs font-bold text-slate-600 hover:bg-slate-50 hover:text-slate-800 rounded-xl transition-colors"
                         >
-                          <Edit3 className="w-4 h-4" /> Sửa Thông Tin
+                          <Edit3 className="w-3.5 h-3.5" /> Sửa Thông Tin
                         </button>
                       )}
                       {onResetPassword && (
                         <button 
                           onClick={() => { onResetPassword(row); setActiveMenu(null); }}
-                          className="flex items-center gap-3 px-3 py-2 text-sm font-bold text-indigo-600 hover:bg-indigo-50 hover:text-indigo-700 rounded-xl transition-colors"
+                          className="flex items-center gap-3 px-3 py-2 text-xs font-bold text-indigo-600 hover:bg-indigo-50 hover:text-indigo-700 rounded-xl transition-colors"
                         >
-                          <KeyRound className="w-4 h-4" /> Cấp Lại Mật Khẩu
+                          <KeyRound className="w-3.5 h-3.5" /> Cấp Lại Mật Khẩu
                         </button>
                       )}
                       {onDelete && (
                         <button 
                           onClick={() => { onDelete(row); setActiveMenu(null); }}
-                          className="flex items-center gap-3 px-3 py-2 text-sm font-bold text-red-500 hover:bg-red-50 hover:text-red-600 rounded-xl transition-colors"
+                          className="flex items-center gap-3 px-3 py-2 text-xs font-bold text-red-500 hover:bg-red-50 hover:text-red-600 rounded-xl transition-colors"
                         >
-                          <Trash2 className="w-4 h-4" /> Xóa Bản Ghi
+                          <Trash2 className="w-3.5 h-3.5" /> Xóa Bản Ghi
                         </button>
                       )}
                     </div>

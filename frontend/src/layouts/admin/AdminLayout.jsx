@@ -17,7 +17,7 @@ export default function AdminLayout() {
           background-attachment: fixed;
         }
       `}} />
-      <div className="min-h-screen text-slate-800 flex overflow-hidden font-sans p-4 md:p-6 gap-6 relative" style={{ backgroundColor: 'rgba(243, 245, 248, 0.1)' }}>
+      <div className="min-h-screen text-slate-800 flex overflow-hidden font-sans p-3 md:p-4 gap-4 relative" style={{ backgroundColor: 'rgba(243, 245, 248, 0.1)' }}>
         {/* Background Decorative Elements - Sharpened */}
         <div className="fixed top-[-5%] left-[-5%] w-[35%] h-[45%] bg-blue-500/15 blur-[60px] rounded-full z-0 pointer-events-none" />
         <div className="fixed bottom-[-5%] right-[5%] w-[25%] h-[35%] bg-indigo-500/15 blur-[40px] rounded-full z-0 pointer-events-none" />

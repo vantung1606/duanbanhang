@@ -22,7 +22,7 @@ const ModalLayout = ({ isOpen, onClose, children, icon: Icon, title, subtitle, c
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          className="bg-white rounded-[2rem] shadow-2xl p-8 max-w-md w-full relative z-10 overflow-hidden"
+          className="bg-white rounded-[1.5rem] shadow-2xl p-6 max-w-md w-full relative z-10 overflow-hidden"
         >
           <button 
             onClick={onClose}
@@ -38,8 +38,8 @@ const ModalLayout = ({ isOpen, onClose, children, icon: Icon, title, subtitle, c
             <Icon className="w-6 h-6" />
           </div>
 
-          <h3 className="text-xl font-black text-slate-800 mb-2">{title}</h3>
-          {subtitle && <p className="text-sm font-medium text-slate-500 mb-6">{subtitle}</p>}
+          <h3 className="text-lg font-black text-slate-800 mb-1">{title}</h3>
+          {subtitle && <p className="text-[11px] font-medium text-slate-500 mb-4">{subtitle}</p>}
 
           {children}
         </motion.div>
@@ -205,7 +205,7 @@ export default function AdminUserManagement({ title, subtitle, targetRole }) {
             {row.username?.charAt(0).toUpperCase() || 'U'}
           </div>
           <div className="min-w-0">
-            <p className="font-bold text-slate-800 truncate">{row.username}</p>
+            <p className="font-bold text-slate-800 truncate text-xs">{row.username}</p>
             <p className="text-xs font-medium text-slate-500 truncate">{row.email}</p>
           </div>
         </div>
@@ -274,7 +274,7 @@ export default function AdminUserManagement({ title, subtitle, targetRole }) {
               <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <input 
                 required
-                className="w-full bg-slate-50 border-none px-12 py-3 rounded-xl text-sm font-bold text-slate-700 outline-none focus:ring-2 ring-indigo-500/20 transition-all"
+                className="w-full bg-slate-50 border-none px-12 py-2.5 rounded-xl text-xs font-bold text-slate-700 outline-none focus:ring-2 ring-indigo-500/20 transition-all"
                 placeholder="username"
                 value={addForm.username}
                 onChange={e => setAddForm({...addForm, username: e.target.value})}
@@ -314,14 +314,14 @@ export default function AdminUserManagement({ title, subtitle, targetRole }) {
             <button 
               type="button"
               onClick={() => setIsAddModalOpen(false)}
-              className="flex-1 py-3 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl font-bold text-sm transition-colors"
+              className="flex-1 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl font-bold text-xs transition-colors"
             >
               Hủy
             </button>
             <button 
               disabled={formLoading}
               type="submit"
-              className="flex-1 py-3 bg-slate-800 hover:bg-slate-900 text-white rounded-xl font-bold text-sm shadow-lg shadow-slate-800/20 transition-all disabled:opacity-50"
+              className="flex-1 py-2.5 bg-slate-800 hover:bg-slate-900 text-white rounded-xl font-bold text-xs shadow-lg shadow-slate-800/20 transition-all disabled:opacity-50"
             >
               {formLoading ? 'Đang tạo...' : 'Tạo Tài Khoản'}
             </button>
@@ -345,7 +345,7 @@ export default function AdminUserManagement({ title, subtitle, targetRole }) {
               <input 
                 required
                 type="email"
-                className="w-full bg-slate-50 border-none px-12 py-3 rounded-xl text-sm font-bold text-slate-700 outline-none focus:ring-2 ring-indigo-500/20 transition-all"
+                className="w-full bg-slate-50 border-none px-12 py-2.5 rounded-xl text-xs font-bold text-slate-700 outline-none focus:ring-2 ring-indigo-500/20 transition-all"
                 value={editForm.email}
                 onChange={e => setEditForm({...editForm, email: e.target.value})}
               />
@@ -409,7 +409,7 @@ export default function AdminUserManagement({ title, subtitle, targetRole }) {
               <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <input 
                 type="password"
-                className="w-full bg-slate-50 border-none px-12 py-3 rounded-xl text-sm font-bold text-slate-700 outline-none focus:ring-2 ring-indigo-500/20 transition-all"
+                className="w-full bg-slate-50 border-none px-12 py-2.5 rounded-xl text-xs font-bold text-slate-700 outline-none focus:ring-2 ring-indigo-500/20 transition-all"
                 placeholder="Nhập mật khẩu mới"
                 value={newPassword}
                 onChange={e => setNewPassword(e.target.value)}
