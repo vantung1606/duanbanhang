@@ -7,14 +7,14 @@ import { useAuthStore } from '../../store/authStore';
  * Nếu đã login nhưng không đúng role → chuyển về trang chính của role đó
  */
 export default function ProtectedRoute({ children, allowedRoles }) {
-  const { isAuthenticated, user } = useAuthStore();
+  const { isAuthenticated, user, token } = useAuthStore();
   const location = useLocation();
 
-  // Log for debugging (only in development if needed, but here for troubleshooting)
-  console.log('ProtectedRoute Check:', { isAuthenticated, userRole: user?.role, allowedRoles });
+  // Log for debugging
+  console.log('ProtectedRoute Check:', { isAuthenticated, hasToken: !!token, userRole: user?.role, path: location.pathname });
 
-  // Chưa login → về trang chủ
-  if (!isAuthenticated || !user) {
+  // Chưa login hoặc thiếu token → về trang chủ
+  if ((!isAuthenticated || !user) && !localStorage.getItem('duongdiy-auth')) {
     console.log('Redirecting to Home: Not authenticated');
     return <Navigate to="/" replace />;
   }

@@ -27,17 +27,31 @@ function LoginForm({ onSwitch }) {
     setError('');
     try {
       const data = await loginApi(formData);
-      console.log('Login successful, user data:', data);
+      console.log('Login success - received data:', data);
       
       const role = data.role?.toUpperCase() || '';
-      setAuth({ username: data.username, role: role }, data.token);
-      closeAuthModal();
       
-      if (role.includes('ADMIN')) navigate('/admin');
-      else if (role.includes('MANAGER')) navigate('/manager');
-      else if (role.includes('STAFF')) navigate('/staff');
-      // For CUSTOMER, we usually stay on the same page, but if you want to force home:
-      // else navigate('/home');
+      // Update store
+      setAuth({ username: data.username, role: role }, data.token);
+      
+      // Success toast or log
+      console.log('Auth state updated. Role:', role);
+
+      // Delay navigation slightly to ensure store is synced and avoid race conditions
+      setTimeout(() => {
+        closeAuthModal();
+        if (role === 'ADMIN') {
+          console.log('Navigating to Admin Dashboard...');
+          navigate('/admin');
+        } else if (role === 'MANAGER') {
+          navigate('/manager');
+        } else if (role === 'STAFF') {
+          navigate('/staff');
+        } else {
+          console.log('Navigating to Home (Customer)...');
+          navigate('/home');
+        }
+      }, 100);
     } catch (err) {
       console.error('Login failed full error:', err);
       setError(err.response?.data?.message || 'Tên đăng nhập hoặc mật khẩu không chính xác.');
