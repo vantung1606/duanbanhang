@@ -30,8 +30,9 @@ export default function ManagerSidebar({ isOpen, setIsOpen }) {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    logout();
-    navigate('/shop');
+    import('../../../services/api/authService').then(module => {
+      module.logout();
+    });
   };
 
   return (

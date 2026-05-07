@@ -20,7 +20,13 @@ export default function ProtectedRoute({ children, allowedRoles }) {
   }
 
   // Đã login, kiểm tra role nếu có yêu cầu
-  const userRole = user.role?.toUpperCase();
+  const currentUser = user || JSON.parse(localStorage.getItem('duongdiy-auth') || 'null')?.state?.user;
+  
+  if (!currentUser) {
+    return <Navigate to="/login" replace />;
+  }
+
+  const userRole = currentUser.role?.toUpperCase();
   const normalizedAllowedRoles = allowedRoles?.map(r => r.toUpperCase());
 
   if (normalizedAllowedRoles && !normalizedAllowedRoles.includes(userRole)) {

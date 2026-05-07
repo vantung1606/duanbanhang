@@ -70,8 +70,9 @@ export default function AdminSidebar({ isOpen, setIsOpen }) {
   const [openDropdown, setOpenDropdown] = useState('SẢN PHẨM'); // Default open for demonstration
 
   const handleLogout = () => {
-    logout();
-    navigate('/shop');
+    import('../../../services/api/authService').then(module => {
+      module.logout();
+    });
   };
 
   const toggleDropdown = (label) => {

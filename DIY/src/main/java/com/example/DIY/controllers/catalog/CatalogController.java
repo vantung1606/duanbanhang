@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/public/catalog")
+@RequestMapping("/api/v1/public/catalog")
 @RequiredArgsConstructor
 public class CatalogController {
 

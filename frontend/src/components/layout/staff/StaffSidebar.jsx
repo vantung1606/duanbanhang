@@ -26,8 +26,9 @@ export default function StaffSidebar({ isOpen, setIsOpen }) {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    logout();
-    navigate('/shop');
+    import('../../../services/api/authService').then(module => {
+      module.logout();
+    });
   };
 
   return (

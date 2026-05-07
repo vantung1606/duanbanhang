@@ -94,10 +94,10 @@ public class CatalogService {
                 .name(product.getName())
                 .slug(product.getSlug())
                 .description(product.getDescription())
-                .brandName(product.getBrand().getName())
-                .categoryName(product.getCategory().getName())
-                .imageUrls(product.getImages().stream().map(ProductImage::getImageUrl).collect(Collectors.toList()))
-                .variants(product.getVariants().stream().map(this::mapToVariantDTO).collect(Collectors.toList()))
+                .brandName(product.getBrand() != null ? product.getBrand().getName() : "DuongDIY")
+                .categoryName(product.getCategory() != null ? product.getCategory().getName() : "Sản phẩm")
+                .imageUrls(product.getImages() != null ? product.getImages().stream().map(ProductImage::getImageUrl).collect(Collectors.toList()) : new ArrayList<>())
+                .variants(product.getVariants() != null ? product.getVariants().stream().map(this::mapToVariantDTO).collect(Collectors.toList()) : new ArrayList<>())
                 .specifications(product.getSpecifications())
                 .rating(4.8) // Mock
                 .reviewCount(124) // Mock
@@ -121,24 +121,33 @@ public class CatalogService {
     }
 
     private ProductResponse mapToProductResponse(Product product) {
-        BigDecimal minPrice = product.getVariants().stream()
-                .map(ProductVariant::getPrice)
-                .min(BigDecimal::compareTo)
-                .orElse(BigDecimal.ZERO);
+        BigDecimal minPrice = BigDecimal.ZERO;
+        BigDecimal maxPrice = BigDecimal.ZERO;
         
-        BigDecimal maxPrice = product.getVariants().stream()
-                .map(ProductVariant::getPrice)
-                .max(BigDecimal::compareTo)
-                .orElse(BigDecimal.ZERO);
+        if (product.getVariants() != null && !product.getVariants().isEmpty()) {
+            minPrice = product.getVariants().stream()
+                    .map(ProductVariant::getPrice)
+                    .filter(p -> p != null)
+                    .min(BigDecimal::compareTo)
+                    .orElse(BigDecimal.ZERO);
+            
+            maxPrice = product.getVariants().stream()
+                    .map(ProductVariant::getPrice)
+                    .filter(p -> p != null)
+                    .max(BigDecimal::compareTo)
+                    .orElse(BigDecimal.ZERO);
+        }
 
-        String thumbnailUrl = product.getImages().isEmpty() ? null : product.getImages().get(0).getImageUrl();
+        String thumbnailUrl = (product.getImages() != null && !product.getImages().isEmpty()) 
+                ? product.getImages().get(0).getImageUrl() 
+                : null;
 
         return ProductResponse.builder()
                 .id(product.getId())
                 .name(product.getName())
                 .slug(product.getSlug())
-                .brandName(product.getBrand().getName())
-                .categoryName(product.getCategory().getName())
+                .brandName(product.getBrand() != null ? product.getBrand().getName() : "DuongDIY")
+                .categoryName(product.getCategory() != null ? product.getCategory().getName() : "Sản phẩm")
                 .thumbnailUrl(thumbnailUrl)
                 .minPrice(minPrice)
                 .maxPrice(maxPrice)

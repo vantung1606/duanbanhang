@@ -20,5 +20,6 @@ export const login = async (userData) => {
 export const logout = () => {
   localStorage.removeItem('token');
   localStorage.removeItem('user');
-  window.location.href = '/login';
+  localStorage.removeItem('duongdiy-auth'); // Xóa cả store của Zustand
+  window.location.href = '/home'; // Chuyển về trang chủ thay vì /login không tồn tại
 };
