@@ -1,6 +1,6 @@
 import apiClient from './apiClient';
 
-const AUTH_URL = '/v1/auth';
+const AUTH_URL = '/auth';
 
 export const register = async (userData) => {
   const response = await apiClient.post(`${AUTH_URL}/register`, userData);
