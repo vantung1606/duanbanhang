@@ -21,7 +21,7 @@ export default function ProtectedRoute({ children, allowedRoles }) {
     if (user.role === 'ADMIN') return <Navigate to="/admin" replace />;
     if (user.role === 'MANAGER') return <Navigate to="/manager" replace />;
     if (user.role === 'STAFF') return <Navigate to="/staff" replace />;
-    return <Navigate to="/shop/app" replace />;
+    return <Navigate to="/home" replace />;
   }
 
   return children;
