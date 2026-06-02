@@ -2,11 +2,11 @@ services:
   # Backend Service (Spring Boot)
   - type: web
     name: duanbanhang-backend
-    env: java
+    env: docker
+    dockerfilePath: ./DIY/Dockerfile
+    dockerContext: ./DIY
     region: singapore
     plan: free
-    buildCommand: ./mvnw clean install -DskipTests
-    startCommand: java -jar target/*.jar
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
@@ -15,26 +15,23 @@ services:
           name: duanbanhang-db
           property: connectionString
 
-  # Frontend Service (Static Site)
+  # Frontend Service (Docker)
   - type: web
     name: duanbanhang-frontend
-    env: static
+    env: docker
+    dockerfilePath: ./frontend/Dockerfile
+    dockerContext: ./frontend
     region: singapore
     plan: free
-    buildCommand: cd frontend && npm install && npm run build
-    staticPublishPath: frontend/dist
     customDomains:
       - duongdiyshop.com
       - www.duongdiyshop.com
     envVars:
       - key: VITE_API_URL
         value: https://duanbanhang-backend.onrender.com/api/v1
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
 
 databases:
   - name: duanbanhang-db
     plan: free
     region: singapore
+

@@ -80,7 +80,7 @@ export default function CustomerNavbar() {
                 <User className="w-4 h-4" />
               </NavLink>
               <button 
-                onClick={() => { logout(); navigate('/home'); }}
+                onClick={() => { logout(); }}
                 className="w-8 h-8 rounded-full bg-red-500/10 flex items-center justify-center text-red-500 hover:bg-red-500/20 transition-all font-black"
                 title="Logout"
               >

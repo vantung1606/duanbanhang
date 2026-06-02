@@ -18,11 +18,17 @@ export const useAuthStore = create(
         isAuthModalOpen: false
       }),
 
-      logout: () => set({ 
-        user: null, 
-        token: null, 
-        isAuthenticated: false 
-      }),
+      logout: () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        localStorage.removeItem('duongdiy-auth');
+        set({ 
+          user: null, 
+          token: null, 
+          isAuthenticated: false 
+        });
+        window.location.href = '/home';
+      },
     }),
     {
       name: 'duongdiy-auth', // name of the item in storage (default: localStorage)
