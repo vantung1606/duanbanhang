@@ -85,7 +85,8 @@ public class SecurityConfig {
             "http://localhost:5174",
             "http://localhost:3000",
             "https://duongdiyshop.com",
-            "https://www.duongdiyshop.com"
+            "https://www.duongdiyshop.com",
+            "https://duanbanhang-frontend.onrender.com"
         ));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         configuration.setAllowedHeaders(List.of("*"));
