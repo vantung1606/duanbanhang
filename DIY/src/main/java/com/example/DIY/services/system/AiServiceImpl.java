@@ -19,13 +19,16 @@ import org.springframework.web.client.RestTemplate;
 import java.util.*;
 
 @Service
-@RequiredArgsConstructor
 @Slf4j
 public class AiServiceImpl implements AiService {
 
     private final ProductRepository productRepository;
-    private final ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper = new ObjectMapper();
     private final RestTemplate restTemplate = new RestTemplate();
+
+    public AiServiceImpl(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
 
     @Value("${application.security.gemini.api-key:${GEMINI_API_KEY:}}")
     private String geminiApiKey;
