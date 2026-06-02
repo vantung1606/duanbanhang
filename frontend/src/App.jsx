@@ -16,6 +16,7 @@ import NotFoundPage from './pages/NotFoundPage';
 import CartSidebar from './components/customer/CartSidebar';
 import CheckoutPage from './pages/customer/CheckoutPage';
 import FloatingContact from './components/customer/FloatingContact';
+import AiChatbot from './components/customer/AiChatbot';
 import StaffOrdersPage from './pages/staff/StaffOrdersPage';
 import StaffOrderDetailPage from './pages/staff/StaffOrderDetailPage';
 import ManagerDashboardPage from './pages/manager/ManagerDashboardPage';
@@ -59,6 +60,7 @@ function App() {
       <ToastContainer />
       <CartSidebar />
       <FloatingContact />
+      <AiChatbot />
       <Routes>
         {/* Admin Section */}
         <Route path="/admin" element={<ProtectedRoute allowedRoles={['ADMIN']}><AdminLayout /></ProtectedRoute>}>
