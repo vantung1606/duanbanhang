@@ -23,7 +23,7 @@ services:
     dockerContext: ./frontend
     region: singapore
     plan: free
-    customDomains:
+    domains:
       - duongdiyshop.com
       - www.duongdiyshop.com
     envVars:
