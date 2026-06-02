@@ -13,7 +13,7 @@ services:
       - key: SPRING_DATASOURCE_URL
         fromDatabase:
           name: duanbanhang-db
-          property: jdbcConnectionString
+          property: connectionString
 
   # Frontend Service (Docker)
   - type: web
