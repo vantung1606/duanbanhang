@@ -10,10 +10,10 @@ services:
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
-      - key: DB_URL
+      - key: SPRING_DATASOURCE_URL
         fromDatabase:
           name: duanbanhang-db
-          property: connectionString
+          property: jdbcConnectionString
 
   # Frontend Service (Docker)
   - type: web
