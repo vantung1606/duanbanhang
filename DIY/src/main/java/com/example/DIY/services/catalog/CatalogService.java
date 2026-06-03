@@ -37,7 +37,23 @@ public class CatalogService {
 
     @Transactional(readOnly = true)
     public Page<ProductResponse> getFilteredProducts(ProductFilterRequest request) {
-        Sort sort = Sort.by(Sort.Direction.fromString(request.getSortDir()), request.getSortBy());
+        String sortDir = request.getSortDir();
+        if (sortDir == null || sortDir.trim().isEmpty()) {
+            sortDir = "asc";
+        }
+        String sortBy = request.getSortBy();
+        if (sortBy == null || sortBy.trim().isEmpty()) {
+            sortBy = "name";
+        }
+
+        Sort.Direction direction;
+        try {
+            direction = Sort.Direction.fromString(sortDir);
+        } catch (IllegalArgumentException e) {
+            direction = Sort.Direction.ASC;
+        }
+
+        Sort sort = Sort.by(direction, sortBy);
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize(), sort);
 
         Specification<Product> spec = (root, query, cb) -> {

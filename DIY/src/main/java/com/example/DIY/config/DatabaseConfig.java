@@ -49,7 +49,16 @@ public class DatabaseConfig {
                         finalPassword = credentials[1];
                     }
                 }
+                String query = uri.getQuery();
                 finalUrl = "jdbc:postgresql://" + host + ":" + port + database;
+                if (query != null && !query.isEmpty()) {
+                    finalUrl += "?" + query;
+                    if (!query.contains("sslmode")) {
+                        finalUrl += "&sslmode=require";
+                    }
+                } else {
+                    finalUrl += "?sslmode=require";
+                }
                 finalDriver = "org.postgresql.Driver";
             } catch (URISyntaxException e) {
                 // Fallback to original values if parsing fails

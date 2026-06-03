@@ -42,6 +42,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ErrorResponse> handleRuntime(RuntimeException e, HttpServletRequest request) {
+        e.printStackTrace(); // Log the stack trace for server monitoring
         return buildResponse(HttpStatus.BAD_REQUEST, e.getMessage(), request);
     }
 
