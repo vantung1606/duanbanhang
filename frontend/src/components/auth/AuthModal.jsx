@@ -14,6 +14,7 @@ const flipVariants = {
 function LoginForm({ onSwitch }) {
   const [formData, setFormData] = useState({ username: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   
@@ -33,11 +34,8 @@ function LoginForm({ onSwitch }) {
       
       // Update store
       setAuth({ username: data.username, role: role }, data.token);
-      
-      // Success toast or log
       console.log('Auth state updated. Role:', role);
 
-      // Delay navigation slightly to ensure store is synced and avoid race conditions
       setTimeout(() => {
         closeAuthModal();
         if (role === 'ADMIN') {
@@ -67,13 +65,13 @@ function LoginForm({ onSwitch }) {
       initial="initial"
       animate="animate"
       exit="exit"
-      transition={{ duration: 0.5, ease: "easeInOut" }}
-      className="absolute inset-0 w-full h-full p-10 flex flex-col justify-center"
+      transition={{ duration: 0.4, ease: "easeInOut" }}
+      className="absolute inset-0 w-full h-full p-8 md:p-10 flex flex-col justify-center bg-[#0b1329]"
       style={{ backfaceVisibility: 'hidden' }}
     >
-      <div className="mb-12 text-center">
-        <h2 className="text-4xl font-heading font-black tracking-tighter uppercase mb-3 text-white drop-shadow-md">Đăng nhập</h2>
-        <p className="text-[#cadaee] font-black text-xs uppercase tracking-[0.2em] opacity-80">Xác thực quyền truy cập</p>
+      <div className="mb-6 text-center">
+        <h2 className="text-2xl font-bold tracking-tight text-white mb-1.5">Đăng Nhập</h2>
+        <p className="text-slate-400 text-xs font-semibold uppercase tracking-[0.15em]">Xác thực quyền truy cập</p>
       </div>
 
       <AnimatePresence>
@@ -82,60 +80,69 @@ function LoginForm({ onSwitch }) {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="mb-8 p-5 bg-red-500 rounded-2xl text-white font-black text-xs uppercase tracking-widest shadow-xl shadow-red-500/20"
+            className="mb-4 p-3 bg-red-950/40 border border-red-500/30 rounded-xl text-red-200 font-medium text-xs text-center shadow-lg"
           >
             {error}
           </motion.div>
         )}
       </AnimatePresence>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="space-y-3 group/field">
-          <label className="text-[11px] font-black uppercase tracking-[0.3em] text-[#cadaee]">ID Tài khoản</label>
-          <div className="relative group/input">
-            <Mail className="absolute left-6 top-1/2 -translate-y-1/2 text-[#cadaee]/60 w-5 h-5 group-focus-within/input:text-white transition-colors z-10" />
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="space-y-1.5">
+          <label className="text-[10px] font-semibold uppercase tracking-[0.15em] text-slate-400">ID Tài khoản</label>
+          <div className="relative">
+            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 w-4 h-4" />
             <input 
               type="text" 
               required
               value={formData.username}
               onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-              placeholder="USERNAME"
-              className="w-full bg-white/10 border-2 border-[#cadaee]/30 focus:border-white pl-16 pr-6 py-5 rounded-[1.5rem] text-white font-black transition-all outline-none placeholder:text-white/20"
+              placeholder="Nhập tên tài khoản..."
+              className="w-full bg-slate-900/60 border border-slate-800/80 focus:border-blue-500/70 focus:bg-slate-950/80 pl-11 pr-4 py-3 rounded-xl text-slate-200 text-sm font-medium transition-all outline-none placeholder:text-slate-600"
             />
           </div>
         </div>
 
-        <div className="space-y-3 group/field">
-          <label className="text-[11px] font-black uppercase tracking-[0.3em] text-[#cadaee]">Mật mã</label>
-          <div className="relative group/input">
-            <Lock className="absolute left-6 top-1/2 -translate-y-1/2 text-[#cadaee]/60 w-5 h-5 group-focus-within/input:text-white transition-colors z-10" />
+        <div className="space-y-1.5">
+          <label className="text-[10px] font-semibold uppercase tracking-[0.15em] text-slate-400">Mật mã</label>
+          <div className="relative">
+            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 w-4 h-4" />
             <input 
               type={showPassword ? 'text' : 'password'}
               required
               value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
               placeholder="••••••••"
-              className="w-full bg-white/10 border-2 border-[#cadaee]/30 focus:border-white pl-16 pr-16 py-5 rounded-[1.5rem] text-white font-black transition-all outline-none placeholder:text-white/20"
+              className="w-full bg-slate-900/60 border border-slate-800/80 focus:border-blue-500/70 focus:bg-slate-950/80 pl-11 pr-11 py-3 rounded-xl text-slate-200 text-sm font-medium transition-all outline-none placeholder:text-slate-600"
             />
             <button 
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-6 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors"
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors"
             >
-              {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+              {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
             </button>
           </div>
         </div>
 
-        <div className="flex items-center justify-between px-2 gap-2">
-          <label className="flex items-center gap-3 cursor-pointer group shrink-0">
-            <input type="checkbox" className="hidden" />
-            <div className="w-6 h-6 border-2 border-white/20 rounded-lg flex items-center justify-center group-hover:border-white transition-colors">
-               <div className="w-3 h-3 rounded-sm bg-[#cadaee] opacity-0 group-hover:opacity-100 transition-opacity shadow-[0_0_10px_#cadaee]" />
+        <div className="flex items-center justify-between px-1 pt-1 select-none">
+          <label className="flex items-center gap-2 cursor-pointer group">
+            <input 
+              type="checkbox" 
+              checked={rememberMe}
+              onChange={() => setRememberMe(!rememberMe)}
+              className="hidden" 
+            />
+            <div className={`w-4 h-4 rounded border transition-all flex items-center justify-center ${rememberMe ? 'bg-blue-600 border-blue-600' : 'bg-slate-900/60 border-slate-800 group-hover:border-slate-700'}`}>
+              {rememberMe && <span className="text-[9px] text-white">✓</span>}
             </div>
-            <span className="text-[11px] font-black text-[#cadaee]/70 uppercase tracking-widest group-hover:text-white transition-colors">Ghi nhớ</span>
+            <span className="text-xs text-slate-400 group-hover:text-slate-300 transition-colors">Ghi nhớ</span>
           </label>
-          <button type="button" onClick={() => onSwitch('forgot')} className="text-[11px] font-black text-[#cadaee] hover:text-white transition-colors uppercase tracking-[0.2em] whitespace-nowrap">
+          <button 
+            type="button" 
+            onClick={() => onSwitch('forgot')} 
+            className="text-xs text-blue-400 hover:text-blue-300 transition-colors font-medium"
+          >
             Quên mật mã?
           </button>
         </div>
@@ -143,25 +150,23 @@ function LoginForm({ onSwitch }) {
         <button 
           type="submit" 
           disabled={isLoading}
-          className="w-full relative group overflow-hidden mt-6"
+          className="w-full mt-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white py-3 rounded-xl font-semibold text-sm transition-all active:scale-[0.98] flex items-center justify-center gap-2 shadow-lg shadow-blue-900/20"
         >
-          <div className="relative bg-white text-[#4981cf] py-6 rounded-[1.5rem] font-black text-xs tracking-[0.3em] uppercase transition-transform active:scale-[0.98] flex items-center justify-center gap-4 shadow-[0_20px_40px_rgba(0,0,0,0.2)]">
-            {isLoading ? (
-              <div className="w-6 h-6 border-4 border-[#4981cf]/30 border-t-[#4981cf] rounded-full animate-spin" />
-            ) : (
-              <> ĐĂNG NHẬP <ArrowRight className="w-5 h-5" /></>
-            )}
-          </div>
+          {isLoading ? (
+            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+          ) : (
+            <>Đăng nhập <ArrowRight className="w-4 h-4" /></>
+          )}
         </button>
       </form>
 
-      <p className="mt-10 text-center text-[11px] font-black text-white/30 uppercase tracking-[0.2em]">
+      <p className="mt-8 text-center text-xs text-slate-500">
         Chưa có danh tính?{' '}
         <button 
           onClick={() => onSwitch('register')} 
-          className="text-[#cadaee] hover:text-white transition-colors font-black ml-2 underline decoration-2 underline-offset-4"
+          className="text-blue-400 hover:text-blue-300 transition-colors font-semibold ml-1 underline decoration-1 underline-offset-4"
         >
-          KHỞI TẠO NGAY
+          Khởi tạo ngay
         </button>
       </p>
     </motion.div>
@@ -175,11 +180,12 @@ function RegisterForm({ onSwitch }) {
   const [error, setError] = useState('');
   
   const setAuth = useAuthStore((state) => state.login);
+  const closeAuthModal = useAuthStore((state) => state.closeAuthModal);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
-      setError('Mật khẩu không khớp.');
+      setError('Mật khẩu xác nhận không khớp.');
       return;
     }
     setIsLoading(true);
@@ -191,6 +197,9 @@ function RegisterForm({ onSwitch }) {
         password: formData.password
       });
       setAuth({ username: data.username, role: data.role }, data.token);
+      setTimeout(() => {
+        closeAuthModal();
+      }, 100);
     } catch (err) {
       setError(err.response?.data?.message || 'Đăng ký thất bại.');
     } finally {
@@ -205,13 +214,13 @@ function RegisterForm({ onSwitch }) {
       initial="initial"
       animate="animate"
       exit="exit"
-      transition={{ duration: 0.5, ease: "easeInOut" }}
-      className="absolute inset-0 w-full h-full p-10 flex flex-col justify-center overflow-y-auto"
+      transition={{ duration: 0.4, ease: "easeInOut" }}
+      className="absolute inset-0 w-full h-full p-8 md:p-10 flex flex-col justify-center overflow-y-auto bg-[#0b1329]"
       style={{ backfaceVisibility: 'hidden' }}
     >
-      <div className="mb-8 text-center">
-        <h2 className="text-3xl font-heading font-black tracking-tighter uppercase mb-2 text-white">Khởi tạo</h2>
-        <p className="text-[#cadaee] font-black text-[10px] uppercase tracking-[0.2em] opacity-80">Gia nhập hệ thống DuongDIY</p>
+      <div className="mb-4 text-center">
+        <h2 className="text-2xl font-bold tracking-tight text-white mb-1.5">Khởi Tạo</h2>
+        <p className="text-slate-400 text-xs font-semibold uppercase tracking-[0.15em]">Gia nhập hệ thống DuongDIY</p>
       </div>
 
       <AnimatePresence>
@@ -220,88 +229,101 @@ function RegisterForm({ onSwitch }) {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="mb-6 p-4 bg-red-500 rounded-2xl text-white font-black text-xs uppercase tracking-widest shadow-xl"
+            className="mb-4 p-3 bg-red-950/40 border border-red-500/30 rounded-xl text-red-200 font-medium text-xs text-center shadow-lg"
           >
             {error}
           </motion.div>
         )}
       </AnimatePresence>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="space-y-2 group/field">
-          <label className="text-[10px] font-black uppercase tracking-[0.3em] text-[#cadaee]">Tên người dùng</label>
-          <div className="relative group/input">
-            <User className="absolute left-5 top-1/2 -translate-y-1/2 text-[#cadaee]/60 w-4 h-4 group-focus-within/input:text-white transition-colors z-10" />
+      <form onSubmit={handleSubmit} className="space-y-3">
+        <div className="space-y-1">
+          <label className="text-[10px] font-semibold uppercase tracking-[0.15em] text-slate-400">Tên người dùng</label>
+          <div className="relative">
+            <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 w-4 h-4" />
             <input 
               type="text" 
               required
               value={formData.username}
               onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-              placeholder="USERNAME"
-              className="w-full bg-white/10 border-2 border-[#cadaee]/30 focus:border-white pl-14 pr-4 py-4 rounded-[1.2rem] text-white font-black transition-all outline-none placeholder:text-white/20"
+              placeholder="Nhập username..."
+              className="w-full bg-slate-900/60 border border-slate-800/80 focus:border-blue-500/70 focus:bg-slate-950/80 pl-11 pr-4 py-2.5 rounded-xl text-slate-200 text-sm font-medium transition-all outline-none placeholder:text-slate-600"
             />
           </div>
         </div>
 
-        <div className="space-y-2 group/field">
-          <label className="text-[10px] font-black uppercase tracking-[0.3em] text-[#cadaee]">Địa chỉ Email</label>
-          <div className="relative group/input">
-            <Mail className="absolute left-5 top-1/2 -translate-y-1/2 text-[#cadaee]/60 w-4 h-4 group-focus-within/input:text-white transition-colors z-10" />
+        <div className="space-y-1">
+          <label className="text-[10px] font-semibold uppercase tracking-[0.15em] text-slate-400">Địa chỉ Email</label>
+          <div className="relative">
+            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 w-4 h-4" />
             <input 
               type="email" 
               required
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              placeholder="EMAIL@EXAMPLE.COM"
-              className="w-full bg-white/10 border-2 border-[#cadaee]/30 focus:border-white pl-14 pr-4 py-4 rounded-[1.2rem] text-white font-black transition-all outline-none placeholder:text-white/20"
+              placeholder="name@example.com"
+              className="w-full bg-slate-900/60 border border-slate-800/80 focus:border-blue-500/70 focus:bg-slate-950/80 pl-11 pr-4 py-2.5 rounded-xl text-slate-200 text-sm font-medium transition-all outline-none placeholder:text-slate-600"
             />
           </div>
         </div>
 
-        <div className="space-y-2 group/field">
-          <label className="text-[10px] font-black uppercase tracking-[0.3em] text-[#cadaee]">Mật khẩu</label>
-          <div className="relative group/input">
-            <Lock className="absolute left-5 top-1/2 -translate-y-1/2 text-[#cadaee]/60 w-4 h-4 group-focus-within/input:text-white transition-colors z-10" />
+        <div className="space-y-1">
+          <label className="text-[10px] font-semibold uppercase tracking-[0.15em] text-slate-400">Mật khẩu</label>
+          <div className="relative">
+            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 w-4 h-4" />
             <input 
               type={showPassword ? 'text' : 'password'}
               required
               value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
               placeholder="••••••••"
-              className="w-full bg-white/10 border-2 border-[#cadaee]/30 focus:border-white pl-14 pr-12 py-4 rounded-[1.2rem] text-white font-black transition-all outline-none placeholder:text-white/20"
+              className="w-full bg-slate-900/60 border border-slate-800/80 focus:border-blue-500/70 focus:bg-slate-950/80 pl-11 pr-11 py-2.5 rounded-xl text-slate-200 text-sm font-medium transition-all outline-none placeholder:text-slate-600"
             />
             <button 
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors"
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors"
             >
               {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
             </button>
           </div>
         </div>
 
+        <div className="space-y-1">
+          <label className="text-[10px] font-semibold uppercase tracking-[0.15em] text-slate-400">Xác nhận mật khẩu</label>
+          <div className="relative">
+            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 w-4 h-4" />
+            <input 
+              type={showPassword ? 'text' : 'password'}
+              required
+              value={formData.confirmPassword}
+              onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+              placeholder="••••••••"
+              className="w-full bg-slate-900/60 border border-slate-800/80 focus:border-blue-500/70 focus:bg-slate-950/80 pl-11 pr-11 py-2.5 rounded-xl text-slate-200 text-sm font-medium transition-all outline-none placeholder:text-slate-600"
+            />
+          </div>
+        </div>
+
         <button 
           type="submit" 
           disabled={isLoading}
-          className="w-full relative group overflow-hidden mt-6"
+          className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white py-3 rounded-xl font-semibold text-sm transition-all active:scale-[0.98] flex items-center justify-center gap-2 shadow-lg shadow-blue-900/20 mt-4"
         >
-          <div className="relative bg-white text-[#4981cf] py-5 rounded-[1.2rem] font-black text-xs tracking-[0.3em] uppercase transition-transform active:scale-[0.98] flex items-center justify-center gap-4 shadow-xl">
-            {isLoading ? (
-              <div className="w-6 h-6 border-4 border-[#4981cf]/30 border-t-[#4981cf] rounded-full animate-spin" />
-            ) : (
-              <> HOÀN TẤT ĐĂNG KÝ <ArrowRight className="w-4 h-4" /></>
-            )}
-          </div>
+          {isLoading ? (
+            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+          ) : (
+            <>Đăng ký <ArrowRight className="w-4 h-4" /></>
+          )}
         </button>
       </form>
 
-      <p className="mt-8 text-center text-[10px] font-black text-white/30 uppercase tracking-[0.2em]">
+      <p className="mt-4 text-center text-xs text-slate-500">
         Đã có danh tính?{' '}
         <button 
           onClick={() => onSwitch('login')} 
-          className="text-[#cadaee] hover:text-white transition-colors font-black ml-2 underline decoration-2 underline-offset-4"
+          className="text-blue-400 hover:text-blue-300 transition-colors font-semibold ml-1 underline decoration-1 underline-offset-4"
         >
-          ĐĂNG NHẬP
+          Đăng nhập
         </button>
       </p>
     </motion.div>
@@ -329,29 +351,29 @@ function ForgotForm({ onSwitch }) {
       initial="initial"
       animate="animate"
       exit="exit"
-      transition={{ duration: 0.5, ease: "easeInOut" }}
-      className="absolute inset-0 w-full h-full p-10 flex flex-col justify-center"
+      transition={{ duration: 0.4, ease: "easeInOut" }}
+      className="absolute inset-0 w-full h-full p-8 md:p-10 flex flex-col justify-center bg-[#0b1329]"
       style={{ backfaceVisibility: 'hidden' }}
     >
       {!sent ? (
         <>
-          <div className="mb-10 text-center">
-            <h2 className="text-3xl font-heading font-black tracking-tighter uppercase mb-3 text-white">Khôi phục</h2>
-            <p className="text-[#cadaee] font-black text-[10px] uppercase tracking-[0.2em] opacity-80">Cổng truy xuất mật mã</p>
+          <div className="mb-6 text-center">
+            <h2 className="text-2xl font-bold tracking-tight text-white mb-1.5">Khôi Phục</h2>
+            <p className="text-slate-400 text-xs font-semibold uppercase tracking-[0.15em]">Cổng truy xuất mật mã</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-8">
-            <div className="space-y-3 group/field">
-              <label className="text-[11px] font-black uppercase tracking-[0.3em] text-[#cadaee]">Email nhận mã</label>
-              <div className="relative group/input">
-                <Mail className="absolute left-6 top-1/2 -translate-y-1/2 text-[#cadaee]/60 w-5 h-5 group-focus-within/input:text-white transition-colors z-10" />
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-1.5">
+              <label className="text-[10px] font-semibold uppercase tracking-[0.15em] text-slate-400">Email nhận mã</label>
+              <div className="relative">
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 w-4 h-4" />
                 <input 
                   type="email" 
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="EMAIL@EXAMPLE.COM"
-                  className="w-full bg-white/10 border-2 border-[#cadaee]/30 focus:border-white pl-16 pr-6 py-5 rounded-[1.5rem] text-white font-black transition-all outline-none placeholder:text-white/20"
+                  placeholder="name@example.com"
+                  className="w-full bg-slate-900/60 border border-slate-800/80 focus:border-blue-500/70 focus:bg-slate-950/80 pl-11 pr-4 py-3 rounded-xl text-slate-200 text-sm font-medium transition-all outline-none placeholder:text-slate-600"
                 />
               </div>
             </div>
@@ -359,34 +381,32 @@ function ForgotForm({ onSwitch }) {
             <button 
               type="submit" 
               disabled={isLoading}
-              className="w-full relative group overflow-hidden"
+              className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white py-3 rounded-xl font-semibold text-sm transition-all active:scale-[0.98] flex items-center justify-center gap-2 shadow-lg shadow-blue-900/20 mt-2"
             >
-              <div className="relative bg-white text-[#4981cf] py-6 rounded-[1.5rem] font-black text-xs tracking-[0.3em] uppercase flex items-center justify-center gap-4 shadow-xl">
-                {isLoading ? (
-                  <div className="w-6 h-6 border-4 border-[#4981cf]/30 border-t-[#4981cf] rounded-full animate-spin" />
-                ) : (
-                  <> GỬI YÊU CẦU </>
-                )}
-              </div>
+              {isLoading ? (
+                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              ) : (
+                <>Gửi yêu cầu</>
+              )}
             </button>
           </form>
         </>
       ) : (
-        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="text-center py-10">
-          <div className="w-24 h-24 rounded-full bg-white/20 border-4 border-white flex items-center justify-center mx-auto mb-10 shadow-2xl">
-            <CheckCircle className="w-12 h-12 text-white" />
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="text-center py-6">
+          <div className="w-20 h-20 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center mx-auto mb-6 shadow-xl">
+            <CheckCircle className="w-10 h-10 text-emerald-500" />
           </div>
-          <h2 className="text-3xl font-heading font-black text-white uppercase tracking-tight mb-4">Gửi Tín Hiệu</h2>
-          <p className="text-[#cadaee] font-black text-xs uppercase tracking-[0.2em]">Kiểm tra email để tiếp tục</p>
+          <h2 className="text-xl font-bold text-white mb-2">Gửi Tín Hiệu</h2>
+          <p className="text-slate-400 text-xs">Kiểm tra email để tiếp tục quy trình.</p>
         </motion.div>
       )}
 
-      <div className="mt-12 pt-8 border-t border-white/10 flex justify-center">
+      <div className="mt-8 pt-6 border-t border-slate-800/80 flex justify-center">
         <button 
           onClick={() => onSwitch('login')} 
-          className="flex items-center gap-3 text-xs font-black uppercase tracking-[0.3em] text-white/50 hover:text-white transition-colors"
+          className="flex items-center gap-2 text-xs font-semibold tracking-wider text-slate-400 hover:text-slate-300 transition-colors uppercase"
         >
-          <ArrowLeft className="w-5 h-5" /> QUAY LẠI
+          <ArrowLeft className="w-4 h-4" /> Quay lại
         </button>
       </div>
     </motion.div>
@@ -409,22 +429,21 @@ export default function AuthModal() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={closeAuthModal}
-          className="absolute inset-0 bg-[#1a365d]/80 backdrop-blur-sm"
+          className="absolute inset-0 bg-[#080d1a]/85 backdrop-blur-sm"
         />
         
         <motion.div 
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          className="relative w-full max-w-md h-[650px] bg-[#4981cf] rounded-[3.5rem] shadow-[0_50px_100px_rgba(0,0,0,0.4)] overflow-hidden border-4 border-white/20"
+          className="relative w-full max-w-md h-[580px] bg-[#0b1329] rounded-[2rem] shadow-[0_24px_50px_-12px_rgba(0,0,0,0.6)] overflow-hidden border border-slate-800/80"
           style={{ transformStyle: 'preserve-3d' }}
         >
-          <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-transparent via-white to-transparent z-20" />
           <button 
             onClick={closeAuthModal}
-            className="absolute top-8 right-8 w-10 h-10 rounded-full bg-white/10 border-2 border-white/20 flex items-center justify-center text-white/50 hover:text-white hover:bg-white/20 transition-all z-20"
+            className="absolute top-6 right-6 w-9 h-9 rounded-full bg-slate-800/50 border border-slate-700/50 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-700/50 transition-all z-20"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
 
           <AnimatePresence mode="wait">
